@@ -65,3 +65,31 @@ the server settings like PORT, HOST and HOSTNAME are injected via process.env an
 
 Two option here, you will find a multistage dockerfile ready to be used and a pm2 config or you could also go for the classic (node dist/server/main.js)
 in the later case, do not forget to set `process.env.NODE_ENV` as `production`. Otherwise, the Nuxt server would rebuild !
+
+
+## Mögliche Quellen für Daten:
+
+
+https://www.jobundfit.de/rezepte/
+
+Z.B. PDF mit Rezepten hier: https://www.jobundfit.de/rezepte/speiseplaene/
+
+Zutaten:  
+https://eatsmarter.de/lexikon/warenkunde
+
+Tonnen an Daten:  
+https://world.openfoodfacts.org/data  
+https://fdc.nal.usda.gov/download-datasets.html
+
+Nährtwertdaten:  
+https://www.bmi-rechner.net/kalorientabelle.htm
+
+Ideen:
+
+* Filter include, exclude, favourite, time, difficulty, region, categories, diversity, ...
+* Bei Rezepten 
+    * beliebig die Portionen verändern 
+    * Nährwertangaben approximieren
+    * Gesundheitsindex berechnen
+
+

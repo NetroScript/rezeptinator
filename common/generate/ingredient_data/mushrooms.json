@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Austernpilze",
+    "kalorien": 20,
+    "eiweiß": 2,
+    "fett": 0,
+    "kohlenhydrate": 0,
+    "zucker": 0,
+    "ballaststoffe": 6,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
+  },
+  {
+    "name": "Butterpilze",
+    "kalorien": 16,
+    "eiweiß": 2,
+    "fett": 0,
+    "kohlenhydrate": 0,
+    "zucker": 0,
+    "ballaststoffe": 4.2,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
+  },
+  {
+    "name": "Champignons",
+    "kalorien": 19,
+    "eiweiß": 3,
+    "fett": 0,
+    "kohlenhydrate": 0.8,
+    "zucker": 0.8,
+    "ballaststoffe": 2,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
+  },
+  {
+    "name": "Morcheln",
+    "kalorien": 21,
+    "eiweiß": 2,
+    "fett": 0,
+    "kohlenhydrate": 0,
+    "zucker": 0,
+    "ballaststoffe": 6.4,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
+  },
+  {
+    "name": "Pfifferlinge",
+    "kalorien": 18,
+    "eiweiß": 2,
+    "fett": 0.4,
+    "kohlenhydrate": 0,
+    "zucker": 0,
+    "ballaststoffe": 3,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
+  },
+  {
+    "name": "Shiitake Pilze",
+    "kalorien": 94,
+    "eiweiß": 3.2,
+    "fett": 0.2,
+    "kohlenhydrate": 19.4,
+    "zucker": 0.4,
+    "ballaststoffe": 1,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
+  },
+  {
+    "name": "Steinpilze",
+    "kalorien": 31,
+    "eiweiß": 4,
+    "fett": 0,
+    "kohlenhydrate": 1,
+    "zucker": 0,
+    "ballaststoffe": 5.5,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
+  },
+  {
+    "name": "Trüffel",
+    "kalorien": 68,
+    "eiweiß": 8,
+    "fett": 0.5,
+    "kohlenhydrate": 8,
+    "zucker": 1,
+    "ballaststoffe": 0,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
+  },
+  {
+    "name": "Pilze",
+    "kalorien": 22,
+    "eiweiß": 3.1,
+    "fett": 0.3,
+    "kohlenhydrate": 3.3,
+    "zucker": 2,
+    "ballaststoffe": 1,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
+  }
+]

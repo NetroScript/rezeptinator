@@ -2,7 +2,7 @@
   <div>
     <h1>index</h1>
     <ul>
-      <li v-for="(user, i) in users" :key="i">Name: {{ user.name }}</li>
+      <li v-for="(user, i) in users" :key="i">Vorname: {{ user.name }}</li>
     </ul>
   </div>
 </template>

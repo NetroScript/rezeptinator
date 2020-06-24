@@ -1,0 +1,99 @@
+[
+  {
+    "name": "Auster",
+    "kalorien": 44,
+    "eiweiß": 10,
+    "fett": 0.5,
+    "kohlenhydrate": 0,
+    "zucker": 0,
+    "ballaststoffe": 0,
+    "alkohol": 0,
+    "vegan": "nein",
+    "allergien": ""
+  },
+  {
+    "name": "Flusskrebs",
+    "kalorien": 64,
+    "eiweiß": 15,
+    "fett": 0.4,
+    "kohlenhydrate": 0,
+    "zucker": 0,
+    "ballaststoffe": 0,
+    "alkohol": 0,
+    "vegan": "nein",
+    "allergien": ""
+  },
+  {
+    "name": "Garnelen",
+    "kalorien": 87,
+    "eiweiß": 20,
+    "fett": 0.9,
+    "kohlenhydrate": 0,
+    "zucker": 0,
+    "ballaststoffe": 0,
+    "alkohol": 0,
+    "vegan": "nein",
+    "allergien": "",
+    "alias": ["Gambas"]
+  },
+  {
+    "name": "Hummer",
+    "kalorien": 88,
+    "eiweiß": 20.1,
+    "fett": 0.8,
+    "kohlenhydrate": 0,
+    "zucker": 0,
+    "ballaststoffe": 0,
+    "alkohol": 0,
+    "vegan": "nein",
+    "allergien": ""
+  },
+  {
+    "name": "Jakobsmuschel",
+    "kalorien": 56,
+    "eiweiß": 11.4,
+    "fett": 1.2,
+    "kohlenhydrate": 0,
+    "zucker": 0,
+    "ballaststoffe": 0,
+    "alkohol": 0,
+    "vegan": "nein",
+    "allergien": ""
+  },
+  {
+    "name": "Krabben",
+    "kalorien": 106,
+    "eiweiß": 22,
+    "fett": 2,
+    "kohlenhydrate": 0,
+    "zucker": 0,
+    "ballaststoffe": 0,
+    "alkohol": 0,
+    "vegan": "nein",
+    "allergien": ""
+  },
+  {
+    "name": "Languste",
+    "kalorien": 78,
+    "eiweiß": 16,
+    "fett": 1.5,
+    "kohlenhydrate": 0,
+    "zucker": 0,
+    "ballaststoffe": 0,
+    "alkohol": 0,
+    "vegan": "nein",
+    "allergien": ""
+  },
+  {
+    "name": "Miesmuscheln",
+    "kalorien": 56,
+    "eiweiß": 10,
+    "fett": 1.8,
+    "kohlenhydrate": 0,
+    "zucker": 0,
+    "ballaststoffe": 0,
+    "alkohol": 0,
+    "vegan": "nein",
+    "allergien": ""
+  }
+]

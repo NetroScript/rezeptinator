@@ -6,13 +6,13 @@ RUN mkdir -p /app
 WORKDIR /app
 
 COPY ./package.json /app
-COPY ./yarn.lock /app
+COPY ./package-lock.json /app
 
-RUN yarn install
+RUN npm install
 
 COPY . /app/
 
-RUN yarn run build
+RUN npm run build
 
 # production container
 FROM node:lts-alpine
@@ -25,23 +25,20 @@ ENV NODE_ENV=production \
 RUN mkdir -p /app
 WORKDIR /app
 
-RUN yarn global add \
-  pm2
+RUN npm install pm2 -g
 
 COPY \
  --chown=node:node \
  --from=build \
  /app/dist/ /app/dist/
 
-COPY --chown=node:node ./yarn.lock /app/
+COPY --chown=node:node ./package-lock.json /app/
 COPY --chown=node:node ./package.json /app/
 COPY --chown=node:node ./ecosystem.config.js /app/
 
-RUN yarn install \
-    --pure-lockfile \
-    --production
+RUN npm ci --production
 
-RUN yarn cache clean
+RUN npm cache clean
 
 USER node
 

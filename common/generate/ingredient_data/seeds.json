@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Chia",
+    "kalorien": 451,
+    "eiweiß": 21,
+    "fett": 31,
+    "kohlenhydrate": 5,
+    "zucker": 0,
+    "ballaststoffe": 34,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
+  },
+  {
+    "name": "Flohsamenschalen",
+    "kalorien": 186,
+    "eiweiß": 1.6,
+    "fett": 0.2,
+    "kohlenhydrate": 2,
+    "zucker": 0,
+    "ballaststoffe": 85,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
+  },
+  {
+    "name": "Hanfsamen",
+    "kalorien": 586,
+    "eiweiß": 33,
+    "fett": 44,
+    "kohlenhydrate": 12,
+    "zucker": 1,
+    "ballaststoffe": 5,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
+  },
+  {
+    "name": "Kürbiskerne",
+    "kalorien": 654,
+    "eiweiß": 32,
+    "fett": 55,
+    "kohlenhydrate": 4,
+    "zucker": 2,
+    "ballaststoffe": 7.4,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
+  },
+  {
+    "name": "Leinsamen",
+    "kalorien": 425,
+    "eiweiß": 22.4,
+    "fett": 29,
+    "kohlenhydrate": 0,
+    "zucker": 0,
+    "ballaststoffe": 37.4,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
+  },
+  {
+    "name": "Mohn",
+    "kalorien": 487,
+    "eiweiß": 19,
+    "fett": 39.4,
+    "kohlenhydrate": 3,
+    "zucker": 0,
+    "ballaststoffe": 22.3,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
+  },
+  {
+    "name": "Pinienkerne",
+    "kalorien": 570,
+    "eiweiß": 23,
+    "fett": 49,
+    "kohlenhydrate": 6,
+    "zucker": 1,
+    "ballaststoffe": 6.5,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
+  },
+  {
+    "name": "Sesam",
+    "kalorien": 559,
+    "eiweiß": 15,
+    "fett": 49,
+    "kohlenhydrate": 9,
+    "zucker": 1,
+    "ballaststoffe": 10.9,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
+  },
+  {
+    "name": "Sonnenblumenkerne",
+    "kalorien": 557,
+    "eiweiß": 19,
+    "fett": 47,
+    "kohlenhydrate": 11.4,
+    "zucker": 2.9,
+    "ballaststoffe": 6,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
+  },
+  {
+    "name": "Kakaobohnen",
+    "kalorien": 415,
+    "eiweiß": 20,
+    "fett": 25,
+    "kohlenhydrate": 11,
+    "zucker": 1,
+    "ballaststoffe": 33,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
+  }
+]
