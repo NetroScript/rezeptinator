@@ -1,11 +1,11 @@
 import * as fs from 'fs';
 import {
   AllergyGroups,
-  Ingredient,
+  IIngredient,
   IngredientCategories,
-  Nutrients,
+  INutrients,
   Vegan,
-} from '@common/Ingredient';
+} from '@common/Model/Ingredient';
 
 interface DataEntry {
   name: string;
@@ -19,9 +19,10 @@ interface DataEntry {
   vegan: string;
   allergien: string;
   alias?: string[];
+  portion?: number;
 }
 
-function getNutrients(entry: DataEntry): Nutrients {
+function getNutrients(entry: DataEntry): INutrients {
   return {
     alcohol: entry.alkohol,
     calories: entry.kalorien,
@@ -49,7 +50,7 @@ const allergyCategories: { [key: string]: AllergyGroups } = {
   sellerie: AllergyGroups.Celery,
 };
 
-function getIngredient(entry: DataEntry, category: IngredientCategories): Ingredient {
+function getIngredient(entry: DataEntry, category: IngredientCategories): IIngredient {
   const allergy: AllergyGroups[] = [];
 
   if (category == IngredientCategories.Nuts) {
@@ -78,7 +79,7 @@ function getIngredient(entry: DataEntry, category: IngredientCategories): Ingred
     allergies: allergy,
     category: category,
     name: entry.name,
-    portionSize: 30,
+    portionSize: !entry.portion ? entry.portion : undefined,
     alias: !entry.alias ? entry.alias : [],
     nutritions: getNutrients(entry),
     vegan:
@@ -111,13 +112,13 @@ const categories: { [key: string]: IngredientCategories } = {
   misc: IngredientCategories.Miscellaneous,
 };
 
-export const collectedIngredients: Ingredient[] = [].concat(
-  Object.keys(categories).map((file): Ingredient[] => {
+export const collectedIngredients: IIngredient[] = [].concat(
+  Object.keys(categories).map((file): IIngredient[] => {
     const data: DataEntry[] = JSON.parse(
       fs.readFileSync(`./ingredient_data/${file}.json`, { encoding: 'utf8' }),
     );
     return data.map(
-      (entry): Ingredient => {
+      (entry): IIngredient => {
         return getIngredient(entry, categories[file]);
       },
     );

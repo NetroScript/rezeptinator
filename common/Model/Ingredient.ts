@@ -1,5 +1,5 @@
 // Always per 100xx
-export interface Nutrients {
+export interface INutrients {
   // Kalorien in kcal
   calories: number;
   // Proteine
@@ -61,11 +61,12 @@ export enum AllergyGroups {
   'Molluscs',
 }
 
-export interface Ingredient {
-  // Nutrition Table
-  nutritions: Nutrients;
+// Ingredients information
+export interface IIngredient {
   // Name of the Ingredient
   name: string;
+  // Nutrition Table
+  nutritions?: INutrients;
   // Weitere Namen unter denen die Zutat bekannt ist
   alias: string[];
   // Which type of ingredient it is
@@ -75,7 +76,7 @@ export interface Ingredient {
   // Common Allergy groups
   allergies: AllergyGroups[];
   // If you have 1 of this ingredient - how much is that in g? for example 50g for a potato
-  portionSize: number;
+  portionSize?: number;
 }
 
 /*
