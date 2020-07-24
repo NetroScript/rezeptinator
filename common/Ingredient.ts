@@ -23,28 +23,42 @@ export enum Vegan {
 }
 
 export enum IngredientCategories {
-  'Obst',
-  'Gemüse',
-  'Samen',
-  'Nüsse',
-  'Nudeln',
-  'Getreide',
-  'Backwaren',
-  'Milchprodukte',
-  'Fleisch',
-  'Fisch',
-  'Geflügel',
-  'FetteÖle',
-  'Getränke',
-  'Süßwaren',
-  'Pilze',
-  'GewürzeKräuterSaucen',
-  'Meeresfrüchte',
-  'Sonstiges',
+  'Fruit',
+  'Vegetables',
+  'Seeds',
+  'Nuts',
+  'Noodles',
+  'Grain',
+  'BakeryProducts',
+  'Dairy',
+  'Flesh',
+  'Fish',
+  'Poultry',
+  'Fat',
+  'Drinks',
+  'Sweets',
+  'Mushrooms',
+  'Spices',
+  'SeaFood',
+  'Miscellaneous',
 }
 
 export enum AllergyGroups {
   'None',
+  'Eggs',
+  'Peanuts',
+  'Fish',
+  'Gluten',
+  'Crustacean',
+  'Lupin',
+  'Lactose',
+  'Nuts',
+  'Sulfur dioxide / Sulfite',
+  'Celery',
+  'Mustard',
+  'Sesame',
+  'Soya',
+  'Molluscs',
 }
 
 export interface Ingredient {
@@ -59,7 +73,7 @@ export interface Ingredient {
   // If this ingredient is vegan / Vegetarian / Neither
   vegan: Vegan;
   // Common Allergy groups
-  allergies: AllergyGroups;
+  allergies: AllergyGroups[];
   // If you have 1 of this ingredient - how much is that in g? for example 50g for a potato
   portionSize: number;
 }

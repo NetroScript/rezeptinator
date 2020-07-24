@@ -405,7 +405,7 @@
     "ballaststoffe": 4.1,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "nuss"
   },
   {
     "name": "Nelken getrocknet",
@@ -537,7 +537,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch, ei"
   },
   {
     "name": "Schnittlauch",
@@ -561,7 +561,7 @@
     "ballaststoffe": 4,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "senf"
   },
   {
     "name": "Sojasauce",
@@ -573,7 +573,7 @@
     "ballaststoffe": 0.4,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "soja"
   },
   {
     "name": "Tabasco",

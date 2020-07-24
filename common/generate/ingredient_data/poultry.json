@@ -9,7 +9,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "ei"
   },
   {
     "name": "Eigelb",
@@ -21,7 +21,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "ei"
   },
   {
     "name": "Eiweiß",
@@ -33,7 +33,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "nein",
-    "allergien": "",
+    "allergien": "ei",
     "alias": ["Eiklar"]
   },
   {

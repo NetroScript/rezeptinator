@@ -805,7 +805,7 @@
     "ballaststoffe": 4,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "sellerie"
   },
   {
     "name": "Sojabohne",
@@ -817,7 +817,7 @@
     "ballaststoffe": 1.9,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "soja"
   },
   {
     "name": "Sojasprossen",
@@ -829,7 +829,7 @@
     "ballaststoffe": 2.5,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "soja"
   },
   {
     "name": "Spargel",
@@ -877,7 +877,7 @@
     "ballaststoffe": 2.7,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "sellerie"
   },
   {
     "name": "Staudensellerie",
@@ -889,7 +889,7 @@
     "ballaststoffe": 2.3,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "sellerie"
   },
   {
     "name": "Steckrüben",

@@ -9,7 +9,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Ayran",
@@ -21,7 +21,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Bergkäse 50% i.Tr.",
@@ -57,7 +57,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Büffelmozzarella",
@@ -69,7 +69,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Butterkäse",
@@ -81,7 +81,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Buttermilch",
@@ -93,7 +93,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Camembert",
@@ -105,7 +105,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Cheddar Käse",
@@ -129,7 +129,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Creme fraiche 30%",
@@ -141,7 +141,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Edamer Käse",
@@ -249,7 +249,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Gouda Käse",
@@ -285,7 +285,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Handkäse",
@@ -307,18 +307,6 @@
     "kohlenhydrate": 0,
     "zucker": 0,
     "ballaststoffe": 0,
-    "alkohol": 0,
-    "vegan": "vegetarisch",
-    "allergien": ""
-  },
-  {
-    "name": "Haselnussmilch",
-    "kalorien": 29,
-    "eiweiß": 0.4,
-    "fett": 1.6,
-    "kohlenhydrate": 3.1,
-    "zucker": 3.1,
-    "ballaststoffe": 0.3,
     "alkohol": 0,
     "vegan": "vegetarisch",
     "allergien": ""
@@ -405,7 +393,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Kaffeesahne 4%",
@@ -417,7 +405,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Kaffeesahne 7,5%",
@@ -429,7 +417,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Kakaomilch 1,5%",
@@ -441,7 +429,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Kakaomilch 3,5%",
@@ -453,7 +441,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Kefir",
@@ -465,7 +453,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Kokosmilch",
@@ -489,7 +477,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Limburger Käse",
@@ -525,7 +513,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Milch 0,3%",
@@ -537,7 +525,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Milch 1,5%",
@@ -549,7 +537,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Milch 3,5%",
@@ -561,7 +549,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Milchpulver",
@@ -573,7 +561,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Molke",
@@ -585,7 +573,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Mozzarella Käse",
@@ -633,7 +621,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Quark, 20%",
@@ -645,7 +633,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Quark, 40%",
@@ -657,7 +645,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Quark, Magerquark 0,5%",
@@ -669,7 +657,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Ricotta",
@@ -681,7 +669,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Romadur Käse",
@@ -717,7 +705,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Sahne 20%",
@@ -729,7 +717,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Sahne 30%",
@@ -741,7 +729,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Sauerrahm",
@@ -753,7 +741,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Schafskäse",
@@ -777,7 +765,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Schmand",
@@ -789,7 +777,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Schmelzkäse",
@@ -813,7 +801,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Sojajoghurt",
@@ -825,7 +813,7 @@
     "ballaststoffe": 0.5,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "soja"
   },
   {
     "name": "Sojamilch",
@@ -837,7 +825,7 @@
     "ballaststoffe": 0.5,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "soja"
   },
   {
     "name": "Tilsiter Käse",

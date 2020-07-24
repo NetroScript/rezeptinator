@@ -97,6 +97,18 @@
     "allergien": ""
   },
   {
+    "name": "Haselnussmilch",
+    "kalorien": 29,
+    "eiweiß": 0.4,
+    "fett": 1.6,
+    "kohlenhydrate": 3.1,
+    "zucker": 3.1,
+    "ballaststoffe": 0.3,
+    "alkohol": 0,
+    "vegan": "vegetarisch",
+    "allergien": "nuss"
+  },
+  {
     "name": "Weinbrand (40%)",
     "kalorien": 227,
     "eiweiß": 0,
@@ -144,7 +156,7 @@
     "ballaststoffe": 0,
     "alkohol": 30.4,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Rum (37% Vol.)",
@@ -228,7 +240,7 @@
     "ballaststoffe": 0,
     "alkohol": 16,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "ei"
   },
   {
     "name": "Likör (20% Vol.)",
@@ -408,7 +420,7 @@
     "ballaststoffe": 0,
     "alkohol": 4,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Cidre",
@@ -444,7 +456,7 @@
     "ballaststoffe": 0,
     "alkohol": 4,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Altbier",
@@ -468,7 +480,7 @@
     "ballaststoffe": 0.1,
     "alkohol": 3.8,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Weißbier Weizenbier",
@@ -480,7 +492,7 @@
     "ballaststoffe": 0,
     "alkohol": 3.8,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Diätbier",
@@ -492,7 +504,7 @@
     "ballaststoffe": 0,
     "alkohol": 3.3,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Radler",
@@ -504,7 +516,7 @@
     "ballaststoffe": 1,
     "alkohol": 2,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Bier, alkoholfrei",
@@ -516,7 +528,7 @@
     "ballaststoffe": 0,
     "alkohol": 0.3,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Aloe Vera Saft",
@@ -636,7 +648,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "ei, milch"
   },
   {
     "name": "Energydrink",
@@ -768,7 +780,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Holundersaft",
@@ -840,7 +852,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Limonade",
@@ -876,7 +888,7 @@
     "ballaststoffe": 0.2,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Mandelmilch gesüßt",
@@ -912,7 +924,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Mineralwasser",
@@ -1104,7 +1116,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Trinkwasser",
@@ -1128,7 +1140,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Zitronensaft",

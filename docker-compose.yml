@@ -1,7 +1,30 @@
 version: '3.4'
 
 services:
-  app:
-    build: .
+  # Funktioniert nicht, muss nochmal neu getestet werden
+#  app:
+#    build: .
+#    container_name: "rezepteapp"
+#    ports:
+#      - 80:80
+#    depends_on:
+#      - postgres
+  # postgres
+  postgres:
+    # mdillon/postgis is postgres + PostGIS (only). if you need additional
+    # extensions, it's probably time to create a purpose-built image with all
+    # necessary extensions. sorry, and thanks for adding support for them!
+    image: "library/postgres:12.3"
+    container_name: "postgres-database"
+    volumes:
+      - database-data:/var/lib/postgresql/data/
     ports:
-      - 80:80
+      - "44444:44444"
+    environment:
+      POSTGRES_USER: "postgresqluser"
+      POSTGRES_PASSWORD: ";*TcoAU6,-zrHLBh6-(MO/']e.-E`*7LV[;@&7Tb"
+      POSTGRES_DB: "rezepte"
+    restart: unless-stopped
+
+volumes:
+  database-data:

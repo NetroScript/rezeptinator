@@ -9,7 +9,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "nein",
-    "allergien": ""
+    "allergien": "weichtiere"
   },
   {
     "name": "Flusskrebs",
@@ -21,7 +21,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "nein",
-    "allergien": ""
+    "allergien": "krebstiere"
   },
   {
     "name": "Garnelen",
@@ -33,7 +33,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "nein",
-    "allergien": "",
+    "allergien": "krebstiere",
     "alias": ["Gambas"]
   },
   {
@@ -46,7 +46,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "nein",
-    "allergien": ""
+    "allergien": "krebstiere"
   },
   {
     "name": "Jakobsmuschel",
@@ -58,7 +58,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "nein",
-    "allergien": ""
+    "allergien": "weucgtuere"
   },
   {
     "name": "Krabben",
@@ -70,7 +70,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "nein",
-    "allergien": ""
+    "allergien": "krebstiere"
   },
   {
     "name": "Languste",
@@ -82,7 +82,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "nein",
-    "allergien": ""
+    "allergien": "krebstiere"
   },
   {
     "name": "Miesmuscheln",
@@ -94,6 +94,6 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "nein",
-    "allergien": ""
+    "allergien": "weichtiere"
   }
 ]

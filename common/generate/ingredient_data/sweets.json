@@ -69,7 +69,7 @@
     "ballaststoffe": 0.7,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Eiskaffee",
@@ -81,7 +81,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Erdnussbutter",
@@ -93,7 +93,7 @@
     "ballaststoffe": 6,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "erdnuss"
   },
   {
     "name": "Erythrit",
@@ -190,7 +190,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Kakaopulver gezuckert",
@@ -238,7 +238,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Kokosblütenzucker",
@@ -370,7 +370,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Mönchsfrucht",
@@ -418,7 +418,7 @@
     "ballaststoffe": 4,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "nuss"
   },
   {
     "name": "Nuss Nougat Creme",
@@ -430,7 +430,7 @@
     "ballaststoffe": 3.5,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "nuss"
   },
   {
     "name": "Nussschokolade",
@@ -442,7 +442,7 @@
     "ballaststoffe": 4.1,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "nuss"
   },
   {
     "name": "Nutella",
@@ -454,7 +454,7 @@
     "ballaststoffe": 3.5,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "nuss"
   },
   {
     "name": "Pflaumenmus",
@@ -526,7 +526,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Schokoladeneis",
@@ -538,7 +538,7 @@
     "ballaststoffe": 1,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Schokoriegel",
@@ -562,7 +562,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Sorbit",
@@ -586,7 +586,7 @@
     "ballaststoffe": 5.9,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "nuss"
   },
   {
     "name": "Süßstoff",
@@ -634,7 +634,7 @@
     "ballaststoffe": 1,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Wassereis",
@@ -658,7 +658,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Xylit",
@@ -682,7 +682,7 @@
     "ballaststoffe": 10,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Zartbitterschokolade 75%",
@@ -694,7 +694,7 @@
     "ballaststoffe": 4,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Zartbitterschokolade 85%",
@@ -706,7 +706,7 @@
     "ballaststoffe": 4,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Zartbitterschokolade 90%",
@@ -718,7 +718,7 @@
     "ballaststoffe": 5,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Zucker",

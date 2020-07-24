@@ -26,3 +26,19 @@ $("#kalorientabelle tbody tr").toArray().map(element => {
 
 Da manche von diesen sachen in 100ml statt 100g angegeben sind, kann es leichte abweichungen geben, das sollte
  jedoch kein Problem sein
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Eventuelle weitere Quelle:
+ https://github.com/pinae/Nutria-DB/blob/master/nutriaDB/jsonAPI/fixtures/knappe_rezepte.json
+ 
+ 
+ # Allergien
+ 
+ https://www.bzfe.de/inhalt/allergenkennzeichnung-1878.html
+ https://www.nestleprofessional.de/news/ernaehrung/allergenliste-die-14-hauptallergengruppen-im-ueberblick

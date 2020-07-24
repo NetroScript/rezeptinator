@@ -9,7 +9,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Glasnudeln",
@@ -58,7 +58,7 @@
     "ballaststoffe": 2,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Nudeln, Eierteigware",
@@ -70,7 +70,7 @@
     "ballaststoffe": 3,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten, ei"
   },
   {
     "name": "Nudeln, Hartweizengrieß",
@@ -94,7 +94,7 @@
     "ballaststoffe": 13,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Reisnudeln",
@@ -118,7 +118,7 @@
     "ballaststoffe": 2.1,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Spaghetti",
@@ -130,7 +130,7 @@
     "ballaststoffe": 1,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Spätzle",
@@ -142,7 +142,7 @@
     "ballaststoffe": 1.9,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten, ei"
   },
   {
     "name": "Tortellini",
@@ -154,6 +154,6 @@
     "ballaststoffe": 2,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten"
   }
 ]

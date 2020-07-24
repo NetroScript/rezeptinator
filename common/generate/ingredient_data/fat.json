@@ -9,7 +9,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "milch"
   },
   {
     "name": "Gheebutter",
@@ -33,7 +33,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "erdnuss, nuss"
   },
   {
     "name": "Gänseschmalz",
@@ -153,7 +153,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "ei"
   },
   {
     "name": "Olivenöl",
@@ -201,7 +201,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "ei"
   },
   {
     "name": "Rindertalg",
@@ -237,7 +237,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "sesam"
   },
   {
     "name": "Sonnenblumenöl",
@@ -273,7 +273,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "nuss"
   },
   {
     "name": "Weizenkeimöl",

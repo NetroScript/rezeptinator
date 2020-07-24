@@ -57,7 +57,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Haferflocken",
@@ -141,7 +141,7 @@
     "ballaststoffe": 3,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Wildreis gemischt",

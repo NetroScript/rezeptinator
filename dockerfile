@@ -36,9 +36,7 @@ COPY --chown=node:node ./package-lock.json /app/
 COPY --chown=node:node ./package.json /app/
 COPY --chown=node:node ./ecosystem.config.js /app/
 
-RUN npm ci --production
-
-RUN npm cache clean
+RUN npm install
 
 USER node
 

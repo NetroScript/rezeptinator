@@ -130,7 +130,7 @@
     "ballaststoffe": 4,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "nuss"
   },
   {
     "name": "Erdnussmus",
@@ -142,7 +142,7 @@
     "ballaststoffe": 6.5,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "nuss, erdnuss"
   },
   {
     "name": "Haselnussmus",
@@ -154,7 +154,7 @@
     "ballaststoffe": 4,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "nuss"
   },
   {
     "name": "Hummus",
@@ -190,7 +190,7 @@
     "ballaststoffe": 8.4,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "nuss"
   },
   {
     "name": "Couscous gekocht",
@@ -227,6 +227,6 @@
     "ballaststoffe": 0.4,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "fisch"
   }
 ]

@@ -33,9 +33,49 @@ function getNutrients(entry: DataEntry): Nutrients {
   };
 }
 
+const allergyCategories: { [key: string]: AllergyGroups } = {
+  nuss: AllergyGroups.Nuts,
+  erdnuss: AllergyGroups.Peanuts,
+  ei: AllergyGroups.Eggs,
+  sesam: AllergyGroups.Sesame,
+  gluten: AllergyGroups.Gluten,
+  fisch: AllergyGroups.Fish,
+  soja: AllergyGroups.Soya,
+  lupine: AllergyGroups.Lupin,
+  milch: AllergyGroups.Lactose,
+  senf: AllergyGroups.Mustard,
+  weichtiere: AllergyGroups.Molluscs,
+  krebstiere: AllergyGroups.Crustacean,
+  sellerie: AllergyGroups.Celery,
+};
+
 function getIngredient(entry: DataEntry, category: IngredientCategories): Ingredient {
+  const allergy: AllergyGroups[] = [];
+
+  if (category == IngredientCategories.Nuts) {
+    allergy.push(AllergyGroups.Nuts);
+  }
+
+  Object.entries(allergyCategories).forEach(([key, value]) => {
+    if (entry.allergien.includes(key)) {
+      allergy.push(value);
+    }
+  });
+
+  if (category == IngredientCategories.Fish) {
+    allergy.push(AllergyGroups.Fish);
+  }
+
+  if (entry.name.toLowerCase().includes('käse') || entry.name.toLowerCase().includes('joghurt')) {
+    allergy.push(AllergyGroups.Lactose);
+  }
+
+  if (allergy.length == 0) {
+    allergy.push(AllergyGroups.None);
+  }
+
   return {
-    allergies: AllergyGroups.None,
+    allergies: allergy,
     category: category,
     name: entry.name,
     portionSize: 30,
@@ -51,24 +91,24 @@ function getIngredient(entry: DataEntry, category: IngredientCategories): Ingred
 }
 
 const categories: { [key: string]: IngredientCategories } = {
-  fruits: IngredientCategories.Obst,
-  nuts: IngredientCategories.Nüsse,
-  seeds: IngredientCategories.Samen,
-  bakeryproducts: IngredientCategories.Backwaren,
-  grain: IngredientCategories.Getreide,
-  seafood: IngredientCategories.Meeresfrüchte,
-  fish: IngredientCategories.Fisch,
-  poultry: IngredientCategories.Geflügel,
-  noodles: IngredientCategories.Nudeln,
-  dairy: IngredientCategories.Milchprodukte,
-  flesh: IngredientCategories.Fleisch,
-  fat: IngredientCategories.FetteÖle,
-  drinks: IngredientCategories.Getränke,
-  spices: IngredientCategories.GewürzeKräuterSaucen,
-  sweets: IngredientCategories.Süßwaren,
-  vegetables: IngredientCategories.Gemüse,
-  mushrooms: IngredientCategories.Pilze,
-  misc: IngredientCategories.Sonstiges,
+  fruits: IngredientCategories.Fruit,
+  nuts: IngredientCategories.Nuts,
+  seeds: IngredientCategories.Seeds,
+  bakeryproducts: IngredientCategories.BakeryProducts,
+  grain: IngredientCategories.Grain,
+  seafood: IngredientCategories.SeaFood,
+  fish: IngredientCategories.Fish,
+  poultry: IngredientCategories.Poultry,
+  noodles: IngredientCategories.Noodles,
+  dairy: IngredientCategories.Dairy,
+  flesh: IngredientCategories.Flesh,
+  fat: IngredientCategories.Fat,
+  drinks: IngredientCategories.Drinks,
+  spices: IngredientCategories.Spices,
+  sweets: IngredientCategories.Sweets,
+  vegetables: IngredientCategories.Vegetables,
+  mushrooms: IngredientCategories.Mushrooms,
+  misc: IngredientCategories.Miscellaneous,
 };
 
 export const collectedIngredients: Ingredient[] = [].concat(

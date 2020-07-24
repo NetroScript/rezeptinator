@@ -21,7 +21,7 @@
     "ballaststoffe": 4,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Baiser",
@@ -33,7 +33,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "ei"
   },
   {
     "name": "Blätterteig",
@@ -45,7 +45,7 @@
     "ballaststoffe": 1.6,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Brandteig",
@@ -93,7 +93,7 @@
     "ballaststoffe": 9.4,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Cornflakes, natur",
@@ -105,7 +105,7 @@
     "ballaststoffe": 3,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Croissant",
@@ -141,7 +141,7 @@
     "ballaststoffe": 8.6,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Dinkelkleie",
@@ -153,7 +153,7 @@
     "ballaststoffe": 44.3,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Dinkelmehl, Vollkorn",
@@ -165,7 +165,7 @@
     "ballaststoffe": 8,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Dinkelvollkornbrot",
@@ -189,7 +189,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "ei"
   },
   {
     "name": "Fladenbrot",
@@ -201,7 +201,7 @@
     "ballaststoffe": 6.4,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Früchtemüsli",
@@ -249,7 +249,7 @@
     "ballaststoffe": 7,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Gluten",
@@ -261,7 +261,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": "",
+    "allergien": "gluten",
     "alias": ["Weizenkleber"],
   },
   {
@@ -274,7 +274,7 @@
     "ballaststoffe": 5.8,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": "",
+    "allergien": "gluten",
     "alias": ["Graubrot"]
   },
   {
@@ -407,7 +407,7 @@
     "ballaststoffe": 6,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Kartoffelstärke",
@@ -623,7 +623,7 @@
     "ballaststoffe": 0.7,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Puddingpulver Vanille",
@@ -695,7 +695,7 @@
     "ballaststoffe": 5.4,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Roggenmehl",
@@ -707,7 +707,7 @@
     "ballaststoffe": 6,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Roggenmischbrot",
@@ -719,7 +719,7 @@
     "ballaststoffe": 5.4,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Roggenvollkornbrot",
@@ -731,7 +731,7 @@
     "ballaststoffe": 11,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Roggenvollkornmehl",
@@ -743,7 +743,7 @@
     "ballaststoffe": 14.8,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Rührkuchenteig",
@@ -791,7 +791,7 @@
     "ballaststoffe": 6.4,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Semmelknödel",
@@ -827,7 +827,7 @@
     "ballaststoffe": 0,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "soja"
   },
   {
     "name": "Sojamehl",
@@ -839,7 +839,7 @@
     "ballaststoffe": 15.5,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "soja"
   },
   {
     "name": "Süßlupinenmehl",
@@ -851,7 +851,7 @@
     "ballaststoffe": 2,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "lupine"
   },
   {
     "name": "Toastbrot",
@@ -863,7 +863,7 @@
     "ballaststoffe": 4,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Tortenguss",
@@ -887,7 +887,7 @@
     "ballaststoffe": 2.4,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Trockenhefe",
@@ -911,7 +911,7 @@
     "ballaststoffe": 7,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Vollkornhaferflocken",
@@ -947,7 +947,7 @@
     "ballaststoffe": 14,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "nuss"
   },
   {
     "name": "Weißbrot",
@@ -959,7 +959,7 @@
     "ballaststoffe": 3,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Weizengrieß",
@@ -971,7 +971,7 @@
     "ballaststoffe": 6.4,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Weizenkleie",
@@ -983,7 +983,7 @@
     "ballaststoffe": 49.4,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Weizenmehl 405",
@@ -995,7 +995,7 @@
     "ballaststoffe": 3.5,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Weizenstärke",
@@ -1007,7 +1007,7 @@
     "ballaststoffe": 0.8,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Weizenvollkornmehl",
@@ -1019,7 +1019,7 @@
     "ballaststoffe": 9.5,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Zwieback",
@@ -1031,7 +1031,7 @@
     "ballaststoffe": 2.4,
     "alkohol": 0,
     "vegan": "vegetarisch",
-    "allergien": ""
+    "allergien": "gluten"
   },
   {
     "name": "Kichererbsenmehl",
