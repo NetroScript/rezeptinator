@@ -1,11 +1,6 @@
 import { IIngredient } from '@common/Model/Ingredient';
 import { LocalisationInformation } from '@common/Model/Localisation';
-
-export enum PortionModifierSizes {
-  'Half' = 'Half',
-  'Quarter' = 'Quarter',
-  'Eighth' = 'Eighth',
-}
+import { splitIntoFraction } from '@common/Utility';
 
 export enum Unit {
   Milligram,
@@ -33,28 +28,57 @@ export enum PiecePortionTypes {
   'ExtraLarge',
 }
 
+export enum PortionTypes {
+  'Unit',
+  'Piece',
+}
+
 export interface IPortion {
+  // Needed so we know which class to restore from the Database Data
+  readonly instanceType: PortionTypes;
+  // Amount of X -> Turn Fractions into 1/2, 1/3, 2/3 and so on
   amount: number;
-  modifier?: PortionModifierSizes;
+  // The specific type of this Portion, this could be either a unit or a size
+  type: number;
+  // How many servings should be created - is just another modifier with can be submitted
+  servingSize: number;
+  // The ingredient the portion references
   ingredient: IIngredient;
 }
 
-export interface IUnitPortion extends IPortion {
-  unit: Unit;
-}
-
-export interface IPiecePortion extends IPortion {
-  type: PiecePortionTypes;
-}
-
 // Functions needed to interpret the Data of IPortion
-export abstract class PortionFunctions {
-  static getCandidates: () => LocalisationInformation[];
+export abstract class PortionFunctions implements IPortion {
+  abstract type: number;
+
+  private _servingSize: number;
+  protected _cachedAmount: number;
+  protected _cachedFraction: string;
+
+  abstract readonly instanceType: PortionTypes;
+  ingredient: IIngredient;
+  amount: number;
+
+  get servingSize(): number {
+    return this._servingSize;
+  }
+
+  set servingSize(value: number) {
+    ({ number: this._cachedAmount, fraction: this._cachedFraction } = splitIntoFraction(
+      this.amount * value,
+    ));
+
+    this._servingSize = value;
+  }
+
+  // Abstract static function not possible with current Typescript
+  static getCandidates(): LocalisationInformation[] {
+    return [];
+  }
   // Returns weight in gram
-  getWeight: () => number;
-  getPrefix: () => LocalisationInformation;
+  abstract getWeight(): number;
+  abstract getPrefix(): LocalisationInformation;
   // If it is possible for this specific ingredient to use this type of portion
-  canBeApplied: () => boolean;
+  abstract canBeApplied(): boolean;
 }
 
 export const Units: { [key in Unit]: number } = {
@@ -74,12 +98,6 @@ export const Units: { [key in Unit]: number } = {
   [Unit.TableSpoon]: 15,
   [Unit.KnifeTip]: 0.3,
   [Unit.Pinch]: 0.15,
-};
-
-export const PortionModifiers: { [key in PortionModifierSizes]: number } = {
-  Half: 0.5,
-  Quarter: 0.25,
-  Eighth: 0.125,
 };
 
 export const PiecePortionModifiers: { [key in PiecePortionTypes]: number } = {

@@ -1,0 +1,4 @@
+enum AvailableLanguages {
+  'German',
+  'English',
+}
