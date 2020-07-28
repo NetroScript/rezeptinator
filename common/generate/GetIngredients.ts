@@ -7,6 +7,25 @@ import {
   Vegan,
 } from '@common/Model/Ingredient';
 
+import nuts from './ingredient_data/nuts.json';
+import fruits from './ingredient_data/fruits.json';
+import seeds from './ingredient_data/seeds.json';
+import bakeryproducts from './ingredient_data/bakeryproducts.json';
+import grain from './ingredient_data/grain.json';
+import seafood from './ingredient_data/seafood.json';
+import fish from './ingredient_data/fish.json';
+import poultry from './ingredient_data/poultry.json';
+import misc from './ingredient_data/misc.json';
+import mushrooms from './ingredient_data/mushrooms.json';
+import vegetables from './ingredient_data/vegetables.json';
+import sweets from './ingredient_data/sweets.json';
+import spices from './ingredient_data/spices.json';
+import drinks from './ingredient_data/drinks.json';
+import fat from './ingredient_data/fat.json';
+import flesh from './ingredient_data/flesh.json';
+import dairy from './ingredient_data/dairy.json';
+import noodles from './ingredient_data/noodles.json';
+
 interface DataEntry {
   name: string;
   kalorien: number;
@@ -79,8 +98,8 @@ function getIngredient(entry: DataEntry, category: IngredientCategories): IIngre
     allergies: allergy,
     category: category,
     name: entry.name,
-    portionSize: !entry.portion ? entry.portion : undefined,
-    alias: !entry.alias ? entry.alias : [],
+    portionSize: entry.portion !== undefined ? entry.portion : undefined,
+    alias: entry.alias !== undefined ? entry.alias : [],
     nutritions: getNutrients(entry),
     vegan:
       entry.vegan == 'vegan'
@@ -91,6 +110,7 @@ function getIngredient(entry: DataEntry, category: IngredientCategories): IIngre
   };
 }
 
+/*
 const categories: { [key: string]: IngredientCategories } = {
   fruits: IngredientCategories.Fruit,
   nuts: IngredientCategories.Nuts,
@@ -111,16 +131,95 @@ const categories: { [key: string]: IngredientCategories } = {
   mushrooms: IngredientCategories.Mushrooms,
   misc: IngredientCategories.Miscellaneous,
 };
+*/
 
-export const collectedIngredients: IIngredient[] = [].concat(
-  Object.keys(categories).map((file): IIngredient[] => {
-    const data: DataEntry[] = JSON.parse(
-      fs.readFileSync(`./ingredient_data/${file}.json`, { encoding: 'utf8' }),
-    );
-    return data.map(
-      (entry): IIngredient => {
-        return getIngredient(entry, categories[file]);
-      },
-    );
-  }),
-);
+const categories: readonly { data: DataEntry[]; category: IngredientCategories }[] = [
+  {
+    category: IngredientCategories.Fruit,
+    data: fruits,
+  },
+  {
+    category: IngredientCategories.Nuts,
+    data: nuts,
+  },
+  {
+    category: IngredientCategories.Seeds,
+    data: seeds,
+  },
+  {
+    category: IngredientCategories.BakeryProducts,
+    data: bakeryproducts,
+  },
+  {
+    category: IngredientCategories.Grain,
+    data: grain,
+  },
+  {
+    category: IngredientCategories.SeaFood,
+    data: seafood,
+  },
+  {
+    category: IngredientCategories.Fish,
+    data: fish,
+  },
+  {
+    category: IngredientCategories.Poultry,
+    data: poultry,
+  },
+  {
+    category: IngredientCategories.Noodles,
+    data: noodles,
+  },
+  {
+    category: IngredientCategories.Dairy,
+    data: dairy,
+  },
+  {
+    category: IngredientCategories.Flesh,
+    data: flesh,
+  },
+  {
+    category: IngredientCategories.Fat,
+    data: fat,
+  },
+  {
+    category: IngredientCategories.Drinks,
+    data: drinks,
+  },
+  {
+    category: IngredientCategories.Spices,
+    data: spices,
+  },
+  {
+    category: IngredientCategories.Sweets,
+    data: sweets,
+  },
+  {
+    category: IngredientCategories.Vegetables,
+    data: vegetables,
+  },
+  {
+    category: IngredientCategories.Mushrooms,
+    data: mushrooms,
+  },
+  {
+    category: IngredientCategories.Miscellaneous,
+    data: misc,
+  },
+] as const;
+
+export const collectedIngredients: IIngredient[] = categories
+  .map((entry) => {
+    return entry.data.map((ingredient) => getIngredient(ingredient, entry.category));
+  })
+  .reduce((current, total) => {
+    return [...current, ...total];
+  }, [] as IIngredient[]);
+
+/*
+categories.forEach((key) => {
+  collectedIngredients.concat(
+    key.data.map((ingredient) => getIngredient(ingredient, key.category)),
+  );
+});
+*/

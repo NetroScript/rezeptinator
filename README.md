@@ -67,6 +67,10 @@ Two option here, you will find a multistage dockerfile ready to be used and a pm
 in the later case, do not forget to set `process.env.NODE_ENV` as `production`. Otherwise, the Nuxt server would rebuild !
 
 
+## Docker
+
+Port: 44444 -> Postgresql Instanz
+
 ## Mögliche Quellen für Daten:
 
 

@@ -1,4 +1,4 @@
-import { User } from '@common/UserInterface';
+import { User } from '@common/Model/User';
 import { IPortion } from '@common/Model/Portion';
 import TagData from '../Data/Tags.json';
 
@@ -41,4 +41,5 @@ interface IRecipe {
   creationDate: Date;
   recipeSteps: IRecipeStep[];
   ingredients: IPortion[];
+  tags: IRecipeTag[];
 }

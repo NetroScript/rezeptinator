@@ -1,10 +1,7 @@
 import { NestFactory } from '@nestjs/core';
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from '@nestjs/platform-fastify';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { NuxtFastifyFilter } from './nuxt/nuxtFastify.filter';
 
 // import { NuxtExpressFilter } from './nuxt/nuxtExpress.filter';
@@ -13,18 +10,36 @@ import { NuxtServer } from './nuxt';
 import config from '../nuxt.config';
 
 import { ApplicationModule } from './application.module';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 const log = new Logger('Bootstrap');
 
 declare const module: any;
 
-(async function bootstrap() {
+async function bootstrap() {
   try {
-    const nuxt = await NuxtServer.getInstance().run(
-      config.dev ? !module.hot._main : true,
+    const nuxt = await NuxtServer.getInstance().run(config.dev ? !module.hot._main : true);
+
+    const APIConfig = new DocumentBuilder()
+      .setTitle('Rezepteapp')
+      .setDescription('API which is used internally to make the Vue frontend work')
+      .setVersion('1.0')
+      .addTag('cooking')
+      .build();
+
+    const app = await NestFactory.create<NestFastifyApplication>(
+      ApplicationModule,
+      new FastifyAdapter(),
     );
 
-    const app = await NestFactory.create<NestFastifyApplication>(ApplicationModule, new FastifyAdapter());
+    const document = SwaggerModule.createDocument(app, APIConfig);
+    SwaggerModule.setup('api', app, document);
+
+    app.useGlobalPipes(
+      new ValidationPipe({
+        transform: true,
+      }),
+    );
     app.useGlobalFilters(new NuxtFastifyFilter(nuxt));
 
     // const app = await NestFactory.create(ApplicationModule);
@@ -34,7 +49,7 @@ declare const module: any;
       app.enableShutdownHooks();
 
       const signals = ['SIGTERM', 'SIGINT'] as const;
-      signals.forEach(signal => {
+      signals.forEach((signal) => {
         process.on(signal, async () => {
           log.log(`[${signal}] received, closing App`);
 
@@ -43,7 +58,7 @@ declare const module: any;
 
           log.log(`[${signal}] App closed`);
         });
-      })
+      });
     }
 
     if (module.hot) {
@@ -58,4 +73,5 @@ declare const module: any;
   } catch (e) {
     log.error(e.message, e.trace);
   }
-})();
+}
+bootstrap();

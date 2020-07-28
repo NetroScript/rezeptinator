@@ -1,10 +1,7 @@
-import {
-  ExceptionFilter,
-  HttpException,
-  ArgumentsHost,
-  Catch,
-} from '@nestjs/common';
+import { ExceptionFilter, HttpException, ArgumentsHost, Catch, HttpStatus } from '@nestjs/common';
 import { Nuxt } from 'nuxt';
+import { ServerResponse } from 'http';
+import { FastifyReply, FastifyRequest } from 'fastify';
 
 @Catch()
 export class NuxtFastifyFilter implements ExceptionFilter {
@@ -14,30 +11,24 @@ export class NuxtFastifyFilter implements ExceptionFilter {
     this.nuxt = nuxt;
   }
 
-  public async catch(
-    exception: HttpException,
-    host: ArgumentsHost,
-  ): Promise<void> {
+  public async catch(exception: unknown, host: ArgumentsHost): Promise<void> {
     const ctx = host.switchToHttp();
-    const res = ctx.getResponse();
-    const req = ctx.getRequest();
-    const status = exception.getStatus();
-
-    const sharedReq = req.raw;
-    const sharedRes = res.res;
-
-    sharedReq.fastifyRequest = req;
-    sharedRes.fastifyReply = res;
+    const res = ctx.getResponse<FastifyReply<ServerResponse>>();
+    const req = ctx.getRequest<FastifyRequest>();
+    const status =
+      exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
 
     if (status === 404) {
-      if (!res.headersSent) {
-        await this.nuxt.render(sharedReq, sharedRes);
+      if (!res.res.headersSent) {
+        await this.nuxt.render(req.req, res.res);
       }
     } else {
-      res.status(status).json({
+      res.status(status);
+      res.send({
         statusCode: status,
         timestamp: new Date().toISOString(),
-        path: req.url,
+        path: req.req.url,
+        error: exception,
       });
     }
   }

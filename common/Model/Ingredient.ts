@@ -63,6 +63,8 @@ export enum AllergyGroups {
 
 // Ingredients information
 export interface IIngredient {
+  // ID describing the ingredient
+  id: number;
   // Name of the Ingredient
   name: string;
   // Nutrition Table

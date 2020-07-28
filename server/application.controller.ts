@@ -1,5 +1,5 @@
 import { Get, Controller } from '@nestjs/common';
-import { User } from '@common/UserInterface';
+import { User } from '@common/Model/User';
 
 @Controller()
 export class AppController {
@@ -8,8 +8,16 @@ export class AppController {
     return 'pong';
   }
 
+  /*
   @Get('/users')
   async fetchAll(): Promise<User[]> {
-    return [{ name: 'John' }, { name: 'Joe'}, {name: 'Peter'}, {name: 'Potato'}, {name: "Gustav"}];
+    return [
+      { name: 'John' },
+      { name: 'Joe' },
+      { name: 'Peter' },
+      { name: 'Potato' },
+      { name: 'Gustav' },
+    ];
   }
+  */
 }

@@ -345,7 +345,8 @@
     "ballaststoffe": 1.7,
     "alkohol": 0,
     "vegan": "vegan",
-    "allergien": ""
+    "allergien": "",
+    "alias": ["Knoblauchzehe"]
   },
   {
     "name": "Kohlrabi",

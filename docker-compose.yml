@@ -19,7 +19,7 @@ services:
     volumes:
       - database-data:/var/lib/postgresql/data/
     ports:
-      - "44444:44444"
+      - "44444:5432"
     environment:
       POSTGRES_USER: "postgresqluser"
       POSTGRES_PASSWORD: ";*TcoAU6,-zrHLBh6-(MO/']e.-E`*7LV[;@&7Tb"
