@@ -95,6 +95,7 @@ function getIngredient(entry: DataEntry, category: IngredientCategories): IIngre
   }
 
   return {
+    id: -1,
     allergies: allergy,
     category: category,
     name: entry.name,

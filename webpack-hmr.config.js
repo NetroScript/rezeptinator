@@ -23,6 +23,9 @@ module.exports = {
             loader: 'ts-loader',
             options: {
               transpileOnly: true,
+              getCustomTransformers: (program) => ({
+                before: [require('@nestjs/swagger/plugin').before({}, program)],
+              }),
             },
           },
         ],

@@ -1,9 +1,13 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { INutrients } from '@common/Model/Ingredient';
+import { Exclude } from 'class-transformer';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 @Entity('nutrient')
 export class NutrientEntity implements INutrients {
+  @Exclude()
   @PrimaryGeneratedColumn()
+  @ApiHideProperty()
   id: number;
 
   @Column('float')

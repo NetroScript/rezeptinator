@@ -8,6 +8,8 @@ import {
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { NutrientEntity } from '@server/ingredient/nutrient.entity';
 import { Exclude } from 'class-transformer';
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+import { NutrientDto } from '@server/ingredient/dto/createIngredient.dto';
 
 @Entity('ingredient')
 export class IngredientEntity implements IIngredient {
@@ -25,12 +27,14 @@ export class IngredientEntity implements IIngredient {
     default: '{' + AllergyGroups.None + '}',
     array: true,
   })
+  @ApiProperty({ enum: AllergyGroups, isArray: true })
   allergies: AllergyGroups[];
 
   @Column('enum', {
     enum: IngredientCategories,
     default: IngredientCategories.Miscellaneous,
   })
+  @ApiProperty({ enum: IngredientCategories })
   category: IngredientCategories;
 
   @Column('text', {
@@ -40,6 +44,7 @@ export class IngredientEntity implements IIngredient {
 
   @OneToOne((type) => NutrientEntity, { nullable: true, cascade: true, onDelete: 'CASCADE' })
   @JoinColumn()
+  @ApiProperty({ type: NutrientDto })
   nutritions?: INutrients;
 
   @Column('int', { nullable: true })
@@ -49,10 +54,12 @@ export class IngredientEntity implements IIngredient {
     enum: Vegan,
     default: Vegan.Neither,
   })
+  @ApiProperty({ enum: Vegan })
   vegan: Vegan;
 
   @Exclude()
   @Column()
+  @ApiHideProperty()
   userGenerated: boolean;
 
   constructor(data?: IIngredient) {
