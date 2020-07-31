@@ -12,11 +12,11 @@ import { Vue, Component } from 'nuxt-property-decorator';
 import { Context } from '@nuxt/types';
 import '@nuxtjs/axios';
 
-import { User } from '@common/Model/User';
+import { IUser } from '@common/Model/User';
 
 @Component
 export default class YourComponent extends Vue {
-  users: User[] = [];
+  users: IUser[] = [];
 
   async asyncData({ $axios }: Context) {
     //const { data: users } = await $axios.get('users');

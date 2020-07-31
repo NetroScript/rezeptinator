@@ -42,7 +42,13 @@ export class IngredientEntity implements IIngredient {
   })
   name: string;
 
-  @OneToOne((type) => NutrientEntity, { nullable: true, cascade: true, onDelete: 'CASCADE' })
+  @OneToOne((type) => NutrientEntity, {
+    nullable: true,
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    eager: true,
+  })
   @JoinColumn()
   @ApiProperty({ type: NutrientDto })
   nutritions?: INutrients;
@@ -58,7 +64,7 @@ export class IngredientEntity implements IIngredient {
   vegan: Vegan;
 
   @Exclude()
-  @Column()
+  @Column('boolean', { default: false })
   @ApiHideProperty()
   userGenerated: boolean;
 

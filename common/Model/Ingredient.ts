@@ -64,7 +64,7 @@ export enum AllergyGroups {
 // Ingredients information
 export interface IIngredient {
   // ID describing the ingredient
-  id: number;
+  id?: number;
   // Name of the Ingredient
   name: string;
   // Nutrition Table
@@ -80,14 +80,3 @@ export interface IIngredient {
   // If you have 1 of this ingredient - how much is that in g? for example 50g for a potato
   portionSize?: number;
 }
-
-/*
-
-Einheiten
-gramm, ML, Stück
-
-
-bei Stück aufteilung in g/Stück, klein, groß
-Wenn klein und groß nicht gegeben sind, wird es automatisch aus 15% mehr oder weniger berechnet
-
- */

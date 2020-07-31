@@ -44,6 +44,8 @@ export interface IPortion {
   servingSize: number;
   // The ingredient the portion references
   ingredient: IIngredient;
+  // Describes which name is used for the ingredient - 0 normal name 1-n a specific index
+  ingredientNameIndex: number;
 }
 
 // Functions needed to interpret the Data of IPortion
@@ -57,6 +59,7 @@ export abstract class PortionFunctions implements IPortion {
   abstract readonly instanceType: PortionTypes;
   ingredient: IIngredient;
   amount: number;
+  ingredientNameIndex = 0;
 
   get servingSize(): number {
     return this._servingSize;
@@ -76,7 +79,7 @@ export abstract class PortionFunctions implements IPortion {
   }
   // Returns weight in gram
   abstract getWeight(): number;
-  abstract getPrefix(): LocalisationInformation;
+  abstract getText(): LocalisationInformation;
   // If it is possible for this specific ingredient to use this type of portion
   abstract canBeApplied(): boolean;
 }

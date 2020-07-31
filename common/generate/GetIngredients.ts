@@ -95,7 +95,6 @@ function getIngredient(entry: DataEntry, category: IngredientCategories): IIngre
   }
 
   return {
-    id: -1,
     allergies: allergy,
     category: category,
     name: entry.name,
@@ -110,29 +109,6 @@ function getIngredient(entry: DataEntry, category: IngredientCategories): IIngre
         : Vegan.Neither,
   };
 }
-
-/*
-const categories: { [key: string]: IngredientCategories } = {
-  fruits: IngredientCategories.Fruit,
-  nuts: IngredientCategories.Nuts,
-  seeds: IngredientCategories.Seeds,
-  bakeryproducts: IngredientCategories.BakeryProducts,
-  grain: IngredientCategories.Grain,
-  seafood: IngredientCategories.SeaFood,
-  fish: IngredientCategories.Fish,
-  poultry: IngredientCategories.Poultry,
-  noodles: IngredientCategories.Noodles,
-  dairy: IngredientCategories.Dairy,
-  flesh: IngredientCategories.Flesh,
-  fat: IngredientCategories.Fat,
-  drinks: IngredientCategories.Drinks,
-  spices: IngredientCategories.Spices,
-  sweets: IngredientCategories.Sweets,
-  vegetables: IngredientCategories.Vegetables,
-  mushrooms: IngredientCategories.Mushrooms,
-  misc: IngredientCategories.Miscellaneous,
-};
-*/
 
 const categories: readonly { data: DataEntry[]; category: IngredientCategories }[] = [
   {
@@ -216,11 +192,3 @@ export const collectedIngredients: IIngredient[] = categories
   .reduce((current, total) => {
     return [...current, ...total];
   }, [] as IIngredient[]);
-
-/*
-categories.forEach((key) => {
-  collectedIngredients.concat(
-    key.data.map((ingredient) => getIngredient(ingredient, key.category)),
-  );
-});
-*/

@@ -1,11 +1,9 @@
-import { User } from '@common/Model/User';
+import { IUser } from '@common/Model/User';
 import { IPortion } from '@common/Model/Portion';
 import TagData from '../Data/Tags.json';
 
-enum RecipeTags {}
-
 interface IRating {
-  creator: User;
+  creator: IUser;
   rating: number;
 }
 
@@ -13,7 +11,7 @@ interface IRecipeImage {
   path: string;
 }
 
-interface IRecipeTag {
+export interface IRecipeTag {
   group: string;
   tag: string;
 }
@@ -30,9 +28,10 @@ export const TagList: IRecipeTag[] = Object.keys(TagData)
     return [...current, ...out];
   }, []);
 
-interface IRecipe {
+export interface IRecipe {
+  id?: number;
   language: AvailableLanguages;
-  creator: User;
+  creator: IUser;
   rating: number;
   difficulty: number;
   cookTime: number;

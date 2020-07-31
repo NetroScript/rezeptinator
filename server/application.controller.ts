@@ -1,5 +1,5 @@
 import { Get, Controller } from '@nestjs/common';
-import { User } from '@common/Model/User';
+import { IUser } from '@common/Model/User';
 
 @Controller()
 export class AppController {

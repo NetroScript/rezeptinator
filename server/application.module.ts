@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { AppController } from './application.controller';
 import { IngredientModule } from './ingredient/ingredient.module';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { RecipesModule } from './recipes/recipes.module';
+import { UserModule } from './user/user.module';
 
 import ormconfig from '../ormconfig';
 
@@ -11,6 +13,8 @@ import ormconfig from '../ormconfig';
       Object.assign({ autoLoadEntities: true } as TypeOrmModuleOptions, ormconfig),
     ),
     IngredientModule,
+    RecipesModule,
+    UserModule,
   ],
   controllers: [AppController],
 })
