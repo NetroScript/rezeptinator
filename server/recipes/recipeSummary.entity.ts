@@ -1,4 +1,4 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { AllergyGroups, IngredientCategories, Vegan } from '@common/Model/Ingredient';
 import { NutrientEntity } from '@server/ingredient/nutrient.entity';
 
@@ -37,6 +37,7 @@ export class RecipeSummaryEntity {
     onUpdate: 'CASCADE',
     eager: true,
   })
+  @JoinColumn()
   // The total nutrients for the base recipes (the servings the recipe has)
   totalNutritions?: NutrientEntity;
 }

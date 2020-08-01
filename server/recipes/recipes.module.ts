@@ -5,9 +5,14 @@ import { IngredientModule } from '@server/ingredient/ingredient.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RecipeEntity } from '@server/recipes/recipe.entity';
 import { RecipeSummaryEntity } from '@server/recipes/recipeSummary.entity';
+import { PortionEntity } from '@server/recipes/portion.entity';
+import { TagEntity } from '@server/recipes/tag.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([RecipeEntity, RecipeSummaryEntity]), IngredientModule],
+  imports: [
+    TypeOrmModule.forFeature([PortionEntity, RecipeSummaryEntity, TagEntity, RecipeEntity]),
+    IngredientModule,
+  ],
   controllers: [RecipesController],
   providers: [RecipesService],
   exports: [RecipesService],

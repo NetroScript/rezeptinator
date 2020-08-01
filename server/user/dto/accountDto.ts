@@ -1,7 +1,7 @@
 import { IOwnAccount, Roles } from '@common/Model/User';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class DummyAccountDto implements IOwnAccount {
+export class AccountDto implements IOwnAccount {
   email: string;
   joinDate: Date;
   profilePicture: string;

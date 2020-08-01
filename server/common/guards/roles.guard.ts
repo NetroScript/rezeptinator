@@ -7,10 +7,10 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Roles } from '@common/Model/User';
-import { User } from '@server/user/user.decorator';
+import { User } from '@server/common/decorators/user.decorator';
 import * as jwt from 'jsonwebtoken';
 import { JWTTokenSecret } from '@server/config';
-import { IJWTPayload } from '@server/user/dto/dummyAccount.dto';
+import { IJWTPayload } from '@server/user/dto/accountDto';
 
 @Injectable()
 export class RolesGuard implements CanActivate {

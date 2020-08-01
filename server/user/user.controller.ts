@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { UserService } from '@server/user/user.service';
-import { User } from '@server/user/user.decorator';
+import { User } from '@server/common/decorators/user.decorator';
 import { IOwnAccount, Roles } from '@common/Model/User';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { DummyAccountDto } from '@server/user/dto/dummyAccount.dto';
+import { AccountDto } from '@server/user/dto/accountDto';
 import { CreateUserDto } from '@server/user/dto/createUser.dto';
 import { LoginUserDto } from '@server/user/dto/loginUser.dto';
 import { RequiredRoles } from '@server/common/decorators/roles.decorator';
@@ -18,7 +18,7 @@ export class UserController {
 
   @Get()
   @ApiResponse({
-    type: DummyAccountDto,
+    type: AccountDto,
     description: 'Returns the User Information for the currently logged in user',
   })
   async getOwnAccount(@User('username') username: string): Promise<IOwnAccount> {
@@ -27,7 +27,7 @@ export class UserController {
 
   @Post()
   @ApiResponse({
-    type: DummyAccountDto,
+    type: AccountDto,
     description: 'Creates a new account with the information submitted by the user',
   })
   async createAccount(@Body('user') userData: CreateUserDto): Promise<IOwnAccount> {

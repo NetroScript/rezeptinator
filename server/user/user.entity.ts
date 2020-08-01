@@ -6,6 +6,8 @@ import {
   JoinTable,
   ManyToMany,
   OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { IsEmail } from 'class-validator';
 import * as argon2 from 'argon2';
@@ -28,8 +30,11 @@ export class UserEntity implements IUser {
   @Column({ default: '' })
   profilePicture: string;
 
-  @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn()
   joinDate: Date;
+
+  @UpdateDateColumn()
+  lastUpdated: Date;
 
   @Column('enum', {
     enum: Roles,

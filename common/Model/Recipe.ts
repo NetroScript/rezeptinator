@@ -1,6 +1,7 @@
 import { IUser } from '@common/Model/User';
 import { IPortion } from '@common/Model/Portion';
 import TagData from '../Data/Tags.json';
+import { AvailableLanguages } from '@common/Localisation/Generic';
 
 interface IRating {
   creator: IUser;
@@ -11,15 +12,15 @@ interface IRecipeImage {
   path: string;
 }
 
-export interface IRecipeTag {
+export interface ITag {
   group: string;
   tag: string;
 }
 
-export const TagList: IRecipeTag[] = Object.keys(TagData)
-  .map((key): IRecipeTag[] => {
+export const TagList: ITag[] = Object.keys(TagData)
+  .map((key): ITag[] => {
     return TagData[key].map(
-      (tag): IRecipeTag => {
+      (tag): ITag => {
         return { group: key, tag };
       },
     );
@@ -30,6 +31,7 @@ export const TagList: IRecipeTag[] = Object.keys(TagData)
 
 export interface IRecipe {
   id?: number;
+  title: string;
   language: AvailableLanguages;
   creator: IUser;
   rating: number;
@@ -40,5 +42,5 @@ export interface IRecipe {
   creationDate: Date;
   recipeSteps: IRecipeStep[];
   ingredients: IPortion[];
-  tags: IRecipeTag[];
+  tags: ITag[];
 }

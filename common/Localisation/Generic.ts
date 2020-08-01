@@ -1,4 +1,4 @@
-enum AvailableLanguages {
+export enum AvailableLanguages {
   'German',
   'English',
 }
