@@ -27,7 +27,7 @@ export class createRecipeDto {
   difficulty: number;
 
   @ValidateNested({ each: true })
-  ingredients: createPortionDto;
+  ingredients: createPortionDto[];
 
   @IsEnum(AvailableLanguages)
   @ApiProperty({ enum: AvailableLanguages })

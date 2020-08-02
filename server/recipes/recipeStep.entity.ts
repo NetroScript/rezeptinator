@@ -2,6 +2,8 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 't
 import { IRecipeStep, RecipeStepTypes } from '@common/Model/RecipeStep';
 import { RecipeEntity } from '@server/recipes/recipe.entity';
 import { Exclude } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
+import { PortionTypes } from '@common/Model/Portion';
 
 @Entity('recipestep')
 export class RecipeStepEntity implements IRecipeStep {
@@ -10,7 +12,8 @@ export class RecipeStepEntity implements IRecipeStep {
   id: number;
 
   @Column('enum', { enum: RecipeStepTypes, default: RecipeStepTypes.Normal })
-  readonly type: RecipeStepTypes;
+  @ApiProperty({ enum: RecipeStepTypes })
+  type: RecipeStepTypes;
 
   @Column()
   text: string;
@@ -19,10 +22,10 @@ export class RecipeStepEntity implements IRecipeStep {
   time: number;
 
   @Column('int', { nullable: true })
-  payloadNumber?: number;
+  payloadNumber?: number | null;
 
   @Column('int', { nullable: true })
-  payloadType?: number;
+  payloadType?: number | null;
 
   @Exclude()
   @ManyToOne((type) => RecipeEntity, (recipe) => recipe.recipeSteps)
@@ -31,4 +34,10 @@ export class RecipeStepEntity implements IRecipeStep {
   @Exclude()
   @RelationId((entity: RecipeStepEntity) => entity.recipe)
   recipeId: number;
+
+  constructor(data?: IRecipeStep) {
+    if (data !== undefined) {
+      Object.assign(this, data);
+    }
+  }
 }

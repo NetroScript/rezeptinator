@@ -11,25 +11,25 @@ export class NutrientEntity implements INutrients {
   id: number;
 
   @Column('float')
-  alcohol: number;
+  alcohol = 0;
 
   @Column('float')
-  calories: number;
+  calories = 0;
 
   @Column('float')
-  carbs: number;
+  carbs = 0;
 
   @Column('float')
-  fat: number;
+  fat = 0;
 
   @Column('float')
-  fibers: number;
+  fibers = 0;
 
   @Column('float')
-  protein: number;
+  protein = 0;
 
   @Column('float')
-  sugar: number;
+  sugar = 0;
 
   constructor(data?: INutrients) {
     if (data !== undefined) {

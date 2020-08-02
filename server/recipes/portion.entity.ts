@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { RecipeEntity } from '@server/recipes/recipe.entity';
 import { Exclude } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('portion')
 export class PortionEntity implements IPortion {
@@ -21,14 +22,19 @@ export class PortionEntity implements IPortion {
   @Column('float')
   amount: number;
 
-  @OneToOne((type) => IngredientEntity, { eager: true })
+  @OneToOne((type) => IngredientEntity, { eager: true, cascade: true })
   @JoinColumn()
   ingredient: IngredientEntity;
+
+  @Exclude()
+  @RelationId((entity: PortionEntity) => entity.ingredient)
+  ingredientId: number;
 
   @Column('int')
   ingredientNameIndex: number;
 
   @Column('enum', { enum: PortionTypes })
+  @ApiProperty({ enum: PortionTypes })
   readonly instanceType: PortionTypes;
 
   @Column('int')

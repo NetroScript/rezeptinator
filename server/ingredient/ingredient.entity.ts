@@ -17,7 +17,6 @@ export class IngredientEntity implements IIngredient {
   id: number;
 
   @Column('simple-array', {
-    nullable: true,
     default: '',
   })
   alias: string[];
@@ -51,10 +50,10 @@ export class IngredientEntity implements IIngredient {
   })
   @JoinColumn()
   @ApiProperty({ type: NutrientDto })
-  nutritions?: INutrients;
+  nutritions?: INutrients | null;
 
   @Column('int', { nullable: true })
-  portionSize: number;
+  portionSize?: number | null;
 
   @Column('enum', {
     enum: Vegan,

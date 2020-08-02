@@ -28,12 +28,21 @@ export class IngredientService {
       .getMany();
   }
 
-  async findInList(idList: number[]): Promise<IIngredient[]> {
+  async findInList(idList: number[]): Promise<IngredientEntity[]> {
     return this.ingredientRepository.find({ id: In(idList) });
   }
 
   async deleteIngredient(id: number): Promise<DeleteResult> {
     return await this.ingredientRepository.delete({ id: id });
+  }
+
+  async deleteUserCreatedList(ids: number[]): Promise<DeleteResult> {
+    return await this.ingredientRepository
+      .createQueryBuilder('ingredient')
+      .delete()
+      .where('ingredient.userGenerated = 1')
+      .andWhere('ingredient.id IN :ids', { ids })
+      .execute();
   }
 
   async clearData(): Promise<void> {

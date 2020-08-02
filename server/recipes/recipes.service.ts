@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RecipeEntity } from '@server/recipes/recipe.entity';
-import { In, Repository } from 'typeorm';
+import { DeleteResult, In, Like, Repository } from 'typeorm';
 import { UserEntity } from '@server/user/user.entity';
 import {
   advancedRecipeSearchDto,
@@ -9,10 +9,17 @@ import {
 } from '@common/Model/dto/advancedRecipeSearch.dto';
 import { PortionEntity } from '@server/recipes/portion.entity';
 import { createRecipeDto } from '@common/Model/dto/createRecipe.dto';
-import { IIngredient } from '@common/Model/Ingredient';
-import { IRecipe, ITag } from '@common/Model/Recipe';
+import { IRecipe } from '@common/Model/Recipe';
 import { TagEntity } from '@server/recipes/tag.entity';
 import { RecipeStepEntity } from '@server/recipes/recipeStep.entity';
+import { IngredientEntity } from '@server/ingredient/ingredient.entity';
+import { NutrientEntity } from '@server/ingredient/nutrient.entity';
+import { RecipeSummaryEntity } from '@server/recipes/recipeSummary.entity';
+import { IngredientService } from '@server/ingredient/ingredient.service';
+import { PortionFunctions, PortionTypes } from '@common/Model/Portion';
+import { PiecePortion } from '@common/Classes/PiecePortion';
+import { UnitPortion } from '@common/Classes/UnitPortion';
+import { Vegan } from '@common/Model/Ingredient';
 
 @Injectable()
 export class RecipesService {
@@ -27,6 +34,7 @@ export class RecipesService {
     private readonly recipeStepRepository: Repository<RecipeStepEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    private readonly ingredientService: IngredientService,
   ) {}
 
   async advancedSearchOverview(query: advancedRecipeSearchDto): Promise<IRecipe[]> {
@@ -230,6 +238,7 @@ export class RecipesService {
       },
     });
 
+    // Extract the tags as raw data
     const tags = await this.tagRepository
       .createQueryBuilder('tag')
       .select('tag.id', 'tagID')
@@ -249,6 +258,7 @@ export class RecipesService {
       recipes.get(step.recipeId).recipeSteps.push(step);
     });
 
+    // Get the tags using the raw data
     tags.forEach((tag) => {
       recipes
         .get(tag.recipeID)
@@ -272,6 +282,7 @@ export class RecipesService {
         tags: entity.tags,
         title: entity.title,
         totalTime: entity.totalTime,
+        recipeSummary: entity.recipeSummary,
       });
     });
 
@@ -279,15 +290,159 @@ export class RecipesService {
     return returnData;
   }
 
-  async create(data: createRecipeDto, userID: number): Promise<void> {
-    const recipe = new RecipeEntity();
+  async create(data: createRecipeDto, userID: number): Promise<number> {
+    let recipe = new RecipeEntity();
 
-    return;
+    recipe.title = data.title;
+    recipe.cookTime = data.cookTime;
+    // Set the creator of the recipe
+    recipe.creator = await this.userRepository.findOneOrFail({ id: userID });
+    recipe.difficulty = data.difficulty;
+
+    const fetchIngredientsIds: [number, number][] = [];
+
+    // Map all the PortionEntities and create Ingredients (+nutritions) for those which are still needed
+    recipe.ingredients = data.ingredients.map<PortionEntity>((ingredient, index) => {
+      const portion = new PortionEntity();
+      portion.amount = ingredient.amount;
+      // Instead of loading the entity just set the corresponding column and load it later in bulk
+      if (ingredient.ingredient != undefined) {
+        portion.ingredientId = ingredient.ingredient;
+        fetchIngredientsIds.push([ingredient.ingredient, index]);
+        // Otherwise create a new ingredient
+      } else if (ingredient.newIngredient != undefined) {
+        portion.ingredient = new IngredientEntity(
+          Object.assign({ alias: [] }, ingredient.newIngredient),
+        );
+        portion.ingredient.userGenerated = true;
+
+        if (ingredient.newIngredient.nutritions != undefined) {
+          portion.ingredient.nutritions = new NutrientEntity(ingredient.newIngredient.nutritions);
+        }
+      }
+      return portion;
+    });
+
+    // Load the missing ingredients to generate the summary of the recipe
+    const loadedIngredients = await this.ingredientService.findInList(
+      fetchIngredientsIds.map((entry) => entry[0]),
+    );
+
+    // Map the loaded ingredients
+    loadedIngredients.forEach((ingredient, index) => {
+      recipe.ingredients[fetchIngredientsIds[index][1]].ingredient = ingredient;
+    });
+
+    recipe.language = data.language;
+    recipe.rating = 0;
+    // Simply map the RecipeSteps
+    recipe.recipeSteps = data.recipeSteps.map<RecipeStepEntity>(
+      (step) => new RecipeStepEntity(step),
+    );
+    recipe.servingSize = data.servingSize;
+    recipe.tags = await this.getTagsByIdList(data.tags);
+    recipe.totalTime = data.totalTime;
+    recipe.recipeSummary = new RecipeSummaryEntity();
+
+    const portionInstances: PortionFunctions[] = recipe.ingredients.map<PortionFunctions>(
+      (entity) => {
+        if (entity.instanceType == PortionTypes.Piece) {
+          return new PiecePortion(entity);
+        } else {
+          return new UnitPortion(entity);
+        }
+      },
+    );
+
+    // Generate the RecipeSummary based on all Portions
+    const summary: RecipeSummaryEntity = portionInstances.reduce<RecipeSummaryEntity>(
+      (total, current) => {
+        // Determine which type of vegan the summary should be
+        if (current.ingredient.vegan == Vegan.Neither || total.vegan == Vegan.Neither) {
+          total.vegan = Vegan.Neither;
+        } else if (
+          current.ingredient.vegan == Vegan.Vegetarion ||
+          total.vegan == Vegan.Vegetarion
+        ) {
+          total.vegan = Vegan.Vegetarion;
+        }
+
+        // Boolean giving info if there is sufficient information for all ingredients
+        if (current.ingredient.nutritions == undefined) {
+          total.dataForAll = false;
+        }
+
+        current.ingredient.allergies.forEach((allergy) => {
+          if (!total.allergies.includes(allergy)) {
+            total.allergies.push(allergy);
+          }
+        });
+
+        if (!total.categories.includes(current.ingredient.category)) {
+          total.categories.push(current.ingredient.category);
+        }
+
+        if (!!current.ingredient.nutritions) {
+          // Divided by 100 because the calories are based on 100g ingredients
+          const weight = current.getWeight() / recipe.servingSize / 100;
+
+          // Add the value for every sub category
+          for (const key in current.ingredient.nutritions) {
+            if (
+              current.ingredient.nutritions.hasOwnProperty(key) &&
+              total.totalNutritions.hasOwnProperty(key)
+            ) {
+              total.totalNutritions[key] += current.ingredient.nutritions[key] * weight;
+            }
+          }
+        }
+
+        return total;
+      },
+      new RecipeSummaryEntity(),
+    );
+
+    recipe.recipeSummary = summary;
+
+    // Put the object into the database
+    recipe = await this.recipeRepository.save(recipe);
+
+    return recipe.id;
   }
 
-  /*
-  async findCompleteInList(idList: number[]): Promise<IRecipe[]> {
-    return this.recipeRepository.find({ id: In(idList) });
+  async findTagsByName(name: string): Promise<TagEntity[]> {
+    return await this.tagRepository.find({ tag: Like(`%${name}%`) });
   }
-  */
+
+  async getTagsByIdList(ids: number[]): Promise<TagEntity[]> {
+    return await this.tagRepository.findByIds(ids);
+  }
+
+  // Get the Creator of a single recipe
+  async getOwner(id: number): Promise<UserEntity> {
+    return (
+      await this.recipeRepository
+        .createQueryBuilder('recipe')
+        .leftJoinAndSelect('recipe.creator', 'user')
+        .where('recipe.id = :id', { id })
+        .getOne()
+    ).creator;
+  }
+
+  async delete(id: number): Promise<DeleteResult> {
+    // When deleting a Recipe we can also create the custom generated ingredients
+    // So we get all ingredient ids and then delete them
+    const ingredients: number[] = (
+      await this.recipeRepository
+        .createQueryBuilder('recipe')
+        .select('ingredients.ingredientId', 'ingredientIDs')
+        .leftJoin('recipes.ingredients', 'ingredients')
+        .getRawMany<{ ingredientIDs: number }>()
+    ).map((data) => data.ingredientIDs);
+
+    await this.ingredientService.deleteUserCreatedList(ingredients);
+
+    // All other properties of recipe are set to delete cascase, so we don't need to delete them manually
+    return await this.recipeRepository.delete(id);
+  }
 }

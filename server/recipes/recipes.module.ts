@@ -10,19 +10,23 @@ import { TagEntity } from '@server/recipes/tag.entity';
 import { UserModule } from '@server/user/user.module';
 import { UserEntity } from '@server/user/user.entity';
 import { RecipeStepEntity } from '@server/recipes/recipeStep.entity';
+import { NutrientEntity } from '@server/ingredient/nutrient.entity';
+import { IngredientEntity } from '@server/ingredient/ingredient.entity';
 
 @Module({
   imports: [
     UserModule,
+    IngredientModule,
     TypeOrmModule.forFeature([
       PortionEntity,
       UserEntity,
       RecipeSummaryEntity,
+      NutrientEntity,
+      IngredientEntity,
       RecipeStepEntity,
       TagEntity,
       RecipeEntity,
     ]),
-    IngredientModule,
   ],
   controllers: [RecipesController],
   providers: [RecipesService],

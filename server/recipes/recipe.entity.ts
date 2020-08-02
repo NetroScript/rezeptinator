@@ -96,7 +96,6 @@ export class RecipeEntity implements RecipeEntityType {
 
   @Exclude()
   @OneToOne((type) => RecipeSummaryEntity, {
-    nullable: true,
     cascade: true,
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
