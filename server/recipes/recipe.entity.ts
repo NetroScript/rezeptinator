@@ -20,9 +20,12 @@ import { PortionEntity } from '@server/recipes/portion.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { AvailableLanguages } from '@common/Localisation/Generic';
 import { TagEntity } from '@server/recipes/tag.entity';
+import { RecipeStepEntity } from '@server/recipes/recipeStep.entity';
+
+type RecipeEntityType = Omit<IRecipe, 'favourites'>;
 
 @Entity('recipe')
-export class RecipeEntity implements IRecipe {
+export class RecipeEntity implements RecipeEntityType {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -62,14 +65,20 @@ export class RecipeEntity implements IRecipe {
   @Column('float')
   rating: number;
 
-  @Column('json')
-  recipeSteps: IRecipeStep[];
+  @OneToMany((type) => RecipeStepEntity, (step) => step.recipe, {
+    eager: true,
+    cascade: true,
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  recipeSteps: RecipeStepEntity[];
 
   @Column('int')
   servingSize: number;
 
-  @ManyToMany((type) => TagEntity, {
+  @ManyToMany((type) => TagEntity, (tag) => tag.recipe, {
     eager: true,
+    cascade: true,
   })
   @JoinTable()
   tags: TagEntity[];
@@ -79,6 +88,11 @@ export class RecipeEntity implements IRecipe {
 
   @OneToMany((type) => UserRatingEntity, (rating) => rating.recipe)
   ratings: UserRatingEntity[];
+
+  @ManyToMany((type) => UserEntity, (user) => user.favorites)
+  favorites: UserEntity[];
+
+  favouriteAmount: number;
 
   @Exclude()
   @OneToOne((type) => RecipeSummaryEntity, {

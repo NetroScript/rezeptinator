@@ -1,24 +1,24 @@
 import { Optional } from '@nestjs/common';
-import { IsEnum, IsIn, IsInt, IsNumber, IsPositive, IsString, Max } from 'class-validator';
+import {
+  IsBoolean,
+  IsEnum,
+  IsIn,
+  IsInt,
+  IsNumber,
+  IsPositive,
+  IsString,
+  Max,
+} from 'class-validator';
 import { AllergyGroups, IngredientCategories, Vegan } from '@common/Model/Ingredient';
 import { AvailableLanguages } from '@common/Localisation/Generic';
 
-export enum QueryDetailLevel {
-  Overview,
-  Complete,
-}
-
 export enum RecipeOrderVariants {
   Default,
-  DefaultInverse,
   Rating,
-  RatingInverse,
+  Favourites,
   Calories,
-  CaloriesInverse,
   Difficulty,
-  DifficultyInverse,
   CookTime,
-  CookTimeInverse,
 }
 
 export class advancedRecipeSearchDto {
@@ -60,7 +60,7 @@ export class advancedRecipeSearchDto {
 
   @Optional()
   @IsInt({ each: true })
-  hasTags?: number;
+  hasTags?: number[];
 
   @Optional()
   @IsNumber()
@@ -85,15 +85,16 @@ export class advancedRecipeSearchDto {
   // Query Specific
   @IsInt()
   @IsPositive()
-  @Max(250)
-  take = 25;
-  @IsInt()
+  @Max(100)
+  pageSize = 25;
+  @Optional()
   @IsPositive()
-  skip = 0;
-
-  @IsEnum(QueryDetailLevel)
-  detail: QueryDetailLevel = QueryDetailLevel.Overview;
+  lastValue = 0;
+  lastId = 0;
 
   @IsEnum(RecipeOrderVariants)
   order: RecipeOrderVariants = RecipeOrderVariants.Default;
+
+  @IsBoolean()
+  ascending: boolean;
 }

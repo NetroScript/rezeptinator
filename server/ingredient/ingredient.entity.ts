@@ -9,7 +9,7 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'ty
 import { NutrientEntity } from '@server/ingredient/nutrient.entity';
 import { Exclude } from 'class-transformer';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
-import { NutrientDto } from '@server/ingredient/dto/createIngredient.dto';
+import { NutrientDto } from '@common/Model/dto/createIngredient.dto';
 
 @Entity('ingredient')
 export class IngredientEntity implements IIngredient {

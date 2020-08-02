@@ -38,6 +38,6 @@ export class RecipeSummaryEntity {
     eager: true,
   })
   @JoinColumn()
-  // The total nutrients for the base recipes (the servings the recipe has)
+  // The total nutrients for the base recipes (for a single serving)
   totalNutritions?: NutrientEntity;
 }

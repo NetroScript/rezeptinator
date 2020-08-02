@@ -2,6 +2,7 @@ import { IUser } from '@common/Model/User';
 import { IPortion } from '@common/Model/Portion';
 import TagData from '../Data/Tags.json';
 import { AvailableLanguages } from '@common/Localisation/Generic';
+import { IRecipeStep } from '@common/Model/RecipeStep';
 
 interface IRating {
   creator: IUser;
@@ -13,6 +14,7 @@ interface IRecipeImage {
 }
 
 export interface ITag {
+  id?: number;
   group: string;
   tag: string;
 }
@@ -35,6 +37,7 @@ export interface IRecipe {
   language: AvailableLanguages;
   creator: IUser;
   rating: number;
+  favourites: number;
   difficulty: number;
   cookTime: number;
   totalTime: number;

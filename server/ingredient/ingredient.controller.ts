@@ -15,7 +15,7 @@ import { IngredientEntity } from '@server/ingredient/ingredient.entity';
 import { IngredientService } from '@server/ingredient/ingredient.service';
 import { IIngredient } from '@common/Model/Ingredient';
 import { collectedIngredients } from '@common/generate/GetIngredients';
-import { CreateIngredientDto } from '@server/ingredient/dto/createIngredient.dto';
+import { CreateIngredientDto } from '@common/Model/dto/createIngredient.dto';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from '@server/common/guards/roles.guard';
 import { RequiredRoles } from '@server/common/decorators/roles.decorator';
@@ -81,7 +81,7 @@ export class IngredientController {
   })
   async createIngredient(@Body() IngredientDto: CreateIngredientDto): Promise<IngredientEntity> {
     return await this.ingredientService.addIngredient(
-      Object.assign({ id: -1, alias: [] }, IngredientDto),
+      Object.assign({ id: undefined, alias: [], portionSize: 1 }, IngredientDto),
     );
   }
 }

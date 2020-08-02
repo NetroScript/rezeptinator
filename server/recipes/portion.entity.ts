@@ -1,10 +1,20 @@
 import { IPortion, PortionTypes } from '@common/Model/Portion';
 import { IngredientEntity } from '@server/ingredient/ingredient.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  RelationId,
+} from 'typeorm';
 import { RecipeEntity } from '@server/recipes/recipe.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity('portion')
 export class PortionEntity implements IPortion {
+  @Exclude()
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -24,8 +34,13 @@ export class PortionEntity implements IPortion {
   @Column('int')
   type: number;
 
+  @Exclude()
   @ManyToOne((type) => RecipeEntity, (recipe) => recipe.ingredients)
   recipe: RecipeEntity;
+
+  @Exclude()
+  @RelationId((entity: PortionEntity) => entity.recipe)
+  recipeId: number;
 
   servingSize = 1;
 }

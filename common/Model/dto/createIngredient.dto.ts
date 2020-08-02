@@ -31,7 +31,7 @@ export class NutrientDto implements INutrients {
 
 export class CreateIngredientDto {
   @IsOptional()
-  @IsArray()
+  @IsString({ each: true })
   alias?: string[];
 
   @IsEnum(AllergyGroups, { each: true })
@@ -51,9 +51,6 @@ export class CreateIngredientDto {
   @IsOptional()
   @ValidateNested()
   nutritions?: NutrientDto;
-
-  @IsOptional()
-  portionSize?: number;
 
   @IsEnum(Vegan)
   @ApiProperty({ enum: Vegan })

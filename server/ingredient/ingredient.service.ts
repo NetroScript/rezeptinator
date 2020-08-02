@@ -4,7 +4,7 @@ import { IngredientEntity } from '@server/ingredient/ingredient.entity';
 import { DeleteResult, getRepository, In, Repository } from 'typeorm';
 import { IIngredient } from '@common/Model/Ingredient';
 import { NutrientEntity } from '@server/ingredient/nutrient.entity';
-import { CreateIngredientDto } from '@server/ingredient/dto/createIngredient.dto';
+import { CreateIngredientDto } from '@common/Model/dto/createIngredient.dto';
 
 @Injectable()
 export class IngredientService {
@@ -29,7 +29,7 @@ export class IngredientService {
   }
 
   async findInList(idList: number[]): Promise<IIngredient[]> {
-    return this.ingredientRepository.find({ nutritions: In(idList) });
+    return this.ingredientRepository.find({ id: In(idList) });
   }
 
   async deleteIngredient(id: number): Promise<DeleteResult> {
