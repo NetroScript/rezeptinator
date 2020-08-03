@@ -21,7 +21,6 @@ import { RolesGuard } from '@server/common/guards/roles.guard';
 import { RequiredRoles } from '@server/common/decorators/roles.decorator';
 import { Roles } from '@common/Model/User';
 
-@ApiBearerAuth()
 @Controller('ingredients')
 @UseGuards(RolesGuard)
 @ApiTags('ingredients')
@@ -39,6 +38,7 @@ export class IngredientController {
   }
 
   @Get('generateData')
+  @ApiBearerAuth()
   @RequiredRoles(Roles.Admin)
   @ApiResponse({
     type: [IngredientEntity],
@@ -63,6 +63,7 @@ export class IngredientController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
   @RequiredRoles(Roles.Admin)
   @ApiResponse({ description: 'Delete a single ingredient' })
   async deleteIngredient(@Param('id', ParseIntPipe) number: number): Promise<boolean> {
@@ -74,6 +75,8 @@ export class IngredientController {
   }
 
   @Post()
+  @ApiBearerAuth()
+  @RequiredRoles(Roles.User)
   @UseInterceptors(ClassSerializerInterceptor)
   @ApiResponse({
     type: IngredientEntity,

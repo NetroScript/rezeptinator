@@ -24,7 +24,7 @@ async function bootstrap() {
       .setTitle('Rezepteapp')
       .setDescription('API which is used internally to make the Vue frontend work')
       .setVersion('1.0')
-      .addTag('cooking')
+      .addBearerAuth()
       .build();
 
     const app = await NestFactory.create<NestFastifyApplication>(
