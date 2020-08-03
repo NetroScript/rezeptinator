@@ -9,7 +9,7 @@ import { NutrientEntity } from '@server/ingredient/nutrient.entity';
   imports: [TypeOrmModule.forFeature([NutrientEntity, IngredientEntity])],
   providers: [IngredientService],
   controllers: [IngredientController],
-  exports: [TypeOrmModule],
+  exports: [IngredientService],
 })
 export class IngredientModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {}

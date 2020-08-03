@@ -6,6 +6,7 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  Logger,
   Param,
   ParseIntPipe,
   Post,
@@ -34,13 +35,14 @@ import { createRecipeDto } from '@common/Model/dto/createRecipe.dto';
 export class RecipesController {
   constructor(private readonly recipesService: RecipesService) {}
 
-  @Get()
+  @Post('find')
   @UseInterceptors(ClassSerializerInterceptor)
   @ApiResponse({
     type: [RecipeEntity],
-    description: 'Return recipes based on supplied filters',
+    description:
+      'Return recipes based on supplied filters -> this should actually be a get, but validation and parsing of the query would be a pain, so this is implemented as post',
   })
-  async findAll(@Query() search: advancedRecipeSearchDto): Promise<IRecipe[]> {
+  async findAll(@Body() search: advancedRecipeSearchDto): Promise<IRecipe[]> {
     return await this.recipesService.advancedSearchOverview(search);
   }
 

@@ -1,16 +1,18 @@
-import { Optional } from '@nestjs/common';
 import {
   IsBoolean,
   IsEnum,
   IsIn,
   IsInt,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsString,
   Max,
+  Min,
 } from 'class-validator';
 import { AllergyGroups, IngredientCategories, Vegan } from '@common/Model/Ingredient';
 import { AvailableLanguages } from '@common/Localisation/Generic';
+import { ApiProperty } from '@nestjs/swagger';
 
 export enum RecipeOrderVariants {
   Default,
@@ -22,64 +24,68 @@ export enum RecipeOrderVariants {
 }
 
 export class advancedRecipeSearchDto {
-  @Optional()
+  @IsOptional()
   @IsString()
   name?: string;
 
-  @Optional()
+  @IsOptional()
   @IsInt({ each: true })
   includeIngredients?: number[];
 
-  @Optional()
+  @IsOptional()
   @IsInt({ each: true })
   excludeIngredients?: number[];
 
-  @Optional()
+  @IsOptional()
   @IsEnum(IngredientCategories, { each: true })
+  @ApiProperty({ enum: IngredientCategories, isArray: true })
   includeCategories?: IngredientCategories[];
 
-  @Optional()
+  @IsOptional()
   @IsEnum(IngredientCategories, { each: true })
+  @ApiProperty({ enum: IngredientCategories, isArray: true })
   excludeCategories?: IngredientCategories[];
 
-  @Optional()
+  @IsOptional()
   @IsEnum(Vegan)
   veganLevel?: Vegan;
 
-  @Optional()
+  @IsOptional()
   @IsInt()
   author?: number;
 
-  @Optional()
+  @IsOptional()
   @IsNumber()
   maxDifficulty?: number;
 
-  @Optional()
+  @IsOptional()
   @IsNumber()
   minDifficulty?: number;
 
-  @Optional()
+  @IsOptional()
   @IsInt({ each: true })
   hasTags?: number[];
 
-  @Optional()
+  @IsOptional()
   @IsNumber()
   maxCookTime?: number;
 
-  @Optional()
+  @IsOptional()
   @IsNumber()
   maxTotalTime?: number;
 
-  @Optional()
+  @IsOptional()
   @IsNumber()
   minimalRating?: number;
 
-  @Optional()
+  @IsOptional()
   @IsEnum(AllergyGroups, { each: true })
+  @ApiProperty({ enum: AllergyGroups, isArray: true })
   excludeAllergies?: AllergyGroups[];
 
-  @Optional()
+  @IsOptional()
   @IsEnum(AvailableLanguages)
+  @ApiProperty({ enum: AvailableLanguages })
   language?: AvailableLanguages;
 
   // Query Specific
@@ -87,14 +93,19 @@ export class advancedRecipeSearchDto {
   @IsPositive()
   @Max(100)
   pageSize = 25;
-  @Optional()
-  @IsPositive()
+  @IsOptional()
+  @Min(0)
   lastValue = 0;
+  @IsOptional()
+  @Min(0)
   lastId = 0;
 
+  @IsOptional()
   @IsEnum(RecipeOrderVariants)
+  @ApiProperty({ enum: RecipeOrderVariants })
   order: RecipeOrderVariants = RecipeOrderVariants.Default;
 
+  @IsOptional()
   @IsBoolean()
-  ascending: boolean;
+  ascending = true;
 }

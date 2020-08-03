@@ -66,8 +66,8 @@ export class RecipesService {
           .subQuery()
           .select('COUNT(*)')
           .from(PortionEntity, 'portion')
-          .where('portion.recipeId = recipe.id')
-          .andWhere('portion.ingredientID IN (:ingredients)', {
+          .where('portion.recipe = recipe.id')
+          .andWhere('portion.ingredient IN (:...ingredients)', {
             ingredients: query.includeIngredients,
           })
           .having('COUNT(*) = :count', { count: query.includeIngredients.length })
@@ -84,8 +84,8 @@ export class RecipesService {
           .subQuery()
           .select()
           .from(PortionEntity, 'portion')
-          .where('portion.recipeId = recipe.id')
-          .andWhere('portion.ingredientID IN (:ingredients)', {
+          .where('portion.recipe = recipe.id')
+          .andWhere('portion.ingredient IN (:...ingredients)', {
             ingredients: query.excludeIngredients,
           })
           .getQuery();
@@ -129,7 +129,7 @@ export class RecipesService {
           .select('COUNT(*)')
           .from('recipe_tags_tag', 'connector')
           .where('connector.recipeId = recipe.id')
-          .andWhere('connector.tagId IN (:ids)', {
+          .andWhere('connector.tagId IN (:...ids)', {
             ids: query.hasTags,
           })
           .having('COUNT(*) = :count', { count: query.hasTags.length })
@@ -159,6 +159,13 @@ export class RecipesService {
     if (!!query.language) {
       queryBuilder.andWhere('recipe.language = :language', { language: query.language });
     }
+
+    // Because we used an aggregate function we also need a group by
+    queryBuilder
+      .groupBy('recipe.id')
+      .addGroupBy('creator.id')
+      .addGroupBy('summary.id')
+      .addGroupBy('totalNutritions.id');
 
     // Total amount of results before we apply pagination
     const amount = await queryBuilder.getCount();
@@ -224,46 +231,47 @@ export class RecipesService {
 
     const loadedRecipeIds = Array.from(recipes.keys());
 
-    // Load additional data -> Portions, Steps and Tags
+    // Load additional data -> Portions, Steps and Tags - assuming there are more than one
+    if (loadedRecipeIds.length > 0) {
+      const portions: PortionEntity[] = await this.portionRepository.find({
+        where: {
+          recipe: In(loadedRecipeIds),
+        },
+      });
 
-    const portions: PortionEntity[] = await this.portionRepository.find({
-      where: {
-        recipe: In(loadedRecipeIds),
-      },
-    });
+      const steps: RecipeStepEntity[] = await this.recipeStepRepository.find({
+        where: {
+          recipe: In(loadedRecipeIds),
+        },
+      });
 
-    const steps: RecipeStepEntity[] = await this.recipeStepRepository.find({
-      where: {
-        recipe: In(loadedRecipeIds),
-      },
-    });
+      // Extract the tags as raw data
+      const tags = await this.tagRepository
+        .createQueryBuilder('tag')
+        .select('tag.id', 'tagID')
+        .addSelect('tag.group', 'group')
+        .addSelect('tag.tag', 'tag')
+        .addSelect('connection.recipeId', 'recipeID')
+        .leftJoin('recipe_tags_tag', 'connection', 'connection.tagId = tag.id')
+        .where('connection.recipeId IN :ids', { ids: loadedRecipeIds })
+        .getRawMany<{ tagID: number; group: string; tag: string; recipeID: number }>();
 
-    // Extract the tags as raw data
-    const tags = await this.tagRepository
-      .createQueryBuilder('tag')
-      .select('tag.id', 'tagID')
-      .addSelect('tag.group', 'group')
-      .addSelect('tag.tag', 'tag')
-      .addSelect('connection.recipeId', 'recipeID')
-      .leftJoin('recipe_tags_tag', 'connection', 'connection.tagId = tag.id')
-      .where('connection.recipeId IN :ids', { ids: loadedRecipeIds })
-      .getRawMany<{ tagID: number; group: string; tag: string; recipeID: number }>();
+      // Save the additionally loaded data into each correct recipe
+      portions.forEach((portion) => {
+        recipes.get(portion.recipeId).ingredients.push(portion);
+      });
 
-    // Save the additionally loaded data into each correct recipe
-    portions.forEach((portion) => {
-      recipes.get(portion.recipeId).ingredients.push(portion);
-    });
+      steps.forEach((step) => {
+        recipes.get(step.recipeId).recipeSteps.push(step);
+      });
 
-    steps.forEach((step) => {
-      recipes.get(step.recipeId).recipeSteps.push(step);
-    });
-
-    // Get the tags using the raw data
-    tags.forEach((tag) => {
-      recipes
-        .get(tag.recipeID)
-        .tags.push(new TagEntity({ id: tag.tagID, tag: tag.tag, group: tag.group }));
-    });
+      // Get the tags using the raw data
+      tags.forEach((tag) => {
+        recipes
+          .get(tag.recipeID)
+          .tags.push(new TagEntity({ id: tag.tagID, tag: tag.tag, group: tag.group }));
+      });
+    }
 
     // Build the return data from the recipes
     recipes.forEach((entity) => {

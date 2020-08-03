@@ -41,7 +41,7 @@ export class IngredientService {
       .createQueryBuilder('ingredient')
       .delete()
       .where('ingredient.userGenerated = 1')
-      .andWhere('ingredient.id IN :ids', { ids })
+      .andWhere('ingredient.id IN (:...ids)', { ids })
       .execute();
   }
 

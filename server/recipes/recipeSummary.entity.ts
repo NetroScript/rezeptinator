@@ -46,7 +46,7 @@ export class RecipeSummaryEntity implements IRecipeSummary {
   // The total nutrients for the base recipes (for a single serving)
   totalNutritions: NutrientEntity = new NutrientEntity();
 
-  @Column()
+  @Column('boolean')
   // If every ingredient also has nutrient Data
   dataForAll = true;
 }
