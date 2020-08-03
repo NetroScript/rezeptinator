@@ -30,26 +30,28 @@ export class UserController {
     type: AccountDto,
     description: 'Creates a new account with the information submitted by the user',
   })
-  async createAccount(@Body('user') userData: CreateUserDto): Promise<IOwnAccount> {
+  async createAccount(@Body() userData: CreateUserDto): Promise<IOwnAccount> {
     return this.userService.createAccount(userData);
   }
 
   @Delete(':username')
   @RequiredRoles(Roles.Admin)
   @ApiResponse({ description: 'Delete a single account' })
-  async deleteAccount(@Param('username') username) {
-    return await this.userService.delete(username);
+  async deleteAccount(@Param('username') username): Promise<{ success: boolean }> {
+    const data = await this.userService.delete(username);
+    return { success: data.affected == 1 };
   }
 
   @Delete()
   @ApiResponse({ description: 'Delete your own account' })
-  async deleteOwnAccount(@User('username') username: string) {
-    return await this.userService.delete(username);
+  async deleteOwnAccount(@User('username') username: string): Promise<{ success: boolean }> {
+    const data = await this.userService.delete(username);
+    return { success: data.affected == 1 };
   }
 
   @Post('login')
   @ApiResponse({ description: 'Login to an account using a email and password combination' })
-  async login(@Body('user') loginUserDto: LoginUserDto): Promise<IOwnAccount> {
+  async login(@Body() loginUserDto: LoginUserDto): Promise<IOwnAccount> {
     return await this.userService.findOne(loginUserDto);
   }
 }

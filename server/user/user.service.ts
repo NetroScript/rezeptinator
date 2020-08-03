@@ -30,7 +30,7 @@ export class UserService {
 
     if (await argon2.verify(user.password, password)) return this.getAccount(user);
 
-    return null;
+    throw new HttpException({ message: 'Wrong Password' }, HttpStatus.BAD_REQUEST);
   }
 
   async createAccount({ username, email, password }: CreateUserDto): Promise<IOwnAccount> {

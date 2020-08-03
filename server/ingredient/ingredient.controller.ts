@@ -66,12 +66,9 @@ export class IngredientController {
   @ApiBearerAuth()
   @RequiredRoles(Roles.Admin)
   @ApiResponse({ description: 'Delete a single ingredient' })
-  async deleteIngredient(@Param('id', ParseIntPipe) number: number): Promise<boolean> {
+  async deleteIngredient(@Param('id', ParseIntPipe) number: number): Promise<{ success: boolean }> {
     const data = await this.ingredientService.deleteIngredient(number);
-    if (data.affected == 1) {
-      return true;
-    }
-    return false;
+    return { success: data.affected == 1 };
   }
 
   @Post()

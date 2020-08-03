@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { RecipesController } from './recipes.controller';
 import { RecipesService } from './recipes.service';
 import { IngredientModule } from '@server/ingredient/ingredient.module';
@@ -15,7 +15,6 @@ import { IngredientEntity } from '@server/ingredient/ingredient.entity';
 
 @Module({
   imports: [
-    UserModule,
     IngredientModule,
     TypeOrmModule.forFeature([
       PortionEntity,

@@ -88,19 +88,5 @@
     "webpack-node-externals": "1.7.2",
     "webpack-shell-plugin": "0.5.0"
   },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": ".",
-    "testRegex": ".spec.ts$",
-    "transform": {
-      ".+\\.(t|j)s$": "ts-jest"
-    },
-    "coverageDirectory": "./coverage",
-    "testEnvironment": "node"
-  },
   "snyk": true
 }

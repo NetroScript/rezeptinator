@@ -62,7 +62,13 @@ export class UserEntity implements IUser {
   recipes: RecipeEntity[];
 
   convertToIUser(): IUser {
-    const { id, password, ratings, favorites, recipes, ...data } = this;
+    const { id, password, ratings, favorites, recipes, lastUpdated, ...data } = this;
     return data;
+  }
+
+  constructor(data?: IUser) {
+    if (data != undefined) {
+      Object.assign(this, data);
+    }
   }
 }

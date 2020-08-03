@@ -35,11 +35,7 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, APIConfig);
     SwaggerModule.setup('api', app, document);
 
-    app.useGlobalPipes(
-      new ValidationPipe({
-        transform: true,
-      }),
-    );
+    app.useGlobalPipes(new ValidationPipe({ transform: true }));
     app.useGlobalFilters(new NuxtFastifyFilter(nuxt));
 
     // const app = await NestFactory.create(ApplicationModule);

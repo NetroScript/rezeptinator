@@ -17,7 +17,9 @@ services:
     image: "library/postgres:12.3"
     container_name: "postgres-database"
     volumes:
+      # This is not in the local folder when using it, but provided to create backups
       - database-data:/var/lib/postgresql/data/
+      - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
     ports:
       - "44444:5432"
     environment:
