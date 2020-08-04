@@ -2,7 +2,6 @@ import { AllergyGroups, IngredientCategories, INutrients, Vegan } from '@common/
 import {
   ArrayNotEmpty,
   ArrayUnique,
-  IsArray,
   IsEnum,
   IsNotEmpty,
   IsOptional,

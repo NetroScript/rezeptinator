@@ -50,8 +50,12 @@ export class IngredientService {
     await this.nutrientRepository.delete({});
   }
 
-  async addIngredient(ingredientData: IIngredient): Promise<IngredientEntity> {
+  async addIngredient(
+    ingredientData: IIngredient,
+    userGenerated = true,
+  ): Promise<IngredientEntity> {
     const ingredient = new IngredientEntity(ingredientData);
+    ingredient.userGenerated = userGenerated;
     if (ingredientData.nutritions !== undefined) {
       const nutrients = new NutrientEntity(ingredientData.nutritions);
       ingredient.nutritions = nutrients;

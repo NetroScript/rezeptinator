@@ -69,7 +69,11 @@ export interface IIngredient {
   name: string;
   // Nutrition Table
   nutritions?: INutrients;
-  // Weitere Namen unter denen die Zutat bekannt ist
+  // Additional names for the ingredient - this should include all the localised names
+  // For example if the Name is Kartoffel it should include Potato, so that multiple languages
+  // can be searched using the name search Endpoint - the problem would be an alias returning of another
+  // language - so in the long run a better method would need to be added (f.e. alias including the language
+  // they are for and additionally filtering for that)
   alias: string[];
   // Which type of ingredient it is
   category: IngredientCategories;

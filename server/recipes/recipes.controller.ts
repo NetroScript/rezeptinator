@@ -82,7 +82,7 @@ export class RecipesController {
   ): Promise<boolean> {
     let result: DeleteResult;
 
-    if (roles.includes(Roles.Admin) || roles.includes(Roles.Owner)) {
+    if (roles.some((role) => role == Roles.Admin || role == Roles.Owner)) {
       result = await this.recipesService.delete(id);
     } else {
       const owner = await this.recipesService.getOwner(id);

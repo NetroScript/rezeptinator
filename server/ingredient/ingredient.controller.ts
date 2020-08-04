@@ -7,7 +7,6 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -20,6 +19,7 @@ import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from '@server/common/guards/roles.guard';
 import { RequiredRoles } from '@server/common/decorators/roles.decorator';
 import { Roles } from '@common/Model/User';
+import { User } from '@server/common/decorators/user.decorator';
 
 @Controller('ingredients')
 @UseGuards(RolesGuard)
@@ -77,11 +77,17 @@ export class IngredientController {
   @UseInterceptors(ClassSerializerInterceptor)
   @ApiResponse({
     type: IngredientEntity,
-    description: 'Create a single user generated ingredient. They will be stored as user generated',
+    description:
+      'Create a single user generated ingredient. They will be stored as user generated. Currently this ' +
+      'Endpoint is only really useful for admins because users have no way to access ingredients they created',
   })
-  async createIngredient(@Body() IngredientDto: CreateIngredientDto): Promise<IngredientEntity> {
+  async createIngredient(
+    @Body() IngredientDto: CreateIngredientDto,
+    @User('roles') roles: Roles[],
+  ): Promise<IngredientEntity> {
     return await this.ingredientService.addIngredient(
       Object.assign({ id: undefined, alias: [], portionSize: 1 }, IngredientDto),
+      roles.some((role) => role == Roles.Admin || role == Roles.Owner),
     );
   }
 }
