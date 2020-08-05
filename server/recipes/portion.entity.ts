@@ -1,14 +1,6 @@
 import { IPortion, PortionTypes } from '@common/Model/Portion';
 import { IngredientEntity } from '@server/ingredient/ingredient.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToOne,
-  PrimaryGeneratedColumn,
-  RelationId,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
 import { RecipeEntity } from '@server/recipes/recipe.entity';
 import { Exclude } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
@@ -22,8 +14,7 @@ export class PortionEntity implements IPortion {
   @Column('float')
   amount: number;
 
-  @OneToOne((type) => IngredientEntity, { eager: true, cascade: true })
-  @JoinColumn()
+  @ManyToOne((type) => IngredientEntity, { eager: true, cascade: true })
   ingredient: IngredientEntity;
 
   @Exclude()
@@ -35,7 +26,7 @@ export class PortionEntity implements IPortion {
 
   @Column('enum', { enum: PortionTypes })
   @ApiProperty({ enum: PortionTypes })
-  readonly instanceType: PortionTypes;
+  instanceType: PortionTypes;
 
   @Column('int')
   type: number;
@@ -49,4 +40,13 @@ export class PortionEntity implements IPortion {
   recipeId: number;
 
   servingSize = 1;
+
+  constructor(data?: Omit<IPortion, 'servingSize' | 'ingredient'>) {
+    if (data != undefined) {
+      this.type = data.type;
+      this.instanceType = data.instanceType;
+      this.amount = data.amount;
+      this.ingredientNameIndex = data.ingredientNameIndex;
+    }
+  }
 }

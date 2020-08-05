@@ -1,12 +1,12 @@
-import { IRecipe, ITag } from '@common/Model/Recipe';
 import { AvailableLanguages } from '@common/Localisation/Generic';
-import { IPortion, PortionTypes } from '@common/Model/Portion';
+import { PortionTypes } from '@common/Model/Portion';
 import { CreateIngredientDto } from '@common/Model/dto/createIngredient.dto';
 import { IncompatableWith } from '@common/Utility';
 import {
   IsEnum,
   IsInt,
   IsNumber,
+  IsOptional,
   IsPositive,
   Max,
   Min,
@@ -18,7 +18,7 @@ import { Optional } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class createRecipeDto {
-  @IsPositive()
+  @Min(0)
   cookTime: number;
 
   @IsPositive()
@@ -46,7 +46,7 @@ export class createRecipeDto {
   @MinLength(4)
   title: string;
 
-  @IsPositive()
+  @Min(0)
   totalTime: number;
 }
 
@@ -54,16 +54,18 @@ export class createPortionDto {
   @IsPositive()
   amount: number;
 
+  @IsOptional()
   @IncompatableWith(['ingredient'])
   @ValidateNested()
   newIngredient?: CreateIngredientDto;
 
+  @IsOptional()
   @IncompatableWith(['newIngredient'])
   @IsInt()
   ingredient?: number;
 
   @IsInt()
-  @IsPositive()
+  @Min(0)
   ingredientNameIndex: number;
 
   @IsEnum(PortionTypes)
@@ -71,7 +73,7 @@ export class createPortionDto {
   instanceType: PortionTypes;
 
   @IsInt()
-  @IsPositive()
+  @Min(0)
   type: number;
 }
 
@@ -83,7 +85,7 @@ export class createRecipeStepDto implements IRecipeStep {
   @MinLength(10)
   text: string;
 
-  @IsPositive()
+  @Min(0)
   time: number;
 
   @Optional()

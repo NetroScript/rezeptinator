@@ -311,8 +311,7 @@ export class RecipesService {
 
     // Map all the PortionEntities and create Ingredients (+nutritions) for those which are still needed
     recipe.ingredients = data.ingredients.map<PortionEntity>((ingredient, index) => {
-      const portion = new PortionEntity();
-      portion.amount = ingredient.amount;
+      const portion = new PortionEntity(ingredient);
       // Instead of loading the entity just set the corresponding column and load it later in bulk
       if (ingredient.ingredient != undefined) {
         portion.ingredientId = ingredient.ingredient;

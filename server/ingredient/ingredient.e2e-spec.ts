@@ -24,7 +24,7 @@ describe('Ingredients', () => {
   let token: string;
 
   const testUser = new UserEntity({
-    username: 'Ingredeinttest',
+    username: 'Ingredienttest',
     email: 'ingredient@test.com',
     joinDate: new Date(),
     profilePicture: '',
@@ -79,9 +79,9 @@ describe('Ingredients', () => {
   });
 
   afterAll(async () => {
-    await app.close();
     await repository.query(`DELETE FROM "ingredient";`);
     await repository.query(`DELETE FROM "user";`);
+    await app.close();
   });
 
   describe('/ingredient endpoint - creating ingredients', () => {

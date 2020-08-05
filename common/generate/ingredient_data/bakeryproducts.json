@@ -180,6 +180,44 @@
     "allergien": ""
   },
   {
+    "name": "Ei",
+    "kalorien": 151,
+    "eiweiß": 12,
+    "fett": 11,
+    "kohlenhydrate": 1,
+    "zucker": 1,
+    "ballaststoffe": 0,
+    "alkohol": 0,
+    "vegan": "vegetarisch",
+    "allergien": "ei",
+    "portion": 53
+  },
+  {
+    "name": "Eigelb",
+    "kalorien": 352,
+    "eiweiß": 17,
+    "fett": 31.5,
+    "kohlenhydrate": 0,
+    "zucker": 0,
+    "ballaststoffe": 0,
+    "alkohol": 0,
+    "vegan": "vegetarisch",
+    "allergien": "ei"
+  },
+  {
+    "name": "Eiweiß",
+    "kalorien": 44,
+    "eiweiß": 10,
+    "fett": 0,
+    "kohlenhydrate": 1,
+    "zucker": 1,
+    "ballaststoffe": 0,
+    "alkohol": 0,
+    "vegan": "nein",
+    "allergien": "ei",
+    "alias": ["Eiklar"]
+  },
+  {
     "name": "Eiweißpulver",
     "kalorien": 358,
     "eiweiß": 80,

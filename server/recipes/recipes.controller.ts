@@ -109,7 +109,8 @@ export class RecipesController {
   async createRecipe(
     @Body() createData: createRecipeDto,
     @User('id') userID: number,
-  ): Promise<number> {
-    return await this.recipesService.create(createData, userID);
+  ): Promise<{ success: boolean; id: number }> {
+    const id = await this.recipesService.create(createData, userID);
+    return { success: true, id };
   }
 }
