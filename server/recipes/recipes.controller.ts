@@ -18,7 +18,7 @@ import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from '@server/common/guards/roles.guard';
 import { RecipesService } from '@server/recipes/recipes.service';
 import { TagEntity } from '@server/recipes/tag.entity';
-import { IRecipe, ITag } from '@common/Model/Recipe';
+import { IRecipe, IRecipeQueryResult, ITag } from '@common/Model/Recipe';
 import { RecipeEntity } from '@server/recipes/recipe.entity';
 import { advancedRecipeSearchDto } from '@common/Model/dto/advancedRecipeSearch.dto';
 import { RequiredRoles } from '@server/common/decorators/roles.decorator';
@@ -42,7 +42,7 @@ export class RecipesController {
     description:
       'Return recipes based on supplied filters -> this should actually be a get, but validation and parsing of the query would be a pain, so this is implemented as post',
   })
-  async findAll(@Body() search: advancedRecipeSearchDto): Promise<IRecipe[]> {
+  async findAll(@Body() search: advancedRecipeSearchDto): Promise<IRecipeQueryResult> {
     return await this.recipesService.advancedSearchOverview(search);
   }
 

@@ -9,7 +9,7 @@ import {
 } from '@common/Model/dto/advancedRecipeSearch.dto';
 import { PortionEntity } from '@server/recipes/portion.entity';
 import { createRecipeDto } from '@common/Model/dto/createRecipe.dto';
-import { IRecipe } from '@common/Model/Recipe';
+import { IRecipe, IRecipeQueryResult } from '@common/Model/Recipe';
 import { TagEntity } from '@server/recipes/tag.entity';
 import { RecipeStepEntity } from '@server/recipes/recipeStep.entity';
 import { IngredientEntity } from '@server/ingredient/ingredient.entity';
@@ -37,9 +37,14 @@ export class RecipesService {
     private readonly ingredientService: IngredientService,
   ) {}
 
-  async advancedSearchOverview(query: advancedRecipeSearchDto): Promise<IRecipe[]> {
+  async advancedSearchOverview(query: advancedRecipeSearchDto): Promise<IRecipeQueryResult> {
     const recipes: Map<number, RecipeEntity> = new Map();
-    const returnData: IRecipe[] = [];
+    const returnData: IRecipeQueryResult = {
+      lastId: query.lastId,
+      lastValue: query.lastValue,
+      recipes: [],
+      totalCount: 0,
+    };
 
     const queryBuilder = await this.recipeRepository
       .createQueryBuilder('recipe')
@@ -67,10 +72,10 @@ export class RecipesService {
           .select('COUNT(*)')
           .from(PortionEntity, 'portion')
           .where('portion.recipe = recipe.id')
-          .andWhere('portion.ingredient IN (:...ingredients)', {
-            ingredients: query.includeIngredients,
+          .andWhere('portion.ingredient IN (:...includeingredients)', {
+            includeingredients: query.includeIngredients,
           })
-          .having('COUNT(*) = :count', { count: query.includeIngredients.length })
+          .having('COUNT(*) = :includecount', { includecount: query.includeIngredients.length })
           .getQuery();
         return 'EXISTS ' + subQuery;
       });
@@ -85,8 +90,8 @@ export class RecipesService {
           .select()
           .from(PortionEntity, 'portion')
           .where('portion.recipe = recipe.id')
-          .andWhere('portion.ingredient IN (:...ingredients)', {
-            ingredients: query.excludeIngredients,
+          .andWhere('portion.ingredient IN (:...excludeingredients)', {
+            excludeingredients: query.excludeIngredients,
           })
           .getQuery();
         return 'NOT EXISTS ' + subQuery;
@@ -94,15 +99,17 @@ export class RecipesService {
     }
 
     if (!!query.includeCategories) {
-      queryBuilder.andWhere(`summary.categories @> '{:categories}'`, {
-        categories: query.includeCategories,
-      });
+      queryBuilder.andWhere(
+        `summary.categories @> '{${query.includeCategories.join(',').replace(/[^0-9,]/g, '')}}'`,
+      );
     }
 
     if (!!query.excludeCategories) {
-      queryBuilder.andWhere(`NOT (summary.categories @> '{:categories}')`, {
-        categories: query.excludeCategories,
-      });
+      queryBuilder.andWhere(
+        `NOT summary.categories @> '{${query.excludeCategories
+          .join(',')
+          .replace(/[^0-9,]/g, '')}}'`,
+      );
     }
 
     if (!!query.veganLevel) {
@@ -134,26 +141,26 @@ export class RecipesService {
           })
           .having('COUNT(*) = :count', { count: query.hasTags.length })
           .getQuery();
-        return 'NOT EXISTS ' + subQuery;
+        return 'EXISTS ' + subQuery;
       });
     }
 
     if (!!query.maxCookTime) {
-      queryBuilder.andWhere('recipe.cookTime <= :max', { max: query.maxCookTime });
+      queryBuilder.andWhere('recipe.cookTime <= :maxCook', { maxCook: query.maxCookTime });
     }
 
     if (!!query.maxTotalTime) {
-      queryBuilder.andWhere('recipe.totalTime <= :max', { max: query.maxTotalTime });
+      queryBuilder.andWhere('recipe.totalTime <= :maxTotal', { maxTotal: query.maxTotalTime });
     }
 
     if (!!query.minimalRating) {
-      queryBuilder.andWhere('recipe.rating >= :min', { min: query.minimalRating });
+      queryBuilder.andWhere('recipe.rating >= :minRating', { minRating: query.minimalRating });
     }
 
     if (!!query.excludeAllergies) {
-      queryBuilder.andWhere(`NOT (summary.allergies @> '{:allergies}')`, {
-        allergies: query.excludeAllergies,
-      });
+      queryBuilder.andWhere(
+        `NOT summary.allergies @> '{${query.excludeAllergies.join(',').replace(/[^0-9,]/g, '')}}'`,
+      );
     }
 
     if (!!query.language) {
@@ -173,8 +180,9 @@ export class RecipesService {
     // Code used for pagination
     // By what we should filter
     let sort: string;
+    let isHaving: boolean;
     // The order of the data
-    const compareOperation = query.ascending ? '>=' : '<=';
+    const compareOperation = query.ascending ? '>' : '<';
     const order = query.ascending ? 'ASC' : 'DESC';
     const orderTypes: string[] = [];
     // Depending on the order mode use different data
@@ -187,7 +195,9 @@ export class RecipesService {
         sort = `(recipe.rating, recipe.id) ${compareOperation} (:lastvalue, :lastid)`;
         break;
       case RecipeOrderVariants.Favourites:
-        sort = `(favourites, recipe.id) ${compareOperation} (:lastvalue, :lastid)`;
+        sort = `(COUNT(DISTINCT userfavourites.userId), recipe.id) ${compareOperation} (:lastvalue, :lastid)`;
+        // Aggregation is not possible in where, and accessing the column also isn't, so we need to put it in Having
+        isHaving = true;
         break;
       case RecipeOrderVariants.Calories:
         sort = `(totalNutritions.calories, recipe.id) ${compareOperation} (:lastvalue, :lastid)`;
@@ -202,11 +212,17 @@ export class RecipesService {
 
     if (orderTypes.length == 0) {
       const partString = sort.split(' ' + compareOperation)[0];
-      orderTypes.push(...partString.substr(1, partString.length - 1).split(', '));
+      orderTypes.push(...partString.substr(1, partString.length - 2).split(', '));
     }
 
     // Apply filter removing all already seen data
-    queryBuilder.andWhere(sort, { lastvalue: query.lastValue, lastid: query.lastId });
+    if (query.lastValue != undefined && query.lastId != undefined) {
+      if (!isHaving) {
+        queryBuilder.andWhere(sort, { lastvalue: query.lastValue, lastid: query.lastId });
+      } else {
+        queryBuilder.having(sort, { lastvalue: query.lastValue, lastid: query.lastId });
+      }
+    }
 
     // Order
     queryBuilder.orderBy(
@@ -221,12 +237,15 @@ export class RecipesService {
 
     const data = await queryBuilder.getRawAndEntities();
 
-    data.entities.forEach((entity) => recipes.set(entity.id, entity));
+    data.entities.forEach((entity) => {
+      entity.ingredients = entity.tags = entity.recipeSteps = entity.favorites = entity.ratings = [];
+      recipes.set(entity.id, entity);
+    });
 
     // Load theamount favourites into the Recipes by parsing the raw data
     data.raw.forEach((data: { [key: string]: string | number }): void => {
-      const current = recipes.get(data['recipe.id'] as number);
-      current.favouriteAmount = data['favourites'] as number;
+      const current = recipes.get(data['recipe_id'] as number);
+      current.favouriteAmount = parseInt(data['favourites'] as string);
     });
 
     const loadedRecipeIds = Array.from(recipes.keys());
@@ -253,7 +272,7 @@ export class RecipesService {
         .addSelect('tag.tag', 'tag')
         .addSelect('connection.recipeId', 'recipeID')
         .leftJoin('recipe_tags_tag', 'connection', 'connection.tagId = tag.id')
-        .where('connection.recipeId IN :ids', { ids: loadedRecipeIds })
+        .where('connection.recipeId IN (:...ids)', { ids: loadedRecipeIds })
         .getRawMany<{ tagID: number; group: string; tag: string; recipeID: number }>();
 
       // Save the additionally loaded data into each correct recipe
@@ -275,7 +294,7 @@ export class RecipesService {
 
     // Build the return data from the recipes
     recipes.forEach((entity) => {
-      returnData.push({
+      returnData.recipes.push({
         cookTime: entity.cookTime,
         creationDate: entity.creationDate,
         creator: entity.creator,
@@ -293,6 +312,24 @@ export class RecipesService {
         recipeSummary: entity.recipeSummary,
       });
     });
+
+    returnData.totalCount = amount;
+    if (returnData.recipes.length > 0) {
+      const [lastRecipe] = returnData.recipes.slice(-1);
+      returnData.lastId = lastRecipe.id;
+      returnData.lastValue =
+        query.order == RecipeOrderVariants.Favourites
+          ? lastRecipe.favourites
+          : query.order == RecipeOrderVariants.Calories
+          ? lastRecipe.recipeSummary.totalNutritions.calories
+          : query.order == RecipeOrderVariants.Rating
+          ? lastRecipe.rating
+          : query.order == RecipeOrderVariants.CookTime
+          ? lastRecipe.cookTime
+          : query.order == RecipeOrderVariants.Difficulty
+          ? lastRecipe.difficulty
+          : 0;
+    }
 
     // Return the data
     return returnData;

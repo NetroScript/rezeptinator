@@ -64,3 +64,10 @@ export interface IRecipeSummary {
   // If nutrients are available for every single ingredient
   dataForAll: boolean;
 }
+
+export interface IRecipeQueryResult {
+  totalCount: number;
+  recipes: IRecipe[];
+  lastId?: number;
+  lastValue?: number;
+}

@@ -1,25 +1,28 @@
+import { collectedIngredients } from '@common/generate/GetIngredients';
+import { AvailableLanguages } from '@common/Localisation/Generic';
+import {
+  IAdvancedRecipeSearch,
+  RecipeOrderVariants,
+} from '@common/Model/dto/advancedRecipeSearch.dto';
+import { AllergyGroups, IngredientCategories, Vegan } from '@common/Model/Ingredient';
+import { PiecePortionTypes, PortionTypes, Unit } from '@common/Model/Portion';
+import { IRecipe, TagList } from '@common/Model/Recipe';
+import { OvenTypes, RecipeStepTypes } from '@common/Model/RecipeStep';
+import { Roles } from '@common/Model/User';
 import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { IngredientEntity } from '@server/ingredient/ingredient.entity';
+import { NutrientEntity } from '@server/ingredient/nutrient.entity';
+import { RecipeEntity } from '@server/recipes/recipe.entity';
+import { RecipesModule } from '@server/recipes/recipes.module';
+import { TagEntity } from '@server/recipes/tag.entity';
+import { UserEntity } from '@server/user/user.entity';
+import { UserModule } from '@server/user/user.module';
 import * as supertest from 'supertest';
 import { getConnection, Repository } from 'typeorm';
 
 import ormconfig from '../../ormconfig';
-import { UserEntity } from '@server/user/user.entity';
-import { Roles } from '@common/Model/User';
-import { AllergyGroups, IIngredient, IngredientCategories, Vegan } from '@common/Model/Ingredient';
-import { UserModule } from '@server/user/user.module';
-import { RecipeEntity } from '@server/recipes/recipe.entity';
-import { RecipesModule } from '@server/recipes/recipes.module';
-import { IngredientEntity } from '@server/ingredient/ingredient.entity';
-import { IRecipe, TagList } from '@common/Model/Recipe';
-import { TagEntity } from '@server/recipes/tag.entity';
-import { AvailableLanguages } from '@common/Localisation/Generic';
-import { collectedIngredients } from '@common/generate/GetIngredients';
-import { NutrientEntity } from '@server/ingredient/nutrient.entity';
-import { OvenTypes, RecipeStepTypes } from '@common/Model/RecipeStep';
-import { PiecePortionTypes, PortionTypes, Unit } from '@common/Model/Portion';
-import { PiecePortion } from '@common/Classes/PiecePortion';
 
 // If this is the first run with docker + typeorm it will need some initial setup time
 jest.setTimeout(30000);
@@ -41,24 +44,6 @@ describe('Recipes', () => {
     role: [Roles.User],
   });
   testUser.password = '123456';
-
-  const ingredientData: IIngredient = {
-    alias: [],
-    allergies: [AllergyGroups.Nuts],
-    category: IngredientCategories.Nuts,
-    name: 'Testnuss',
-    nutritions: {
-      calories: 635,
-      protein: 12,
-      fat: 61,
-      carbs: 5.8,
-      sugar: 1,
-      fibers: 7.4,
-      alcohol: 0,
-    },
-    portionSize: 0,
-    vegan: Vegan.Vegan,
-  };
 
   const ingredientList = collectedIngredients.map<IngredientEntity>((data) => {
     const ingredient = new IngredientEntity(data);
@@ -122,6 +107,28 @@ describe('Recipes', () => {
     totalTime: 80,
   };
 
+  const toFind = {
+    name: recipeData.title,
+    includeIngredients: [],
+    excludeIngredients: [],
+    includeCategories: [IngredientCategories.Fruit],
+    excludeCategories: [IngredientCategories.Fish],
+    veganLevel: Vegan.Vegetarion,
+    author: testUser.id,
+    maxDifficulty: 1,
+    hasTags: [5, 7],
+    maxCookTime: 600,
+    maxTotalTime: 600,
+    minimalRating: 0,
+    excludeAllergies: [AllergyGroups.Crustacean],
+    language: recipeData.language,
+    pageSize: 30,
+    lastValue: 0,
+    lastId: 0,
+    order: RecipeOrderVariants.Favourites,
+    ascending: true,
+  };
+
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
@@ -155,7 +162,7 @@ describe('Recipes', () => {
     it('should show find no tags if there are none', async () => {
       const data = await supertest
         .agent(app.getHttpServer())
-        .get('/recipes/tags/NonExistantRandomTag')
+        .get('/recipes/tags/NonExistentRandomTag')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200);
@@ -185,6 +192,15 @@ describe('Recipes', () => {
       await repositoryTags.save(Tags);
       await repositoryIngredient.save(ingredientList);
 
+      // Set Up to find now that the ingredients have ids assigned
+      toFind.excludeIngredients = [
+        ingredientList.find((ingredient) => ingredient.name == 'Kartoffeln').id,
+      ];
+      toFind.includeIngredients = [
+        recipeData.ingredients[0].ingredient.id,
+        recipeData.ingredients[2].ingredient.id,
+      ];
+
       const { body } = await supertest
         .agent(app.getHttpServer())
         .post('/user/login')
@@ -199,8 +215,7 @@ describe('Recipes', () => {
           Object.assign({}, recipeData, {
             // The API accepts only ids as ingredients so we need to map the ingredient instance to an id
             ingredients: recipeData.ingredients.map((ingredient) => {
-              const data = Object.assign({}, ingredient, { ingredient: ingredient.ingredient.id });
-              return data;
+              return Object.assign({}, ingredient, { ingredient: ingredient.ingredient.id });
             }),
             tags: [7, 5],
           }),
@@ -233,10 +248,9 @@ describe('Recipes', () => {
             // The API accepts only ids as ingredients so we need to map the ingredient instance to an id
             ingredients: [
               ...recipeData.ingredients.map((ingredient) => {
-                const data = Object.assign({}, ingredient, {
+                return Object.assign({}, ingredient, {
                   ingredient: ingredient.ingredient.id,
                 });
-                return data;
               }),
               {
                 instanceType: PortionTypes.Unit,
@@ -270,7 +284,89 @@ describe('Recipes', () => {
     });
   });
 
-  describe('/recipes endpoint - finding', () => {});
+  describe('/recipes endpoint - finding', () => {
+    it('should return exactly one recipe when using all filters fitting for the one put into the database', async () => {
+      const data = await supertest
+        .agent(app.getHttpServer())
+        .post('/recipes/find')
+        .send(toFind)
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/);
+
+      if (data.status != 201) {
+        Logger.log(toFind);
+        Logger.log(data.body);
+      }
+
+      expect(data.status).toBe(201);
+
+      expect(data.body).toMatchObject({ lastId: 1, lastValue: 0, totalCount: 1 });
+      expect(data.body).toHaveProperty('recipes');
+      expect(data.body.recipes.length).toBe(1);
+    });
+
+    it('should return no vegan results', async () => {
+      const params: IAdvancedRecipeSearch = {
+        ascending: false,
+        order: RecipeOrderVariants.Calories,
+        pageSize: 25,
+      };
+      const data = await supertest
+        .agent(app.getHttpServer())
+        .post('/recipes/find')
+        .send(Object.assign({ veganLevel: Vegan.Vegan }, params))
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/);
+
+      expect(data.status).toBe(201);
+
+      expect(data.body).toMatchObject({ totalCount: 0 });
+      expect(data.body).toHaveProperty('recipes');
+      expect(data.body.recipes.length).toBe(0);
+    });
+
+    it('should 2 results total', async () => {
+      const params: IAdvancedRecipeSearch = {
+        ascending: false,
+        order: RecipeOrderVariants.Rating,
+        pageSize: 25,
+      };
+      const data = await supertest
+        .agent(app.getHttpServer())
+        .post('/recipes/find')
+        .send(params)
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/);
+
+      expect(data.status).toBe(201);
+
+      expect(data.body).toMatchObject({ lastId: 1, lastValue: 0, totalCount: 2 });
+      expect(data.body).toHaveProperty('recipes');
+      expect(data.body.recipes.length).toBe(2);
+    });
+
+    it('no results when using pagination but return 2 total results', async () => {
+      const params: IAdvancedRecipeSearch = {
+        ascending: true,
+        lastId: 2,
+        lastValue: 0,
+        order: RecipeOrderVariants.Rating,
+        pageSize: 25,
+      };
+      const data = await supertest
+        .agent(app.getHttpServer())
+        .post('/recipes/find')
+        .send(params)
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/);
+
+      expect(data.status).toBe(201);
+
+      expect(data.body).toMatchObject({ lastId: 2, lastValue: 0, totalCount: 2 });
+      expect(data.body).toHaveProperty('recipes');
+      expect(data.body.recipes.length).toBe(0);
+    });
+  });
 
   describe('/recipes endpoint - deleting', () => {});
 });
