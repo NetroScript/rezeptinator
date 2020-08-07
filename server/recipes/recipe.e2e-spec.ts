@@ -12,6 +12,7 @@ import { Roles } from '@common/Model/User';
 import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { ImagesEntity } from '@server/images/images.entity';
 import { IngredientEntity } from '@server/ingredient/ingredient.entity';
 import { NutrientEntity } from '@server/ingredient/nutrient.entity';
 import { RecipeEntity } from '@server/recipes/recipe.entity';
@@ -33,6 +34,7 @@ describe('Recipes', () => {
   let repositoryIngredient: Repository<IngredientEntity>;
   let repositoryUser: Repository<UserEntity>;
   let repositoryTags: Repository<TagEntity>;
+  let repositoryImages: Repository<ImagesEntity>;
   let token: string;
   const Tags: TagEntity[] = [];
 
@@ -57,6 +59,7 @@ describe('Recipes', () => {
     creationDate: new Date(),
     creator: undefined,
     difficulty: 0.5,
+    images: [1],
     favourites: 0,
     ingredients: [
       {
@@ -147,6 +150,7 @@ describe('Recipes', () => {
     repositoryIngredient = module.get('IngredientEntityRepository');
     repositoryUser = module.get('UserEntityRepository');
     repositoryTags = module.get('TagEntityRepository');
+    repositoryImages = module.get('ImagesEntityRepository');
     repository = module.get('RecipeEntityRepository');
     await getConnection().synchronize(true);
 
@@ -187,7 +191,13 @@ describe('Recipes', () => {
 
   describe('/recipes endpoint - creating a recipe', () => {
     it('should be possible to create a recipe', async () => {
+      const exampleImage = new ImagesEntity();
+      exampleImage.path = 'test';
+      exampleImage.originalName = 'test.png';
+      exampleImage.uploader = testUser;
+
       await repositoryUser.save(testUser);
+      await repositoryImages.save(exampleImage);
       TagList.forEach((tag) => Tags.push(new TagEntity(tag)));
       await repositoryTags.save(Tags);
       await repositoryIngredient.save(ingredientList);

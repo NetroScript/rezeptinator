@@ -37,6 +37,7 @@ export const TagList: ITag[] = Object.keys(TagData)
 export interface IRecipe {
   id?: number;
   title: string;
+  images: number[];
   language: AvailableLanguages;
   creator: IUser;
   rating: number;

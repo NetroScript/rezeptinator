@@ -43,6 +43,9 @@ export class createRecipeDto {
   @IsInt({ each: true })
   tags: number[];
 
+  @IsInt({ each: true })
+  images: number[];
+
   @MinLength(4)
   title: string;
 

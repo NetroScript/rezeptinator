@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ImagesEntity } from '@server/images/images.entity';
 import { RecipeEntity } from '@server/recipes/recipe.entity';
 import { DeleteResult, In, Like, Repository } from 'typeorm';
 import { UserEntity } from '@server/user/user.entity';
@@ -28,6 +29,8 @@ export class RecipesService {
     private readonly recipeRepository: Repository<RecipeEntity>,
     @InjectRepository(PortionEntity)
     private readonly portionRepository: Repository<PortionEntity>,
+    @InjectRepository(ImagesEntity)
+    private readonly imageRepository: Repository<ImagesEntity>,
     @InjectRepository(TagEntity)
     private readonly tagRepository: Repository<TagEntity>,
     @InjectRepository(RecipeStepEntity)
@@ -275,6 +278,12 @@ export class RecipesService {
         .where('connection.recipeId IN (:...ids)', { ids: loadedRecipeIds })
         .getRawMany<{ tagID: number; group: string; tag: string; recipeID: number }>();
 
+      const images: { imageId: number; recipeId: number }[] = await this.imageRepository.query(
+        `SELECT * from recipe_image_entities_image WHERE "recipeId" IN (${loadedRecipeIds.join(
+          ',',
+        )})`,
+      );
+
       // Save the additionally loaded data into each correct recipe
       portions.forEach((portion) => {
         recipes.get(portion.recipeId).ingredients.push(portion);
@@ -289,6 +298,10 @@ export class RecipesService {
         recipes
           .get(tag.recipeID)
           .tags.push(new TagEntity({ id: tag.tagID, tag: tag.tag, group: tag.group }));
+      });
+
+      images.forEach((image) => {
+        recipes.get(image.recipeId).imageEntities.push(new ImagesEntity({ id: image.imageId }));
       });
     }
 
@@ -310,6 +323,7 @@ export class RecipesService {
         title: entity.title,
         totalTime: entity.totalTime,
         recipeSummary: entity.recipeSummary,
+        images: entity.imageEntities.map((entity) => entity.id),
       });
     });
 
@@ -385,6 +399,7 @@ export class RecipesService {
     );
     recipe.servingSize = data.servingSize;
     recipe.tags = await this.getTagsByIdList(data.tags);
+    recipe.imageEntities = await this.getImagesByIdList(data.images);
     recipe.totalTime = data.totalTime;
     recipe.recipeSummary = new RecipeSummaryEntity();
 
@@ -460,6 +475,10 @@ export class RecipesService {
 
   async getTagsByIdList(ids: number[]): Promise<TagEntity[]> {
     return await this.tagRepository.findByIds(ids);
+  }
+
+  async getImagesByIdList(ids: number[]): Promise<ImagesEntity[]> {
+    return await this.imageRepository.findByIds(ids);
   }
 
   // Get the Creator of a single recipe

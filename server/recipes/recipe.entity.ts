@@ -1,4 +1,5 @@
 import { IRecipe, ITag } from '@common/Model/Recipe';
+import { ImagesEntity } from '@server/images/images.entity';
 import {
   Column,
   CreateDateColumn,
@@ -22,7 +23,7 @@ import { AvailableLanguages } from '@common/Localisation/Generic';
 import { TagEntity } from '@server/recipes/tag.entity';
 import { RecipeStepEntity } from '@server/recipes/recipeStep.entity';
 
-type RecipeEntityType = Omit<IRecipe, 'favourites'>;
+type RecipeEntityType = Omit<IRecipe, 'favourites' | 'images'>;
 
 @Entity('recipe')
 export class RecipeEntity implements RecipeEntityType {
@@ -31,6 +32,15 @@ export class RecipeEntity implements RecipeEntityType {
 
   @Column()
   title: string;
+
+  @Exclude()
+  @ManyToMany((type) => ImagesEntity, {
+    eager: true,
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinTable()
+  imageEntities: ImagesEntity[];
 
   @Column('float')
   cookTime: number;
@@ -41,7 +51,7 @@ export class RecipeEntity implements RecipeEntityType {
   @UpdateDateColumn()
   lastUpdated: Date;
 
-  @ManyToOne((type) => UserEntity, (user) => user.recipes)
+  @ManyToOne((type) => UserEntity, (user) => user.recipes, { eager: true })
   creator: UserEntity;
 
   @Column('float')

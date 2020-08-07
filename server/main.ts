@@ -3,8 +3,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { NuxtFastifyFilter } from './nuxt/nuxtFastify.filter';
-
-// import { NuxtExpressFilter } from './nuxt/nuxtExpress.filter';
+import fmp from 'fastify-multipart';
 
 import { NuxtServer } from './nuxt';
 import config from '../nuxt.config';
@@ -27,10 +26,11 @@ async function bootstrap() {
       .addBearerAuth()
       .build();
 
-    const app = await NestFactory.create<NestFastifyApplication>(
-      ApplicationModule,
-      new FastifyAdapter(),
-    );
+    const adapter = new FastifyAdapter();
+
+    adapter.register(fmp);
+
+    const app = await NestFactory.create<NestFastifyApplication>(ApplicationModule, adapter);
 
     const document = SwaggerModule.createDocument(app, APIConfig);
     SwaggerModule.setup('api', app, document);

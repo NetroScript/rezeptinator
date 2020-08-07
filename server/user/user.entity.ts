@@ -1,3 +1,4 @@
+import { ImagesEntity } from '@server/images/images.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -60,6 +61,9 @@ export class UserEntity implements IUser {
 
   @OneToMany((type) => RecipeEntity, (recipe) => recipe.creator)
   recipes: RecipeEntity[];
+
+  @OneToMany((type) => ImagesEntity, (image) => image.uploader)
+  images: ImagesEntity[];
 
   convertToIUser(): IUser {
     const { id, password, ratings, favorites, recipes, lastUpdated, ...data } = this;

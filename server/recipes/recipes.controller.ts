@@ -79,7 +79,7 @@ export class RecipesController {
     @Param('id', ParseIntPipe) id: number,
     @User('roles') roles: Roles[],
     @User('id') userID: number,
-  ): Promise<boolean> {
+  ): Promise<{ success: boolean }> {
     let result: DeleteResult;
 
     if (roles.some((role) => role == Roles.Admin || role == Roles.Owner)) {
@@ -96,7 +96,7 @@ export class RecipesController {
       }
     }
 
-    return result.affected == 1;
+    return { success: result.affected == 1 };
   }
 
   @Post()
