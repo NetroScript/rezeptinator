@@ -51,11 +51,10 @@ export class UserEntity implements IUser {
   async hashPassword() {
     this.password = await argon2.hash(this.password);
   }
-
   @OneToMany((type) => UserRatingEntity, (rating) => rating.user)
   ratings: UserRatingEntity[];
 
-  @ManyToMany((type) => RecipeEntity)
+  @ManyToMany((type) => RecipeEntity, (recipe) => recipe.favorites)
   @JoinTable()
   favorites: RecipeEntity[];
 

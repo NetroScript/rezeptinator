@@ -41,7 +41,7 @@ export interface IRecipe {
   language: AvailableLanguages;
   creator: IUser;
   rating: number;
-  favourites: number;
+  favorites: number;
   difficulty: number;
   cookTime: number;
   totalTime: number;
@@ -51,6 +51,8 @@ export interface IRecipe {
   ingredients: IPortion[];
   tags: ITag[];
   recipeSummary: IRecipeSummary;
+  // If a user is logged in, and has it favourited this is set to true, otherwise false
+  isFavorited: boolean;
 }
 
 export interface IRecipeSummary {

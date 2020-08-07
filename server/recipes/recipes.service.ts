@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ImagesEntity } from '@server/images/images.entity';
 import { RecipeEntity } from '@server/recipes/recipe.entity';
+import { UserRatingEntity } from '@server/user/userRating.entity';
 import { DeleteResult, In, Like, Repository } from 'typeorm';
 import { UserEntity } from '@server/user/user.entity';
 import {
@@ -37,10 +38,15 @@ export class RecipesService {
     private readonly recipeStepRepository: Repository<RecipeStepEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(UserRatingEntity)
+    private readonly userRatingRepository: Repository<UserRatingEntity>,
     private readonly ingredientService: IngredientService,
   ) {}
 
-  async advancedSearchOverview(query: advancedRecipeSearchDto): Promise<IRecipeQueryResult> {
+  async advancedSearchOverview(
+    query: advancedRecipeSearchDto,
+    userID: number | undefined = undefined,
+  ): Promise<IRecipeQueryResult> {
     const recipes: Map<number, RecipeEntity> = new Map();
     const returnData: IRecipeQueryResult = {
       lastId: query.lastId,
@@ -49,11 +55,13 @@ export class RecipesService {
       totalCount: 0,
     };
 
+    const favoriteMap: Map<number, boolean> = new Map();
+
     const queryBuilder = await this.recipeRepository
       .createQueryBuilder('recipe')
       // Get the favourite count
-      .addSelect('COUNT(DISTINCT userfavourites.userId)', 'favourites')
-      .leftJoin('user_favorites_recipe', 'userfavourites', 'userfavourites.recipeId = recipe.id')
+      .addSelect('COUNT(DISTINCT userfavorites.userId)', 'favorites')
+      .leftJoin('user_favorites_recipe', 'userfavorites', 'userfavorites.recipeId = recipe.id')
       // Join 1-1 stuff
       .leftJoinAndSelect('recipe.creator', 'creator')
       .leftJoinAndSelect('recipe.recipeSummary', 'summary')
@@ -198,7 +206,7 @@ export class RecipesService {
         sort = `(recipe.rating, recipe.id) ${compareOperation} (:lastvalue, :lastid)`;
         break;
       case RecipeOrderVariants.Favourites:
-        sort = `(COUNT(DISTINCT userfavourites.userId), recipe.id) ${compareOperation} (:lastvalue, :lastid)`;
+        sort = `(COUNT(DISTINCT userfavorites.userId), recipe.id) ${compareOperation} (:lastvalue, :lastid)`;
         // Aggregation is not possible in where, and accessing the column also isn't, so we need to put it in Having
         isHaving = true;
         break;
@@ -241,14 +249,14 @@ export class RecipesService {
     const data = await queryBuilder.getRawAndEntities();
 
     data.entities.forEach((entity) => {
-      entity.ingredients = entity.tags = entity.recipeSteps = entity.favorites = entity.ratings = [];
+      entity.ingredients = entity.tags = entity.recipeSteps = entity.favorites = entity.ratings = entity.imageEntities = [];
       recipes.set(entity.id, entity);
     });
 
     // Load theamount favourites into the Recipes by parsing the raw data
     data.raw.forEach((data: { [key: string]: string | number }): void => {
       const current = recipes.get(data['recipe_id'] as number);
-      current.favouriteAmount = parseInt(data['favourites'] as string);
+      current.favoriteAmount = parseInt(data['favorites'] as string);
     });
 
     const loadedRecipeIds = Array.from(recipes.keys());
@@ -284,6 +292,18 @@ export class RecipesService {
         )})`,
       );
 
+      if (userID != undefined) {
+        const favorites: { userId: number; recipeId: number }[] = await this.imageRepository.query(
+          `SELECT * from user_favorites_recipe WHERE "recipeId" IN (${loadedRecipeIds.join(
+            ',',
+          )}) AND "userId" = ${userID}`,
+        );
+
+        favorites.forEach((data) => {
+          favoriteMap.set(data.recipeId, true);
+        });
+      }
+
       // Save the additionally loaded data into each correct recipe
       portions.forEach((portion) => {
         recipes.get(portion.recipeId).ingredients.push(portion);
@@ -301,7 +321,10 @@ export class RecipesService {
       });
 
       images.forEach((image) => {
-        recipes.get(image.recipeId).imageEntities.push(new ImagesEntity({ id: image.imageId }));
+        const recipe = recipes.get(image.recipeId);
+        if (recipe != undefined) {
+          recipe.imageEntities.push(new ImagesEntity({ id: image.imageId }));
+        }
       });
     }
 
@@ -310,9 +333,9 @@ export class RecipesService {
       returnData.recipes.push({
         cookTime: entity.cookTime,
         creationDate: entity.creationDate,
-        creator: entity.creator,
+        creator: entity.creator.convertToIUser(),
         difficulty: entity.difficulty,
-        favourites: entity.favouriteAmount,
+        favorites: entity.favoriteAmount,
         id: entity.id,
         ingredients: entity.ingredients,
         language: entity.language,
@@ -324,6 +347,7 @@ export class RecipesService {
         totalTime: entity.totalTime,
         recipeSummary: entity.recipeSummary,
         images: entity.imageEntities.map((entity) => entity.id),
+        isFavorited: favoriteMap.get(entity.id) || false,
       });
     });
 
@@ -333,7 +357,7 @@ export class RecipesService {
       returnData.lastId = lastRecipe.id;
       returnData.lastValue =
         query.order == RecipeOrderVariants.Favourites
-          ? lastRecipe.favourites
+          ? lastRecipe.favorites
           : query.order == RecipeOrderVariants.Calories
           ? lastRecipe.recipeSummary.totalNutritions.calories
           : query.order == RecipeOrderVariants.Rating
@@ -469,6 +493,33 @@ export class RecipesService {
     return recipe.id;
   }
 
+  async findById(id: number, userID: number | undefined): Promise<IRecipe> {
+    const recipe = await this.recipeRepository.findOne(id);
+    const favourites: { count: number }[] = await this.recipeRepository.query(
+      `SELECT COUNT(*) AS count FROM user_favorites_recipe WHERE "recipeId"=${id}`,
+    );
+
+    return {
+      cookTime: recipe.cookTime,
+      creationDate: recipe.creationDate,
+      creator: recipe.creator.convertToIUser(),
+      difficulty: recipe.difficulty,
+      favorites: favourites[0].count,
+      id: id,
+      images: recipe.imageEntities.map((entity) => entity.id),
+      ingredients: recipe.ingredients,
+      isFavorited: userID == undefined ? false : await this.isFavourited(id, userID),
+      language: recipe.language,
+      rating: recipe.rating,
+      recipeSteps: recipe.recipeSteps,
+      recipeSummary: recipe.recipeSummary,
+      servingSize: recipe.servingSize,
+      tags: recipe.tags,
+      title: recipe.title,
+      totalTime: recipe.totalTime,
+    };
+  }
+
   async findTagsByName(name: string): Promise<TagEntity[]> {
     return await this.tagRepository.find({ tag: Like(`%${name}%`) });
   }
@@ -507,5 +558,73 @@ export class RecipesService {
 
     // All other properties of recipe are set to delete cascase, so we don't need to delete them manually
     return await this.recipeRepository.delete(id);
+  }
+
+  async isFavourited(recipeID: number, userID: number): Promise<boolean> {
+    const result: { userId: number; recipeId: number }[] = await this.recipeRepository.query(
+      `SELECT * FROM user_favorites_recipe WHERE "userId"=${userID} AND "recipeId"=${recipeID}`,
+    );
+
+    return result.length > 0;
+  }
+
+  async toggleFavourite(
+    recipeID: number,
+    userID: number,
+  ): Promise<{ success: boolean; result: boolean }> {
+    if (await this.isFavourited(recipeID, userID)) {
+      await this.recipeRepository
+        .createQueryBuilder('recipe')
+        .relation('favorites')
+        .of(recipeID)
+        .remove(userID);
+      return { success: true, result: false };
+    } else {
+      await this.recipeRepository
+        .createQueryBuilder('recipe')
+        .relation('favorites')
+        .of(recipeID)
+        .add(userID);
+      return { success: true, result: true };
+    }
+  }
+
+  async rate(recipeID: number, userID: number, rating: number): Promise<{ success: boolean }> {
+    // Update or insert
+    await this.userRatingRepository.query(
+      `INSERT INTO rating ("rating", "userId", "recipeId") VALUES (${rating}, ${userID}, ${recipeID}) ON CONFLICT ( "recipeId", "userId" ) DO UPDATE SET rating = EXCLUDED.rating RETURNING "id"`,
+    );
+
+    // get new average
+    const averageRating = await this.userRatingRepository
+      .createQueryBuilder('rating')
+      .select('AVG(rating.rating)', 'ratingAverage')
+      .where('rating.recipe = :recipeID', { recipeID })
+      .getRawOne<{ ratingAverage: number | null }>();
+
+    // Save the new average value
+
+    await this.recipeRepository
+      .createQueryBuilder()
+      .update()
+      .set({ rating: averageRating.ratingAverage || -1 })
+      .where('id = :id', { id: recipeID })
+      .execute();
+
+    return { success: true };
+  }
+
+  async getRating(recipeID: number, userID: number): Promise<{ rating: number | null }> {
+    return {
+      rating:
+        (
+          await this.userRatingRepository.findOne({
+            where: {
+              recipe: recipeID,
+              user: userID,
+            },
+          })
+        ).rating || null,
+    };
   }
 }

@@ -20,6 +20,7 @@ import { RecipesModule } from '@server/recipes/recipes.module';
 import { TagEntity } from '@server/recipes/tag.entity';
 import { UserEntity } from '@server/user/user.entity';
 import { UserModule } from '@server/user/user.module';
+import exp from 'constants';
 import * as supertest from 'supertest';
 import { getConnection, Repository } from 'typeorm';
 
@@ -60,7 +61,8 @@ describe('Recipes', () => {
     creator: undefined,
     difficulty: 0.5,
     images: [1],
-    favourites: 0,
+    favorites: 0,
+    isFavorited: false,
     ingredients: [
       {
         instanceType: PortionTypes.Unit,
@@ -190,7 +192,7 @@ describe('Recipes', () => {
   });
 
   describe('/recipes endpoint - creating a recipe', () => {
-    it('should be possible to create a recipe', async () => {
+    it('should be possible to create a recipe and favorite + rate it', async () => {
       const exampleImage = new ImagesEntity();
       exampleImage.path = 'test';
       exampleImage.originalName = 'test.png';
@@ -240,14 +242,42 @@ describe('Recipes', () => {
       }
 
       expect(recipe1.status).toBe(201);
-
       expect(recipe1.body).toStrictEqual({ id: 1, success: true });
 
-      const createdRecipe = await repository.findOne(1);
+      // Check if we are able to favourite and rate a recipe
+      const favouriting = await supertest
+        .agent(app.getHttpServer())
+        .post('/recipes/favorite/1')
+        .send()
+        .set('Authorization', 'Bearer ' + token)
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/);
+
+      expect(favouriting.status).toBe(201);
+      expect(favouriting.body).toStrictEqual({ success: true, result: true });
+
+      const rating = await supertest
+        .agent(app.getHttpServer())
+        .post('/recipes/rating/1')
+        .send({
+          rating: 5,
+        })
+        .set('Authorization', 'Bearer ' + token)
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/);
+
+      expect(rating.status).toBe(201);
+      expect(rating.body).toStrictEqual({ success: true });
+
+      const createdRecipe = await repository.findOne(1, { relations: ['favorites'] });
 
       // Manually pre calculated calories
       expect(createdRecipe.recipeSummary.totalNutritions.calories).toBe(9653.9677);
       expect(createdRecipe).toBeDefined();
+
+      // Confirm the rating and favourite
+      expect(createdRecipe.rating).toBe(5);
+      expect(createdRecipe.favorites.length).toBe(1);
 
       // Testing a recipe with a custom ingredient
       const recipe2 = await supertest
@@ -310,7 +340,7 @@ describe('Recipes', () => {
 
       expect(data.status).toBe(201);
 
-      expect(data.body).toMatchObject({ lastId: 1, lastValue: 0, totalCount: 1 });
+      expect(data.body).toMatchObject({ lastId: 1, lastValue: 1, totalCount: 1 });
       expect(data.body).toHaveProperty('recipes');
       expect(data.body.recipes.length).toBe(1);
     });
@@ -350,7 +380,7 @@ describe('Recipes', () => {
 
       expect(data.status).toBe(201);
 
-      expect(data.body).toMatchObject({ lastId: 1, lastValue: 0, totalCount: 2 });
+      expect(data.body).toMatchObject({ lastId: 2, lastValue: 0, totalCount: 2 });
       expect(data.body).toHaveProperty('recipes');
       expect(data.body.recipes.length).toBe(2);
     });
@@ -359,7 +389,7 @@ describe('Recipes', () => {
       const params: IAdvancedRecipeSearch = {
         ascending: true,
         lastId: 2,
-        lastValue: 0,
+        lastValue: 5,
         order: RecipeOrderVariants.Rating,
         pageSize: 25,
       };
@@ -372,9 +402,19 @@ describe('Recipes', () => {
 
       expect(data.status).toBe(201);
 
-      expect(data.body).toMatchObject({ lastId: 2, lastValue: 0, totalCount: 2 });
+      expect(data.body).toMatchObject({ lastId: 2, lastValue: 5, totalCount: 2 });
       expect(data.body).toHaveProperty('recipes');
       expect(data.body.recipes.length).toBe(0);
+    });
+
+    it('one complete recipe when specifically requesting it', async () => {
+      const data = await supertest
+        .agent(app.getHttpServer())
+        .get('/recipes/1')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/);
+
+      expect(data.status).toBe(200);
     });
   });
 

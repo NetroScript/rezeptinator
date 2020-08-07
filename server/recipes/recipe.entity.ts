@@ -23,7 +23,7 @@ import { AvailableLanguages } from '@common/Localisation/Generic';
 import { TagEntity } from '@server/recipes/tag.entity';
 import { RecipeStepEntity } from '@server/recipes/recipeStep.entity';
 
-type RecipeEntityType = Omit<IRecipe, 'favourites' | 'images'>;
+type RecipeEntityType = Omit<IRecipe, 'favorites' | 'images' | 'isFavorited'>;
 
 @Entity('recipe')
 export class RecipeEntity implements RecipeEntityType {
@@ -102,9 +102,8 @@ export class RecipeEntity implements RecipeEntityType {
   @ManyToMany((type) => UserEntity, (user) => user.favorites)
   favorites: UserEntity[];
 
-  favouriteAmount: number;
+  favoriteAmount: number;
 
-  @Exclude()
   @OneToOne((type) => RecipeSummaryEntity, {
     cascade: true,
     onDelete: 'CASCADE',

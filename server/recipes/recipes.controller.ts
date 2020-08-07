@@ -16,6 +16,9 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from '@server/common/guards/roles.guard';
+import { rateRecipeDto } from '@server/recipes/dto/rateRecipe.dto';
+import { returnRecipeDto } from '@server/recipes/dto/returnRecipe.dto';
+import { returnRecipeQueryDto } from '@server/recipes/dto/returnRecipeQuery.dto';
 import { RecipesService } from '@server/recipes/recipes.service';
 import { TagEntity } from '@server/recipes/tag.entity';
 import { IRecipe, IRecipeQueryResult, ITag } from '@common/Model/Recipe';
@@ -23,7 +26,7 @@ import { RecipeEntity } from '@server/recipes/recipe.entity';
 import { advancedRecipeSearchDto } from '@common/Model/dto/advancedRecipeSearch.dto';
 import { RequiredRoles } from '@server/common/decorators/roles.decorator';
 import { Roles } from '@common/Model/User';
-import { User } from '@server/common/decorators/user.decorator';
+import { User, UserNoError } from '@server/common/decorators/user.decorator';
 import { DeleteResult } from 'typeorm';
 import { IngredientEntity } from '@server/ingredient/ingredient.entity';
 import { CreateIngredientDto } from '@common/Model/dto/createIngredient.dto';
@@ -42,8 +45,21 @@ export class RecipesController {
     description:
       'Return recipes based on supplied filters -> this should actually be a get, but validation and parsing of the query would be a pain, so this is implemented as post',
   })
-  async findAll(@Body() search: advancedRecipeSearchDto): Promise<IRecipeQueryResult> {
-    return await this.recipesService.advancedSearchOverview(search);
+  async findAll(@Body() search: advancedRecipeSearchDto): Promise<returnRecipeQueryDto> {
+    return new returnRecipeQueryDto(await this.recipesService.advancedSearchOverview(search));
+  }
+
+  @Get(':id')
+  @UseInterceptors(ClassSerializerInterceptor)
+  @ApiResponse({
+    type: RecipeEntity,
+    description: 'Return a single recipe based on supplied its id',
+  })
+  async find(
+    @Param('id', ParseIntPipe) recipeID: number,
+    @UserNoError('id') userID: number,
+  ): Promise<returnRecipeDto> {
+    return new returnRecipeDto(await this.recipesService.findById(recipeID, userID));
   }
 
   @Get('generateData')
@@ -112,5 +128,59 @@ export class RecipesController {
   ): Promise<{ success: boolean; id: number }> {
     const id = await this.recipesService.create(createData, userID);
     return { success: true, id };
+  }
+
+  @Post('favorite/:id')
+  @ApiBearerAuth()
+  @UseInterceptors(ClassSerializerInterceptor)
+  @ApiResponse({
+    description:
+      'Toggle the favorite on a recipe. The property result is true when favorited, false when removed',
+  })
+  async setFavourite(
+    @Param('id', ParseIntPipe) recipeID: number,
+    @User('id') userID: number,
+  ): Promise<{ success: boolean; result: boolean }> {
+    return await this.recipesService.toggleFavourite(recipeID, userID);
+  }
+
+  @Get('favorite/:id')
+  @ApiBearerAuth()
+  @UseInterceptors(ClassSerializerInterceptor)
+  @ApiResponse({
+    description: 'Returns if a recipe is favorited',
+  })
+  async getFavourite(
+    @Param('id', ParseIntPipe) recipeID: number,
+    @User('id') userID: number,
+  ): Promise<{ favorited: boolean }> {
+    return { favorited: await this.recipesService.isFavourited(recipeID, userID) };
+  }
+
+  @Get('rating/:id')
+  @ApiBearerAuth()
+  @UseInterceptors(ClassSerializerInterceptor)
+  @ApiResponse({
+    description: 'Returns the rating which a user gave for a recipe or null',
+  })
+  async getRating(
+    @Param('id', ParseIntPipe) recipeID: number,
+    @User('id') userID: number,
+  ): Promise<{ rating: number | null }> {
+    return await this.recipesService.getRating(recipeID, userID);
+  }
+
+  @Post('rating/:id')
+  @ApiBearerAuth()
+  @UseInterceptors(ClassSerializerInterceptor)
+  @ApiResponse({
+    description: 'Returns the rating which a user gave for a recipe or null',
+  })
+  async rate(
+    @Param('id', ParseIntPipe) recipeID: number,
+    @User('id') userID: number,
+    @Body() rating: rateRecipeDto,
+  ): Promise<{ success: boolean }> {
+    return await this.recipesService.rate(recipeID, userID, rating.rating);
   }
 }

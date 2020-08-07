@@ -1,4 +1,5 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Exclude } from 'class-transformer';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ITag } from '@common/Model/Recipe';
 import { RecipeEntity } from '@server/recipes/recipe.entity';
 
@@ -12,6 +13,7 @@ export class TagEntity implements ITag {
   @Column()
   tag: string;
 
+  @Exclude()
   @ManyToMany((type) => RecipeEntity, (recipe) => recipe.tags)
   recipe: RecipeEntity[];
 

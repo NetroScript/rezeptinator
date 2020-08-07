@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ImagesEntity } from '@server/images/images.entity';
+import { UserRatingEntity } from '@server/user/userRating.entity';
 import { RecipesController } from './recipes.controller';
 import { RecipesService } from './recipes.service';
 import { IngredientModule } from '@server/ingredient/ingredient.module';
@@ -21,6 +22,7 @@ import { IngredientEntity } from '@server/ingredient/ingredient.entity';
       UserEntity,
       ImagesEntity,
       RecipeSummaryEntity,
+      UserRatingEntity,
       NutrientEntity,
       IngredientEntity,
       RecipeStepEntity,
