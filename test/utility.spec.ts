@@ -1,9 +1,7 @@
 import { splitIntoFraction } from '../common/Utility';
-import { TagList } from '../common/Model/Recipe';
 
 describe('Utility Functions | Fractions', function () {
   test('Correct fraction for 1.5', () => {
-    console.log(TagList);
     const { number, fraction } = splitIntoFraction(1.5);
     expect(number).toBe(1);
     expect(fraction).toBe('½');

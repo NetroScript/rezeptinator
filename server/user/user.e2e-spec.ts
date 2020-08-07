@@ -1,4 +1,4 @@
-import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
+import { HttpStatus, INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as supertest from 'supertest';
@@ -21,7 +21,7 @@ describe('User', () => {
   };
 
   const User1 = new UserEntity(userData);
-  User1.password = '123456';
+  User1.password = '12345678';
 
   const User2 = new UserEntity(
     Object.assign({}, userData, {
@@ -30,7 +30,7 @@ describe('User', () => {
       role: [Roles.User, Roles.Owner],
     }),
   );
-  User2.password = 'abcdefg';
+  User2.password = 'abcdefghij';
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -128,13 +128,14 @@ describe('User', () => {
 
   describe('/user with an account', () => {
     it('should be able to login, get his account and then delete it', async () => {
+      const password = User1.password;
       await repository.save(User1);
       const data = await supertest
         .agent(app.getHttpServer())
         .post('/user/login')
-        .send({ email: User1.email, password: '123456' })
+        .send({ email: User1.email, password })
         .set('Accept', 'application/json')
-        .expect('Content-Type', /json/)
+        .expect('Content-Type', /json/);
         .expect(HttpStatus.CREATED);
 
       const info: any = User1.convertToIUser();
@@ -174,7 +175,7 @@ describe('User', () => {
     const data = await supertest
       .agent(app.getHttpServer())
       .post('/user/login')
-      .send({ email: User2.email, password: 'abcdefg' });
+      .send({ email: User2.email, password: 'abcdefghij' });
 
     const data2 = await supertest
       .agent(app.getHttpServer())
