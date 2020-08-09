@@ -4,6 +4,8 @@
     <ul>
       <li v-for="(user, i) in users" :key="i">Vorname: {{ user.name }}</li>
     </ul>
+    <AuthenticationForm :username-required="false" :submit-function="() => {}">
+    </AuthenticationForm>
   </div>
 </template>
 
@@ -13,9 +15,11 @@ import { Context } from '@nuxt/types';
 import '@nuxtjs/axios';
 
 import { IUser } from '@common/Model/User';
-
-@Component
-export default class YourComponent extends Vue {
+import AuthenticationForm from '@client/components/AuthenticationForm.vue';
+@Component({
+  components: { AuthenticationForm },
+})
+export default class IndexPage extends Vue {
   users: IUser[] = [];
 
   async asyncData({ $axios }: Context) {

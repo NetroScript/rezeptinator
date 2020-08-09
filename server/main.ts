@@ -62,9 +62,13 @@ async function bootstrap() {
       module.hot.dispose(() => app.close());
     }
 
-    await app.listen(config.env.port as number, config.env.host, () => {
-      log.log(`Server listening at ${config.env.host}:${config.env.port}`);
-      log.log(`Server listening at ${config.env.domain}`);
+    await app.listen(config.env.port as number, config.env.host, (e) => {
+      if (e != undefined) {
+        log.error(e.message, e.stack);
+      } else {
+        log.log(`Server listening at ${config.env.host}:${config.env.port}`);
+        log.log(`Server listening at ${config.env.domain}`);
+      }
     });
   } catch (e) {
     log.error(e.message, e.trace);

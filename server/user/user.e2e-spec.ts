@@ -135,7 +135,7 @@ describe('User', () => {
         .post('/user/login')
         .send({ email: User1.email, password })
         .set('Accept', 'application/json')
-        .expect('Content-Type', /json/);
+        .expect('Content-Type', /json/)
         .expect(HttpStatus.CREATED);
 
       const info: any = User1.convertToIUser();
