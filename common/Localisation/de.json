@@ -3,7 +3,11 @@
     "LOGIN": "Anmelden",
     "REGISTER": "Registrieren",
     "PASSWORD_HINT": "Mindestens 8 Zeichen",
-    "ENTER_PASSWORD": "Geben Sie das Passwort ein."
+    "ENTER_PASSWORD": "Geben Sie das Passwort ein.",
+    "REGISTERED": "Erfolgreich registriert.",
+    "LOGGEDIN": "Erfolgreich eingeloggt.",
+    "CURRENTLYLOGGEDIN": "Eingeloggt",
+    "LOGOUT": "Ausloggen"
   },
   "VALIDATION": {
     "ALPHA": "{_field_} darf nur alphabetische Zeichen enthalten",
@@ -32,7 +36,18 @@
     "REQUIRED_IF": "{_field_} ist ein Pflichtfeld",
     "SIZE": "{_field_} muss kleiner als {size}KB sein"
   },
+  "ERROR": {
+    "NETWORK": "Ein Netzwerk Fehler ist aufgetreten.",
+    "UNKNOWN": "Ein unbekannter Fehler ist aufgetreten.",
+    "USEREXISTS": "Die E-Mail Adresse oder der Nutzername existieren schon.",
+    "NOACCOUNT": "Es gibt keinen Account mit dieser E-Mail",
+    "WRONGPASSWORD": "Das eingegebene Passwort ist falsch."
+  },
   "EMAIL": "E-Mail",
   "PASSWORD": "Passwort",
-  "NAME": "Name"
+  "NAME": "Name",
+  "CANCEL": "Abbrechen",
+  "CLOSE": "Schließen",
+  "ADVANCEDFILTERS": "Erweiterte Filter Optionen",
+  "SEARCH": "Suche"
 }

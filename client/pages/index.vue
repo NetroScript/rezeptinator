@@ -4,8 +4,6 @@
     <ul>
       <li v-for="(user, i) in users" :key="i">Vorname: {{ user.name }}</li>
     </ul>
-    <AuthenticationForm :username-required="false" :submit-function="() => {}">
-    </AuthenticationForm>
   </div>
 </template>
 

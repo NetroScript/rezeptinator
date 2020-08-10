@@ -1,6 +1,6 @@
 <template>
-  <ValidationObserver ref="observer" v-slot="{ validate, reset }">
-    <form>
+  <ValidationObserver ref="observer" v-slot="{ invalid }">
+    <form @submit="submitFunction">
       <ValidationProvider
         v-if="usernameRequired"
         v-slot="{ errors }"
@@ -34,9 +34,21 @@
           @click:append="showPassword = !showPassword"
         ></v-text-field>
       </ValidationProvider>
-      <v-btn class="mr-4" @click="submitFunction">{{
+      <v-btn bottom :disabled="invalid" class="" block :loading="isLoading" @click="submit">{{
         usernameRequired ? $t('AUTHENTICATION.REGISTER') : $t('AUTHENTICATION.LOGIN')
       }}</v-btn>
+      <div class="my-4">
+        <v-alert
+          v-for="(error, index) in additionalErrors"
+          :key="`error-${index}`"
+          dense
+          class="my-1"
+          outlined
+          type="error"
+        >
+          {{ $t(error) }}
+        </v-alert>
+      </div>
     </form>
   </ValidationObserver>
 </template>
@@ -65,7 +77,34 @@ extend('max', { ...max });
 })
 export default class AuthenticationForm extends Vue {
   @Prop({ required: true }) usernameRequired!: boolean;
-  @Prop({ required: true }) submitFunction!: { username?: string; email: string; password: string };
+  @Prop({ required: true }) submitFunction!: (data: {
+    username?: string;
+    email: string;
+    password: string;
+  }) => Promise<string[]>;
+
+  async submit(): Promise<void> {
+    if (
+      !this.isLoading &&
+      (await (this.$refs.observer as Vue & { validate: () => boolean }).validate())
+    ) {
+      this.isLoading = true;
+      this.additionalErrors = await this.submitFunction({
+        username: this.username,
+        email: this.email,
+        password: this.password,
+      });
+      this.isLoading = false;
+    }
+  }
+
+  additionalErrors: string[] = [];
+
+  validate(): boolean {
+    return true;
+  }
+
+  isLoading = false;
 
   username = '';
   email = '';

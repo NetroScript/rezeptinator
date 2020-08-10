@@ -25,24 +25,22 @@ export class UserService {
     const user = await this.userRepository.findOne({ email });
 
     if (!user) {
-      throw new HttpException({ message: 'Account not found' }, HttpStatus.BAD_REQUEST);
+      throw new HttpException({ message: 'ERROR.NOACCOUNT' }, HttpStatus.BAD_REQUEST);
     }
 
     if (await argon2.verify(user.password, password)) return this.getAccount(user);
 
-    throw new HttpException({ message: 'Wrong Password' }, HttpStatus.BAD_REQUEST);
+    throw new HttpException({ message: 'ERROR.WRONGPASSWORD' }, HttpStatus.BAD_REQUEST);
   }
 
   async createAccount({ username, email, password }: CreateUserDto): Promise<IOwnAccount> {
     // If a user with this username or email already exists fail the request
     if (await this.userRepository.findOne({ where: [{ username }, { email }] })) {
-      throw new HttpException(
-        { message: 'Account creation failed. - Username or email already exist.' },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException({ message: 'ERROR.USEREXISTS' }, HttpStatus.BAD_REQUEST);
     }
 
     const user = new UserEntity();
+    user.profilePicture = `https://api.adorable.io/avatars/100/${username}.png`;
     user.username = username;
     user.email = email;
     user.password = password;

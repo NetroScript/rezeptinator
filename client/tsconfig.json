@@ -19,6 +19,14 @@
       "@common/*": ["./common/*"],
       "@server/*": ["./server/*"]
     },
-    "types": ["@types/node", "@nuxt/types", "@nuxtjs/axios", "@nuxtjs/vuetify", "@types/nuxtjs__auth", "nuxt-i18n"]
+    "types": [
+      "@types/node",
+      "@nuxt/types",
+      "@nuxtjs/axios",
+      "@nuxt/vue-app",
+      "@nuxtjs/vuetify",
+      "@types/nuxtjs__auth",
+      "nuxt-i18n"
+    ]
   }
 }

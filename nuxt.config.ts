@@ -62,6 +62,7 @@ export default {
    */
   modules: [
     '@nuxtjs/axios',
+    '@nuxtjs/vuetify',
     '@nuxtjs/auth',
     [
       'nuxt-i18n',
@@ -146,23 +147,37 @@ export default {
         endpoints: {
           login: { url: '/user/login', method: 'post', propertyName: 'token' },
           user: { url: '/user', method: 'get', propertyName: false },
+          logout: false,
         },
       },
+      tokenRequired: true,
+      tokenType: 'Bearer',
+      globalToken: true,
+      autoFetchUser: true,
     },
   },
 
   vuetify: {
     theme: {
-      dark: true,
+      dark: false,
       themes: {
         dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3,
+          primary: '#689F38',
+          accent: '#FDD835',
+          secondary: '#827717',
+          success: '#4CAF50',
+          info: '#2196F3',
+          warning: '#FB8C00',
+          error: '#FF5252',
+        },
+        light: {
+          primary: '#9CCC65',
+          accent: '#FDD835',
+          secondary: '#827717',
+          success: '#4CAF50',
+          info: '#2196F3',
+          warning: '#FB8C00',
+          error: '#FF5252',
         },
       },
     },
