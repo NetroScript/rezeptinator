@@ -43,11 +43,16 @@
     "NOACCOUNT": "Es gibt keinen Account mit dieser E-Mail",
     "WRONGPASSWORD": "Das eingegebene Passwort ist falsch."
   },
+  "DESCRIPTION": {
+    "PROFILEPICTURE": "Profilbild des Nutzers"
+  },
   "EMAIL": "E-Mail",
   "PASSWORD": "Passwort",
   "NAME": "Name",
   "CANCEL": "Abbrechen",
   "CLOSE": "Schließen",
   "ADVANCEDFILTERS": "Erweiterte Filter Optionen",
-  "SEARCH": "Suche"
+  "SEARCH": "Suche",
+  "MAINPAGE": "Startseite",
+  "CHANGETHEME": "Theme wechseln"
 }

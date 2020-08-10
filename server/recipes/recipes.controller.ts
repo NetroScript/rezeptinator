@@ -21,15 +21,13 @@ import { returnRecipeDto } from '@server/recipes/dto/returnRecipe.dto';
 import { returnRecipeQueryDto } from '@server/recipes/dto/returnRecipeQuery.dto';
 import { RecipesService } from '@server/recipes/recipes.service';
 import { TagEntity } from '@server/recipes/tag.entity';
-import { IRecipe, IRecipeQueryResult, ITag } from '@common/Model/Recipe';
+import { IRecipe, ITag } from '@common/Model/Recipe';
 import { RecipeEntity } from '@server/recipes/recipe.entity';
 import { advancedRecipeSearchDto } from '@common/Model/dto/advancedRecipeSearch.dto';
 import { RequiredRoles } from '@server/common/decorators/roles.decorator';
 import { Roles } from '@common/Model/User';
 import { User, UserNoError } from '@server/common/decorators/user.decorator';
 import { DeleteResult } from 'typeorm';
-import { IngredientEntity } from '@server/ingredient/ingredient.entity';
-import { CreateIngredientDto } from '@common/Model/dto/createIngredient.dto';
 import { createRecipeDto } from '@common/Model/dto/createRecipe.dto';
 
 @Controller('recipes')

@@ -95,10 +95,10 @@ export class advancedRecipeSearchDto {
   pageSize = 25;
   @IsOptional()
   @Min(0)
-  lastValue?;
+  lastValue?: number;
   @IsOptional()
   @Min(0)
-  lastId?;
+  lastId?: number;
 
   @IsOptional()
   @IsEnum(RecipeOrderVariants)
