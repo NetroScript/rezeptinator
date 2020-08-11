@@ -1,6 +1,7 @@
 import { AvailableLanguages } from '@common/Localisation/Generic';
-import { PortionTypes } from '@common/Model/Portion';
-import { CreateIngredientDto } from '@common/Model/dto/createIngredient.dto';
+import { ICreatePortion, PortionTypes } from '@common/Model/Portion';
+import { ICreateRecipe } from '@common/Model/Recipe';
+import { CreateIngredientDto } from '@server/ingredient/dto/createIngredient.dto';
 import { IncompatableWith } from '@common/Utility';
 import {
   IsEnum,
@@ -17,7 +18,7 @@ import { IRecipeStep, RecipeStepTypes } from '@common/Model/RecipeStep';
 import { Optional } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class createRecipeDto {
+export class createRecipeDto implements ICreateRecipe {
   @Min(0)
   cookTime: number;
 
@@ -53,7 +54,7 @@ export class createRecipeDto {
   totalTime: number;
 }
 
-export class createPortionDto {
+export class createPortionDto implements ICreatePortion {
   @IsPositive()
   amount: number;
 

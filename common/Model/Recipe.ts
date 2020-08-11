@@ -1,9 +1,8 @@
 import { IUser } from '@common/Model/User';
-import { IPortion } from '@common/Model/Portion';
+import { ICreatePortion, IPortion } from '@common/Model/Portion';
 import TagData from '../Data/Tags.json';
 import { AvailableLanguages } from '@common/Localisation/Generic';
 import { IRecipeStep } from '@common/Model/RecipeStep';
-import { Column, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { AllergyGroups, IngredientCategories, Vegan } from '@common/Model/Ingredient';
 import { NutrientEntity } from '@server/ingredient/nutrient.entity';
 
@@ -66,6 +65,51 @@ export interface IRecipeSummary {
   totalNutritions: NutrientEntity;
   // If nutrients are available for every single ingredient
   dataForAll: boolean;
+}
+
+export enum RecipeOrderVariants {
+  Default,
+  Rating,
+  Favourites,
+  Calories,
+  Difficulty,
+  CookTime,
+}
+
+export interface IAdvancedRecipeSearch {
+  ascending?: boolean;
+  author?: number;
+  excludeAllergies?: AllergyGroups[];
+  excludeCategories?: IngredientCategories[];
+  excludeIngredients?: number[];
+  hasTags?: number[];
+  includeCategories?: IngredientCategories[];
+  includeIngredients?: number[];
+  language?: AvailableLanguages;
+  lastId?: number;
+  lastValue?: number;
+  maxCookTime?: number;
+  maxDifficulty?: number;
+  maxTotalTime?: number;
+  minDifficulty?: number;
+  minimalRating?: number;
+  name?: string;
+  order?: RecipeOrderVariants;
+  pageSize?: number;
+  veganLevel?: Vegan;
+}
+
+export interface ICreateRecipe {
+  cookTime: number;
+  difficulty: number;
+  images: number[];
+  ingredients: ICreatePortion[];
+  language: AvailableLanguages;
+  recipeSteps: IRecipeStep[];
+  servingSize: number;
+  tags: number[];
+  title: string;
+  totalTime: number;
 }
 
 export interface IRecipeQueryResult {

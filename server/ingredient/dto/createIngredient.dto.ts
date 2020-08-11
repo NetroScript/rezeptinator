@@ -1,4 +1,10 @@
-import { AllergyGroups, IngredientCategories, INutrients, Vegan } from '@common/Model/Ingredient';
+import {
+  AllergyGroups,
+  ICreateIngredient,
+  IngredientCategories,
+  INutrients,
+  Vegan,
+} from '@common/Model/Ingredient';
 import {
   ArrayNotEmpty,
   ArrayUnique,
@@ -28,7 +34,7 @@ export class NutrientDto implements INutrients {
   sugar: number;
 }
 
-export class CreateIngredientDto {
+export class CreateIngredientDto implements ICreateIngredient {
   @IsOptional()
   @IsString({ each: true })
   alias?: string[];

@@ -1,3 +1,4 @@
+import { IAdvancedRecipeSearch, RecipeOrderVariants } from '@common/Model/Recipe';
 import {
   IsBoolean,
   IsEnum,
@@ -14,16 +15,7 @@ import { AllergyGroups, IngredientCategories, Vegan } from '@common/Model/Ingred
 import { AvailableLanguages } from '@common/Localisation/Generic';
 import { ApiProperty } from '@nestjs/swagger';
 
-export enum RecipeOrderVariants {
-  Default,
-  Rating,
-  Favourites,
-  Calories,
-  Difficulty,
-  CookTime,
-}
-
-export class advancedRecipeSearchDto {
+export class advancedRecipeSearchDto implements IAdvancedRecipeSearch {
   @IsOptional()
   @IsString()
   name?: string;
@@ -91,6 +83,7 @@ export class advancedRecipeSearchDto {
   // Query Specific
   @IsInt()
   @IsPositive()
+  @IsOptional()
   @Max(100)
   pageSize = 25;
   @IsOptional()
@@ -109,5 +102,3 @@ export class advancedRecipeSearchDto {
   @IsBoolean()
   ascending = true;
 }
-
-export type IAdvancedRecipeSearch = advancedRecipeSearchDto;

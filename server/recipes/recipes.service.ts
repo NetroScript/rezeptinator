@@ -5,13 +5,10 @@ import { RecipeEntity } from '@server/recipes/recipe.entity';
 import { UserRatingEntity } from '@server/user/userRating.entity';
 import { DeleteResult, In, Like, Repository } from 'typeorm';
 import { UserEntity } from '@server/user/user.entity';
-import {
-  advancedRecipeSearchDto,
-  RecipeOrderVariants,
-} from '@common/Model/dto/advancedRecipeSearch.dto';
+import { advancedRecipeSearchDto } from '@server/recipes/dto/advancedRecipeSearch.dto';
 import { PortionEntity } from '@server/recipes/portion.entity';
-import { createRecipeDto } from '@common/Model/dto/createRecipe.dto';
-import { IRecipe, IRecipeQueryResult } from '@common/Model/Recipe';
+import { createRecipeDto } from '@server/recipes/dto/createRecipe.dto';
+import { IRecipe, IRecipeQueryResult, RecipeOrderVariants } from '@common/Model/Recipe';
 import { TagEntity } from '@server/recipes/tag.entity';
 import { RecipeStepEntity } from '@server/recipes/recipeStep.entity';
 import { IngredientEntity } from '@server/ingredient/ingredient.entity';

@@ -8,6 +8,12 @@
         </li>
       </ul>
     </template>
+    <template #drawer>
+      <v-btn color="secondary" dark fixed bottom right fab>
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </template>
+
     <template #header>
       <v-text-field
         flat
@@ -33,9 +39,9 @@
 import MainLayout from '@client/layout/default.vue';
 import {
   IAdvancedRecipeSearch,
+  IRecipeQueryResult,
   RecipeOrderVariants,
-} from '@common/Model/dto/advancedRecipeSearch.dto';
-import { IRecipe, IRecipeQueryResult } from '@common/Model/Recipe';
+} from '@common/Model/Recipe';
 
 import { IUser } from '@common/Model/User';
 import { Context } from '@nuxt/types';
@@ -47,7 +53,8 @@ import { Component, Vue } from 'nuxt-property-decorator';
 })
 export default class IndexPage extends Vue {
   users: IUser[] = [];
-  recipeQuery: IRecipeQueryResult;
+  recipeQuery: IRecipeQueryResult = { recipes: [], totalCount: 0 };
+
   currentQuery: IAdvancedRecipeSearch = {
     ascending: false,
     order: RecipeOrderVariants.Favourites,
@@ -55,18 +62,20 @@ export default class IndexPage extends Vue {
   };
 
   async asyncData({ $axios }: Context) {
-    /*
-    const recipeQuery = await $axios.$post('recipes/find', {
-      ascending: false,
-      order: RecipeOrderVariants.Favourites,
-      pageSize: 25,
-    });
-
+    let recipeQuery: IRecipeQueryResult;
+    try {
+      recipeQuery = await $axios.$post('recipes/find', {
+        ascending: false,
+        order: RecipeOrderVariants.Favourites,
+        pageSize: 25,
+      });
+    } catch (e) {
+      console.log(e);
+    }
 
     return {
       recipeQuery,
     };
-     */
   }
 }
 </script>

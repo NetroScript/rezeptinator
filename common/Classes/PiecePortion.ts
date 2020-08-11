@@ -23,15 +23,12 @@ export class PiecePortion extends PortionFunctions implements IPortion {
 
   /**
    * Creates an instance of PiecePortion.
-   * @param {IPortion} { amount, type, ingredient, modifier }
+   * @param data {IPortion} { amount, type, ingredient, modifier }
    * @memberof PiecePortion
    */
-  constructor({ amount, type, ingredient }: IPortion) {
-    super();
-    this.amount = amount;
-    this.type = type as PiecePortionTypes;
-    this.ingredient = ingredient;
-    this.servingSize = 1;
+  constructor(data: IPortion) {
+    super(data);
+    this.type = data.type as PiecePortionTypes;
   }
 
   /**

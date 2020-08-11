@@ -51,8 +51,19 @@
   "NAME": "Name",
   "CANCEL": "Abbrechen",
   "CLOSE": "Schließen",
+  "SEND": "Absenden",
   "ADVANCEDFILTERS": "Erweiterte Filter Optionen",
   "SEARCH": "Suche",
   "MAINPAGE": "Startseite",
-  "CHANGETHEME": "Theme wechseln"
+  "CHANGETHEME": "Theme wechseln",
+  "CREATERECIPE": "Neues Rezept erstellen",
+  "CREATE": {
+    "NOIMAGES": "Du kannst auch per Drag und Drop Bilder hierhin ziehen.",
+    "UPLOADIMAGES": "Lade ein paar Bilder hoch - das schönste zuerst :)",
+    "TITLE": "Rezeptname",
+    "IMAGESHEADER": "Wähl ein paar hübsche Bilder aus",
+    "TITLEHEADER": "Wie heißt das Rezept?"
+  },
+  "PORTIONTYPES0": "Einheiten",
+  "PORTIONTYPES1": "Stück"
 }

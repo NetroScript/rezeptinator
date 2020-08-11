@@ -4,7 +4,7 @@ import { IngredientEntity } from '@server/ingredient/ingredient.entity';
 import { DeleteResult, getRepository, In, Repository } from 'typeorm';
 import { IIngredient } from '@common/Model/Ingredient';
 import { NutrientEntity } from '@server/ingredient/nutrient.entity';
-import { CreateIngredientDto } from '@common/Model/dto/createIngredient.dto';
+import { CreateIngredientDto } from '@server/ingredient/dto/createIngredient.dto';
 
 @Injectable()
 export class IngredientService {

@@ -6,7 +6,7 @@
         <v-divider></v-divider>
 
         <v-list-item
-          v-for="(item, i) in items"
+          v-for="(item, i) in drawerUrls"
           :key="i"
           :to="item.to"
           link
@@ -43,8 +43,10 @@
         <slot name="content"></slot>
       </v-container>
     </v-main>
-    <v-footer app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+    <v-footer app absolute elevation="4">
+      <v-col class="text-center" cols="12">
+        &copy; {{ new Date().getFullYear() }} — <strong>Rezeptinator</strong>
+      </v-col>
     </v-footer>
   </v-app>
 </template>
@@ -63,24 +65,53 @@ export default class MainLayout extends Vue {
     await this.$auth.logout();
   }
 
-  items = [
+  get drawerUrls(): {
+    icon: string;
+    title: string;
+    to: string;
+    loggedInOnly: boolean;
+    onclick: (Event) => void;
+  }[] {
+    if (this.$auth.loggedIn) {
+      return this.items;
+    } else {
+      return this.items.filter((item) => !item.loggedInOnly);
+    }
+  }
+
+  items: {
+    icon: string;
+    title: string;
+    to: string;
+    loggedInOnly: boolean;
+    onclick: (Event) => void;
+  }[] = [
     {
       icon: 'mdi-home',
       title: 'MAINPAGE',
       to: '/',
+      loggedInOnly: false,
       onclick: () => {},
     },
     {
       icon: 'mdi-chart-bubble',
       title: 'Inspire',
       to: '/inspire',
+      loggedInOnly: false,
       onclick: () => {},
     },
-
+    {
+      icon: 'mdi-plus-circle',
+      title: 'CREATERECIPE',
+      to: '',
+      loggedInOnly: true,
+      onclick: () => {},
+    },
     {
       icon: 'mdi-invert-colors',
       title: 'CHANGETHEME',
       to: '',
+      loggedInOnly: false,
       onclick: (event: Event) => {
         event.stopPropagation();
         event.preventDefault();

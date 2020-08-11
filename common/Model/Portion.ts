@@ -1,4 +1,4 @@
-import { IIngredient } from '@common/Model/Ingredient';
+import { ICreateIngredient, IIngredient } from '@common/Model/Ingredient';
 import { LocalisationInformation } from '@common/Model/Localisation';
 import { splitIntoFraction } from '@common/Utility';
 
@@ -53,8 +53,8 @@ export abstract class PortionFunctions implements IPortion {
   abstract type: number;
 
   private _servingSize: number;
-  protected _cachedAmount: number;
-  protected _cachedFraction: string;
+  protected _cachedAmount = 1;
+  protected _cachedFraction = '';
 
   abstract readonly instanceType: PortionTypes;
   ingredient: IIngredient;
@@ -71,6 +71,12 @@ export abstract class PortionFunctions implements IPortion {
     ));
 
     this._servingSize = value;
+  }
+
+  protected constructor({ amount, ingredient }: IPortion) {
+    this.amount = amount;
+    this.ingredient = ingredient;
+    this.servingSize = 1;
   }
 
   // Abstract static function not possible with current Typescript
@@ -109,3 +115,12 @@ export const PiecePortionModifiers: { [key in PiecePortionTypes]: number } = {
   [PiecePortionTypes.Large]: 1.18,
   [PiecePortionTypes.ExtraLarge]: 1.35,
 };
+
+export interface ICreatePortion {
+  amount: number;
+  ingredient?: number;
+  ingredientNameIndex: number;
+  instanceType: PortionTypes;
+  newIngredient?: ICreateIngredient;
+  type: number;
+}

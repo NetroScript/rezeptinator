@@ -14,7 +14,7 @@ import { IngredientEntity } from '@server/ingredient/ingredient.entity';
 import { IngredientService } from '@server/ingredient/ingredient.service';
 import { IIngredient } from '@common/Model/Ingredient';
 import { collectedIngredients } from '@common/generate/GetIngredients';
-import { CreateIngredientDto } from '@common/Model/dto/createIngredient.dto';
+import { CreateIngredientDto } from '@server/ingredient/dto/createIngredient.dto';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from '@server/common/guards/roles.guard';
 import { RequiredRoles } from '@server/common/decorators/roles.decorator';

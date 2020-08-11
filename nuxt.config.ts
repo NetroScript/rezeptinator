@@ -155,6 +155,12 @@ export default {
       globalToken: true,
       autoFetchUser: true,
     },
+    redirect: {
+      login: '/',
+      logout: '/',
+      callback: '/',
+      home: '/',
+    },
   },
 
   vuetify: {

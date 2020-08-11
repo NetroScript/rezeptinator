@@ -1,6 +1,13 @@
 import { IIngredient } from '@common/Model/Ingredient';
 import { LocalisationInformation } from '@common/Model/Localisation';
-import { IPortion, PortionFunctions, PortionTypes, Unit, Units } from '@common/Model/Portion';
+import {
+  IPortion,
+  PiecePortionTypes,
+  PortionFunctions,
+  PortionTypes,
+  Unit,
+  Units,
+} from '@common/Model/Portion';
 
 /**
  * A UnitPortion is used to represent an ingredient measured in a specific unit (like 500g apple)
@@ -17,14 +24,12 @@ export class UnitPortion extends PortionFunctions implements IPortion {
 
   /**
    * Creates an instance of UnitPortion.
-   * @param {IPortion} { amount, type, ingredient, modifier }
+   * @param data {IPortion} { amount, type, ingredient, modifier }
    * @memberof UnitPortion
    */
-  constructor({ amount, type, ingredient }: IPortion) {
-    super();
-    this.amount = amount;
-    this.type = type as Unit;
-    this.ingredient = ingredient;
+  constructor(data: IPortion) {
+    super(data);
+    this.type = data.type as Unit;
   }
 
   /**

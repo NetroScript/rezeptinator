@@ -84,3 +84,12 @@ export interface IIngredient {
   // If you have 1 of this ingredient - how much is that in g? for example 50g for a potato
   portionSize?: number;
 }
+
+export interface ICreateIngredient {
+  alias?: string[];
+  allergies: AllergyGroups[];
+  category: IngredientCategories;
+  name: string;
+  nutritions?: INutrients;
+  vegan: Vegan;
+}
