@@ -1,5 +1,6 @@
 import { AvailableLanguages } from '@common/Localisation/Generic';
-import { ICreatePortion, PortionTypes } from '@common/Model/Portion';
+import { ICreatePortion } from '@common/Model/CreatePortion';
+import { PortionTypes } from '@common/Model/Portion';
 import { ICreateRecipe } from '@common/Model/Recipe';
 import { CreateIngredientDto } from '@server/ingredient/dto/createIngredient.dto';
 import { IncompatableWith } from '@common/Utility';

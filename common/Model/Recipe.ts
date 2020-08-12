@@ -1,5 +1,6 @@
+import { ICreatePortion } from '@common/Model/CreatePortion';
 import { IUser } from '@common/Model/User';
-import { ICreatePortion, IPortion } from '@common/Model/Portion';
+import { IPortion } from '@common/Model/Portion';
 import TagData from '../Data/Tags.json';
 import { AvailableLanguages } from '@common/Localisation/Generic';
 import { IRecipeStep } from '@common/Model/RecipeStep';

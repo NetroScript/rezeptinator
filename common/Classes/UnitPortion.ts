@@ -85,12 +85,14 @@ export class UnitPortion extends PortionFunctions implements IPortion {
    * @memberof UnitPortion
    */
   static getCandidates(): LocalisationInformation[] {
-    return Object.keys(Unit).map(
-      (entry): LocalisationInformation => {
-        return {
-          key: entry + 'Unit',
-        };
-      },
-    );
+    return Object.keys(Unit)
+      .filter((value) => !(parseInt(value) >= 0))
+      .map(
+        (entry): LocalisationInformation => {
+          return {
+            key: entry + 'Unit',
+          };
+        },
+      );
   }
 }

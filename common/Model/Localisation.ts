@@ -1,6 +1,4 @@
-import { StringMap, TOptionsBase } from 'i18next';
-
 export interface LocalisationInformation {
-  key: string | string[];
-  options?: (TOptionsBase & StringMap) | string;
+  key: string;
+  options?: { [key: string]: any };
 }

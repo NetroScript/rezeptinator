@@ -1,4 +1,4 @@
-import { ICreateIngredient, IIngredient } from '@common/Model/Ingredient';
+import { IIngredient } from '@common/Model/Ingredient';
 import { LocalisationInformation } from '@common/Model/Localisation';
 import { splitIntoFraction } from '@common/Utility';
 
@@ -115,12 +115,3 @@ export const PiecePortionModifiers: { [key in PiecePortionTypes]: number } = {
   [PiecePortionTypes.Large]: 1.18,
   [PiecePortionTypes.ExtraLarge]: 1.35,
 };
-
-export interface ICreatePortion {
-  amount: number;
-  ingredient?: number;
-  ingredientNameIndex: number;
-  instanceType: PortionTypes;
-  newIngredient?: ICreateIngredient;
-  type: number;
-}

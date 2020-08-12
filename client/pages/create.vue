@@ -5,9 +5,8 @@
       <div class="pa-4">
         <ValidationObserver ref="observer" v-slot="{ invalid }">
           <form>
-            <EditablePortion v-model="testIngredient"></EditablePortion>
             <h2 class="text-h5 text-md-h4 my-2 text-center">{{ $t('CREATE.TITLEHEADER') }}</h2>
-            <ValidationProvider v-slot="{ errors }" name="email" rules="required">
+            <ValidationProvider v-slot="{ errors }" name="CREATE.TITLE" rules="required">
               <v-text-field
                 v-model.trim="createRecipe.title"
                 :error-messages="errors"
@@ -67,6 +66,40 @@
               </v-file-input>
             </div>
 
+            <v-divider class="ma-5"></v-divider>
+            <h2 class="text-h5 text-md-h4 my-2 text-center">
+              {{ $t('CREATE.INGREDIENTSHEADER') }}
+            </h2>
+
+            <div v-for="(ingredient, index) in createRecipe.ingredients" class="ma-3">
+              <v-row no-gutters>
+                <v-col>
+                  <EditablePortion v-model="createRecipe.ingredients[index]"></EditablePortion>
+                </v-col>
+                <v-btn icon class="mx-2 my-auto" @click="createRecipe.ingredients.splice(index, 1)">
+                  <v-icon color="error">mdi-delete</v-icon>
+                </v-btn>
+              </v-row>
+            </div>
+
+            <div class="text-center">
+              <v-btn
+                class="mx-auto my-2"
+                color="accent"
+                @click="
+                  createRecipe.ingredients.push({
+                    amount: 0,
+                    ingredient: 0,
+                    ingredientNameIndex: 0,
+                    instanceType: 0,
+                    type: 1,
+                  })
+                "
+              >
+                {{ $t('CREATE.ADDINGREDIENT') }}
+              </v-btn>
+            </div>
+
             <v-btn bottom :disabled="invalid" class="" block :loading="isLoading" @click="submit">
               {{ $t('SEND') }}
             </v-btn>
@@ -92,7 +125,7 @@
 
 <script lang="ts">
 import MainLayout from '@client/layout/default.vue';
-import { ICreatePortion } from '@common/Model/Portion';
+import { ICreatePortion } from '@common/Model/CreatePortion';
 import { ICreateRecipe } from '@common/Model/Recipe';
 
 import '@nuxtjs/axios';
@@ -103,8 +136,6 @@ import EditablePortion from '@client/components/EditablePortion.vue';
 
 extend('required', { ...required });
 
-//eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore - needed because of some reason the editor won't accept the property middleware despite it being defined
 @Component({
   components: { MainLayout, ValidationObserver, ValidationProvider, EditablePortion },
   middleware: 'auth',
@@ -115,21 +146,21 @@ export default class CreateRecipePage extends Vue {
     cookTime: 0,
     difficulty: 0,
     images: [],
-    ingredients: [],
+    ingredients: [
+      {
+        amount: 0,
+        ingredient: 0,
+        ingredientNameIndex: 0,
+        instanceType: 0,
+        type: 1,
+      },
+    ],
     language: undefined,
     recipeSteps: [],
     servingSize: 0,
     tags: [],
     title: '',
     totalTime: 0,
-  };
-
-  testIngredient: ICreatePortion = {
-    amount: 0,
-    ingredient: 0,
-    ingredientNameIndex: 0,
-    instanceType: 0,
-    type: 0,
   };
 
   editingDisallowed = false;

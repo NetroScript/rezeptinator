@@ -34,7 +34,8 @@
     "REGEX": "Das Format von {_field_} ist ungültig",
     "REQUIRED": "{_field_} ist ein Pflichtfeld",
     "REQUIRED_IF": "{_field_} ist ein Pflichtfeld",
-    "SIZE": "{_field_} muss kleiner als {size}KB sein"
+    "SIZE": "{_field_} muss kleiner als {size}KB sein",
+    "INGREDIENT": "Eine Zutat muss ausgewählt sein"
   },
   "ERROR": {
     "NETWORK": "Ein Netzwerk Fehler ist aufgetreten.",
@@ -62,8 +63,43 @@
     "UPLOADIMAGES": "Lade ein paar Bilder hoch - das schönste zuerst :)",
     "TITLE": "Rezeptname",
     "IMAGESHEADER": "Wähl ein paar hübsche Bilder aus",
-    "TITLEHEADER": "Wie heißt das Rezept?"
+    "INGREDIENTSHEADER": "Füge Zutaten hinzu",
+    "TITLEHEADER": "Wie heißt das Rezept?",
+    "INGREDIENTAMOUNT": "Menge",
+    "SEARCHINGREDIENT": "Nach einer Zutat suchen",
+    "CREATENEWINGREDIENT": "Neue Zutat hinzufügen",
+    "INGREDIENT": "Zutat",
+    "SAVEINGREDIENT": "Zutat übernehmen",
+    "INGREDIENTNAME": "Name der Zutat",
+    "NODATA": "Fange an einen Zutatennamen zu schreiben oder füge eine eigene hinzu",
+    "ADDINGREDIENT": "Weitere Zutat hinzufügen"
   },
-  "PORTIONTYPES0": "Einheiten",
-  "PORTIONTYPES1": "Stück"
+  "PORTIONTYPES": {
+    "0": "Einheiten",
+    "1": "Stück"
+  },
+  "PORTIONTYPESSELECT": {
+    "0": "Einheit",
+    "1": "Größe"
+  },
+  "MilligramUnit": "mg",
+  "GramUnit": "g",
+  "PoundUnit": "Pfund",
+  "KilogramUnit": "kg",
+  "MillilitreUnit": "ml",
+  "CentiliterUnit": "cl",
+  "DeciliterUnit": "dl",
+  "LiterUnit": "l",
+  "DropUnit": "Tropfen",
+  "DashUnit": "Spritzer",
+  "ShotUnit": "Schuss",
+  "CupUnit": "Tasse",
+  "TeaSpoonUnit": "Teelöffel",
+  "TableSpoonUnit": "Esslöffel",
+  "KnifeTipUnit": "Messerspitze",
+  "PinchUnit": "Prise",
+  "SmallPiecePortion": "Klein",
+  "MediumPiecePortion": "Normal",
+  "LargePiecePortion": "Groß",
+  "ExtraLargePiecePortion": "Sehr Groß"
 }

@@ -94,12 +94,14 @@ export class PiecePortion extends PortionFunctions implements IPortion {
    * @memberof PiecePortion
    */
   static getCandidates(): LocalisationInformation[] {
-    return Object.keys(PiecePortionTypes).map(
-      (entry): LocalisationInformation => {
-        return {
-          key: entry + 'PiecePortion',
-        };
-      },
-    );
+    return Object.keys(PiecePortionTypes)
+      .filter((value) => !(parseInt(value) >= 0))
+      .map(
+        (entry): LocalisationInformation => {
+          return {
+            key: entry + 'PiecePortion',
+          };
+        },
+      );
   }
 }

@@ -12,6 +12,17 @@
     "outDir": "./dist/",
     "baseUrl": "./",
     "incremental": true,
+    "types": [
+      "@types/node",
+      "@nuxt/types",
+      "@nuxtjs/axios",
+      "nuxt-i18n",
+      "@nuxt/vue-app",
+      "@nuxtjs/vuetify",
+      "@types/nuxtjs__auth",
+      "nuxt-i18n",
+      "jest"
+    ],
     "paths": {
       "@server/*": ["server/*"],
       "@client/*": ["client/*"],
