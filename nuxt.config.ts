@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-import colors from 'vuetify/es5/util/colors';
+import LowerHeat from './client/components/icons/LowerHeat.vue';
 
 const {
   NODE_ENV,
@@ -164,28 +164,6 @@ export default {
   },
 
   vuetify: {
-    theme: {
-      dark: false,
-      themes: {
-        dark: {
-          primary: '#689F38',
-          accent: '#FDD835',
-          secondary: '#827717',
-          success: '#4CAF50',
-          info: '#2196F3',
-          warning: '#FB8C00',
-          error: '#FF5252',
-        },
-        light: {
-          primary: '#9CCC65',
-          accent: '#FDD835',
-          secondary: '#827717',
-          success: '#4CAF50',
-          info: '#2196F3',
-          warning: '#FB8C00',
-          error: '#FF5252',
-        },
-      },
-    },
+    optionsPath: './vuetify.options.ts',
   },
 };
