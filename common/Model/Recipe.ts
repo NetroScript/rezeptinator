@@ -1,9 +1,9 @@
 import { ICreatePortion } from '@common/Model/CreatePortion';
+import { IRecipeStep } from '@common/Model/IRecipeStep';
 import { IUser } from '@common/Model/User';
 import { IPortion } from '@common/Model/Portion';
 import TagData from '../Data/Tags.json';
 import { AvailableLanguages } from '@common/Localisation/Generic';
-import { IRecipeStep } from '@common/Model/RecipeStep';
 import { AllergyGroups, IngredientCategories, Vegan } from '@common/Model/Ingredient';
 import { NutrientEntity } from '@server/ingredient/nutrient.entity';
 

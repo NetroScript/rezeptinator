@@ -1,16 +1,10 @@
+import { IRecipeStep } from '@common/Model/IRecipeStep';
+
 export enum RecipeStepTypes {
   Normal,
   Oven,
   Cooking,
   Rest,
-}
-
-export interface IRecipeStep {
-  readonly type: RecipeStepTypes;
-  text: string;
-  time: number;
-  payloadType?: number;
-  payloadNumber?: number;
 }
 
 export enum OvenTypes {

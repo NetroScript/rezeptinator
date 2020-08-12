@@ -100,6 +100,42 @@
               </v-btn>
             </div>
 
+            <v-divider class="ma-5"></v-divider>
+            <h2 class="text-h5 text-md-h4 my-2 text-center">
+              {{ $t('CREATE.STEPSHEADER') }}
+            </h2>
+
+            <div v-for="(step, index) in createRecipe.recipeSteps" class="ma-3">
+              <v-row no-gutters>
+                <v-col>
+                  <EditableRecipeStep
+                    v-model="createRecipe.recipeSteps[index]"
+                  ></EditableRecipeStep>
+                </v-col>
+                <v-btn icon class="mx-2 my-auto" @click="createRecipe.recipeSteps.splice(index, 1)">
+                  <v-icon color="error">mdi-delete</v-icon>
+                </v-btn>
+              </v-row>
+            </div>
+
+            <div class="text-center">
+              <v-btn
+                class="mx-auto my-2"
+                color="accent"
+                @click="
+                  createRecipe.recipeSteps.push({
+                    payloadNumber: 0,
+                    payloadType: 0,
+                    text: '',
+                    time: 0,
+                    type: RecipeStepTypes.Normal,
+                  })
+                "
+              >
+                {{ $t('CREATE.ADDSTEP') }}
+              </v-btn>
+            </div>
+
             <v-btn bottom :disabled="invalid" class="" block :loading="isLoading" @click="submit">
               {{ $t('SEND') }}
             </v-btn>
@@ -124,20 +160,27 @@
 </template>
 
 <script lang="ts">
+import EditablePortion from '@client/components/EditablePortion.vue';
 import MainLayout from '@client/layout/default.vue';
-import { ICreatePortion } from '@common/Model/CreatePortion';
 import { ICreateRecipe } from '@common/Model/Recipe';
+import { RecipeStepTypes } from '@common/Model/RecipeStep';
 
 import '@nuxtjs/axios';
 import { Component, Vue } from 'nuxt-property-decorator';
 import { extend, ValidationObserver, ValidationProvider } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
-import EditablePortion from '@client/components/EditablePortion.vue';
+import EditableRecipeStep from '@client/components/EditableRecipeStep.vue';
 
 extend('required', { ...required });
 
 @Component({
-  components: { MainLayout, ValidationObserver, ValidationProvider, EditablePortion },
+  components: {
+    EditableRecipeStep,
+    MainLayout,
+    ValidationObserver,
+    ValidationProvider,
+    EditablePortion,
+  },
   middleware: 'auth',
 })
 export default class CreateRecipePage extends Vue {
@@ -156,7 +199,15 @@ export default class CreateRecipePage extends Vue {
       },
     ],
     language: undefined,
-    recipeSteps: [],
+    recipeSteps: [
+      {
+        payloadNumber: 0,
+        payloadType: 0,
+        text: '',
+        time: 0,
+        type: RecipeStepTypes.Normal,
+      },
+    ],
     servingSize: 0,
     tags: [],
     title: '',

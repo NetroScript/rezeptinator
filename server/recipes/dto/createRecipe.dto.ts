@@ -1,5 +1,6 @@
 import { AvailableLanguages } from '@common/Localisation/Generic';
 import { ICreatePortion } from '@common/Model/CreatePortion';
+import { IRecipeStep } from '@common/Model/IRecipeStep';
 import { PortionTypes } from '@common/Model/Portion';
 import { ICreateRecipe } from '@common/Model/Recipe';
 import { CreateIngredientDto } from '@server/ingredient/dto/createIngredient.dto';
@@ -15,7 +16,7 @@ import {
   MinLength,
   ValidateNested,
 } from 'class-validator';
-import { IRecipeStep, RecipeStepTypes } from '@common/Model/RecipeStep';
+import { RecipeStepTypes } from '@common/Model/RecipeStep';
 import { Optional } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 

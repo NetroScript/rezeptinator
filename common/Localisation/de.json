@@ -72,8 +72,14 @@
     "SAVEINGREDIENT": "Zutat übernehmen",
     "INGREDIENTNAME": "Name der Zutat",
     "NODATA": "Fange an einen Zutatennamen zu schreiben oder füge eine eigene hinzu",
-    "ADDINGREDIENT": "Weitere Zutat hinzufügen"
+    "ADDINGREDIENT": "Weitere Zutat hinzufügen",
+    "STEPDESCRIPTION": "Beschreiben Sie diesen Schritt",
+    "STEPSHEADER": "Trage die verschiedenen Schritte für dein Rezept ein",
+    "ADDSTEO": "Füge einen weiteren Schritt hinzu",
+    "DEGREE": "Grad",
+    "TIME": "Zeit"
   },
+  "MINUTES": "Minuten",
   "PORTIONTYPES": {
     "0": "Einheiten",
     "1": "Stück"
@@ -81,6 +87,24 @@
   "PORTIONTYPESSELECT": {
     "0": "Einheit",
     "1": "Größe"
+  },
+  "RECIPESTEPTYPES": {
+    "0": "Beschreibung",
+    "1": "Ofen",
+    "2": "Kochen",
+    "3": "Ruhen"
+  },
+  "OVENTYPES": {
+    "0": "Unterhitze",
+    "1": "Oberhitze",
+    "2": "Ober-/Unterhitze",
+    "3": "Umluft",
+    "4": "Grill",
+    "5": "Teilgrill",
+    "6": "Umluftgrill"
+  },
+  "RECIPESTEPTYPESSELECT": {
+    "1": "Art"
   },
   "MilligramUnit": "mg",
   "GramUnit": "g",

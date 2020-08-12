@@ -1,8 +1,7 @@
 import { IngredientCategories } from '@common/Model/Ingredient';
+import { OvenTypes } from '@common/Model/RecipeStep';
 
-IngredientCategories.Fruit;
-
-const IconsForIngredientCategories: { [key: number]: string } = {
+export const IconsForIngredientCategories: { [key in IngredientCategories]: string } = {
   0: 'mdi-food-apple',
   1: 'mdi-corn',
   2: 'mdi-seed',
@@ -21,4 +20,14 @@ const IconsForIngredientCategories: { [key: number]: string } = {
   15: 'mdi-chili-mild',
   16: 'mdi-waves',
   17: 'mdi-silverware-variant',
+};
+
+export const IconsForOvenTypes: { [key in OvenTypes]: string } = {
+  0: '$lowerheat',
+  1: '$upperheat',
+  2: '$lowerupperheat',
+  3: '$fan',
+  4: '$fullgrill',
+  5: '$partgrill',
+  6: '$grillfan',
 };

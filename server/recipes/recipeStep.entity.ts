@@ -1,5 +1,6 @@
+import { IRecipeStep } from '@common/Model/IRecipeStep';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
-import { IRecipeStep, RecipeStepTypes } from '@common/Model/RecipeStep';
+import { RecipeStepTypes } from '@common/Model/RecipeStep';
 import { RecipeEntity } from '@server/recipes/recipe.entity';
 import { Exclude } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
