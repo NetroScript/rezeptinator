@@ -77,7 +77,7 @@
                 :loading="loadingIngredients"
                 clearable
                 :hide-details="errors.length <= 0"
-                :no-data-text="$t('CREATE.NODATA')"
+                :no-data-text="$t('CREATE.NODATAINGREDIENT')"
                 class="my-1 mx-2"
                 :error-messages="errors"
                 :label="$t('CREATE.SEARCHINGREDIENT')"

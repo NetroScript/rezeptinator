@@ -1,3 +1,5 @@
+import { collectedIngredients } from '@common/generate/GetIngredients';
+import { IIngredient } from '@common/Model/Ingredient';
 import {
   Body,
   ClassSerializerInterceptor,
@@ -16,6 +18,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from '@server/common/guards/roles.guard';
+import { IngredientEntity } from '@server/ingredient/ingredient.entity';
 import { rateRecipeDto } from '@server/recipes/dto/rateRecipe.dto';
 import { returnRecipeDto } from '@server/recipes/dto/returnRecipe.dto';
 import { returnRecipeQueryDto } from '@server/recipes/dto/returnRecipeQuery.dto';
@@ -64,13 +67,16 @@ export class RecipesController {
   @ApiBearerAuth()
   @RequiredRoles(Roles.Admin)
   @ApiResponse({
-    type: [RecipeEntity],
-    description: 'Fill database with recipes -> used for the presentation of the application.',
+    description: 'Fill database with data for recipes (tags for now).',
   })
-  async generateData(): Promise<{ data: IRecipe[]; time: number }> {
-    // TODO: Implement
+  async generateData(): Promise<{ time: number }> {
+    // TODO: Improve
     const now = Date.now();
-    return { data: [], time: Date.now() - now };
+    try {
+      await this.recipesService.generateData();
+    } catch (e) {}
+
+    return { time: Date.now() - now };
   }
 
   @Get('tags/:name')

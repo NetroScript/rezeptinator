@@ -15,7 +15,7 @@
               ></v-text-field>
             </ValidationProvider>
 
-            <v-divider class="ma-5"></v-divider>
+            <v-divider class="ma-9" />
             <h2 class="text-h5 text-md-h4 my-2 text-center">{{ $t('CREATE.IMAGESHEADER') }}</h2>
             <div @drop.prevent="dragImages" @dragover.prevent>
               <v-carousel>
@@ -66,7 +66,7 @@
               </v-file-input>
             </div>
 
-            <v-divider class="ma-5"></v-divider>
+            <v-divider class="ma-9" />
             <h2 class="text-h5 text-md-h4 my-2 text-center">
               {{ $t('CREATE.INGREDIENTSHEADER') }}
             </h2>
@@ -100,7 +100,7 @@
               </v-btn>
             </div>
 
-            <v-divider class="ma-5"></v-divider>
+            <v-divider class="ma-9" />
             <h2 class="text-h5 text-md-h4 my-2 text-center">
               {{ $t('CREATE.STEPSHEADER') }}
             </h2>
@@ -112,9 +112,34 @@
                     v-model="createRecipe.recipeSteps[index]"
                   ></EditableRecipeStep>
                 </v-col>
-                <v-btn icon class="mx-2 my-auto" @click="createRecipe.recipeSteps.splice(index, 1)">
-                  <v-icon color="error">mdi-delete</v-icon>
-                </v-btn>
+                <div class="d-flex flex-column justify-center">
+                  <v-btn
+                    icon
+                    class="mx-2 my-auto"
+                    :disabled="index === 0"
+                    @click="swapRecipeStep(index, index - 1)"
+                  >
+                    <v-icon :color="index > 0 ? 'primary' : 'gray'">mdi-arrow-up-bold</v-icon>
+                  </v-btn>
+                  <v-btn
+                    icon
+                    class="mx-2 my-auto"
+                    @click="createRecipe.recipeSteps.splice(index, 1)"
+                  >
+                    <v-icon color="error">mdi-delete</v-icon>
+                  </v-btn>
+                  <v-btn
+                    icon
+                    class="mx-2 my-auto"
+                    :disabled="index === createRecipe.recipeSteps.length - 1"
+                    @click="swapRecipeStep(index, index + 1)"
+                  >
+                    <v-icon
+                      :color="index < createRecipe.recipeSteps.length - 1 ? 'primary' : 'gray'"
+                      >mdi-arrow-down-bold</v-icon
+                    >
+                  </v-btn>
+                </div>
               </v-row>
             </div>
 
@@ -128,7 +153,7 @@
                     payloadType: 0,
                     text: '',
                     time: 0,
-                    type: RecipeStepTypes.Normal,
+                    type: 0,
                   })
                 "
               >
@@ -136,7 +161,16 @@
               </v-btn>
             </div>
 
-            <v-btn bottom :disabled="invalid" class="" block :loading="isLoading" @click="submit">
+            <v-divider class="ma-9" />
+            <h2 class="text-h5 text-md-h4 my-2 text-center">
+              {{ $t('CREATE.TAGSHEADER') }}
+            </h2>
+
+            <TagSelect v-model="createRecipe.tags" />
+
+            <v-divider class="ma-9" />
+
+            <v-btn bottom :disabled="invalid" block :loading="isLoading" @click="submit">
               {{ $t('SEND') }}
             </v-btn>
             <div class="my-4">
@@ -154,7 +188,6 @@
           </form>
         </ValidationObserver>
       </div>
-      <v-divider class="ma-5"></v-divider>
     </template>
   </main-layout>
 </template>
@@ -170,11 +203,13 @@ import { Component, Vue } from 'nuxt-property-decorator';
 import { extend, ValidationObserver, ValidationProvider } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
 import EditableRecipeStep from '@client/components/EditableRecipeStep.vue';
+import TagSelect from '@client/components/TagSelect.vue';
 
 extend('required', { ...required });
 
 @Component({
   components: {
+    TagSelect,
     EditableRecipeStep,
     MainLayout,
     ValidationObserver,
@@ -236,6 +271,14 @@ export default class CreateRecipePage extends Vue {
 
       this.isLoading = false;
     }
+  }
+
+  swapRecipeStep(oldIndex, newIndex) {
+    this.$set(
+      this.createRecipe.recipeSteps,
+      newIndex,
+      this.createRecipe.recipeSteps.splice(oldIndex, 1, this.createRecipe.recipeSteps[newIndex])[0],
+    );
   }
 
   dragImages(event: DragEvent) {

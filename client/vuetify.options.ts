@@ -12,7 +12,7 @@ export default {
     themes: {
       dark: {
         primary: '#689F38',
-        accent: '#FDD835',
+        accent: '#bea11c',
         secondary: '#827717',
         success: '#4CAF50',
         info: '#2196F3',

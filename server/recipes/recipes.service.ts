@@ -8,7 +8,7 @@ import { UserEntity } from '@server/user/user.entity';
 import { advancedRecipeSearchDto } from '@server/recipes/dto/advancedRecipeSearch.dto';
 import { PortionEntity } from '@server/recipes/portion.entity';
 import { createRecipeDto } from '@server/recipes/dto/createRecipe.dto';
-import { IRecipe, IRecipeQueryResult, RecipeOrderVariants } from '@common/Model/Recipe';
+import { IRecipe, IRecipeQueryResult, RecipeOrderVariants, TagList } from '@common/Model/Recipe';
 import { TagEntity } from '@server/recipes/tag.entity';
 import { RecipeStepEntity } from '@server/recipes/recipeStep.entity';
 import { IngredientEntity } from '@server/ingredient/ingredient.entity';
@@ -623,5 +623,9 @@ export class RecipesService {
           })
         ).rating || null,
     };
+  }
+
+  async generateData(): Promise<void> {
+    await this.tagRepository.save(TagList);
   }
 }

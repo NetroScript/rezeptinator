@@ -103,7 +103,7 @@ export default class MainLayout extends Vue {
     {
       icon: 'mdi-plus-circle',
       title: 'CREATERECIPE',
-      to: '',
+      to: '/create',
       loggedInOnly: true,
       onclick: () => {},
     },

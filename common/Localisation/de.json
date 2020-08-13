@@ -71,13 +71,16 @@
     "INGREDIENT": "Zutat",
     "SAVEINGREDIENT": "Zutat übernehmen",
     "INGREDIENTNAME": "Name der Zutat",
-    "NODATA": "Fange an einen Zutatennamen zu schreiben oder füge eine eigene hinzu",
+    "NODATAINGREDIENT": "Fange an einen Zutatennamen zu schreiben oder füge eine eigene hinzu",
+    "NODATA": "Keine Daten verfügbar",
     "ADDINGREDIENT": "Weitere Zutat hinzufügen",
     "STEPDESCRIPTION": "Beschreiben Sie diesen Schritt",
     "STEPSHEADER": "Trage die verschiedenen Schritte für dein Rezept ein",
-    "ADDSTEO": "Füge einen weiteren Schritt hinzu",
+    "ADDSTEP": "Füge einen weiteren Schritt hinzu",
     "DEGREE": "Grad",
-    "TIME": "Zeit"
+    "TIME": "Zeit",
+    "TAGSHEADER": "Wenn du willst, füge ein paar Tags hinzu",
+    "SEARCHTAGS": "Nach Tags suchen"
   },
   "MINUTES": "Minuten",
   "PORTIONTYPES": {

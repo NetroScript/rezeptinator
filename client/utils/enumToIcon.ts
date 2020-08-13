@@ -31,3 +31,9 @@ export const IconsForOvenTypes: { [key in OvenTypes]: string } = {
   5: '$partgrill',
   6: '$grillfan',
 };
+
+export const IconsForTagGroups: { [key: string]: string } = {
+  Regionen: 'mdi-earth',
+  Saison: 'mdi-calendar',
+  Typ: 'mdi-pot-mix',
+};
