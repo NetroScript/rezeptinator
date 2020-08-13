@@ -3,7 +3,7 @@
     <template #content>
       <h1 class="text-center text-h3 text-md-h2">Erstelle ein Rezept</h1>
       <div class="pa-4">
-        <ValidationObserver ref="observer" v-slot="{ invalid }">
+        <ValidationObserver ref="observer" v-slot="{ invalid, validate, errors }">
           <form>
             <h2 class="text-h5 text-md-h4 my-2 text-center">{{ $t('CREATE.TITLEHEADER') }}</h2>
             <ValidationProvider v-slot="{ errors }" name="CREATE.TITLE" rules="required">
@@ -22,7 +22,7 @@
                 <v-carousel-item v-if="previews.length === 0">
                   <v-sheet color="warning" height="100%">
                     <v-row class="fill-height" align="center" justify="center">
-                      <div class="display-3">{{ $t('CREATE.NOIMAGES') }}</div>
+                      <div class="display-3 ma-4">{{ $t('CREATE.NOIMAGES') }}</div>
                     </v-row>
                   </v-sheet>
                 </v-carousel-item>
@@ -169,10 +169,122 @@
             <TagSelect v-model="createRecipe.tags" />
 
             <v-divider class="ma-9" />
+            <h2 class="text-h5 text-md-h4 my-2 text-center">
+              {{ $t('CREATE.MISCHEADER') }}
+            </h2>
+
+            <v-row no-gutters align="center" justify="center">
+              <v-col lg="4" cols="6">
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  :name="$t('CREATE.COOKTIME')"
+                  rules="required"
+                >
+                  <v-text-field
+                    v-model.number="createRecipe.cookTime"
+                    type="number"
+                    :error-messages="errors"
+                    :label="$t('CREATE.COOKTIME')"
+                    class="my-4 mx-2"
+                    :hide-details="errors.length <= 0"
+                    dense
+                    step="0.5"
+                    prepend-icon="mdi-clock-outline"
+                    :suffix="$t('MINUTES')"
+                    required
+                  >
+                  </v-text-field>
+                </ValidationProvider>
+              </v-col>
+              <v-col lg="4" cols="6">
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  :name="$t('CREATE.TOTALTIME')"
+                  rules="required"
+                >
+                  <v-text-field
+                    v-model.number="createRecipe.totalTime"
+                    type="number"
+                    :error-messages="errors"
+                    :label="$t('CREATE.TOTALTIME')"
+                    class="my-4 mx-2"
+                    :hide-details="errors.length <= 0"
+                    dense
+                    step="0.5"
+                    prepend-icon="mdi-clock-outline"
+                    :suffix="$t('MINUTES')"
+                    required
+                  >
+                  </v-text-field>
+                </ValidationProvider>
+              </v-col>
+              <v-col lg="4" cols="12">
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  :name="$t('CREATE.PORTION')"
+                  rules="required"
+                >
+                  <v-text-field
+                    v-model.number="createRecipe.servingSize"
+                    type="number"
+                    :error-messages="errors"
+                    :label="$t('CREATE.PORTION')"
+                    class="my-4 mx-2"
+                    :hide-details="errors.length <= 0"
+                    dense
+                    prepend-icon="mdi-account-group"
+                    :suffix="$t('PORTIONS')"
+                    required
+                  >
+                  </v-text-field>
+                </ValidationProvider>
+              </v-col>
+              <v-col lg="12" cols="12">
+                <v-subheader>
+                  {{ $t('CREATE.DIFFICULTY') }}
+                </v-subheader>
+                <v-slider
+                  v-model="createRecipe.difficulty"
+                  max="1"
+                  min="0"
+                  step="0.05"
+                  :messages="
+                    $t(
+                      'RECIPEDIFFICULTIES.' + Math.min(Math.floor(createRecipe.difficulty * 10), 9),
+                    )
+                  "
+                  color="primary"
+                  append-icon="mdi-circle"
+                >
+                  <template #prepend>
+                    <v-icon color="primary">
+                      mdi-baby-face-outline
+                    </v-icon>
+                  </template>
+                  <template #append>
+                    <v-icon color="primary">
+                      mdi-rocket-launch
+                    </v-icon>
+                  </template>
+                  <template #thumb-label="{ value }">
+                    {{
+                      ['😍', '😄', '😁', '😊', '🙂', '😐', '🙁', '☹️', '😢', '😭'][
+                        Math.min(Math.floor(value * 10), 9)
+                      ]
+                    }}
+                  </template>
+                </v-slider>
+              </v-col>
+            </v-row>
+
+            <v-divider class="ma-9" />
 
             <v-btn bottom :disabled="invalid" block :loading="isLoading" @click="submit">
               {{ $t('SEND') }}
             </v-btn>
+            <v-alert v-if="invalid" class="my-4 mx-2" type="error" dense @click="validate">
+              {{ $t('CREATE.INVALIDFORM') }}
+            </v-alert>
             <div class="my-4">
               <v-alert
                 v-for="(error, index) in additionalErrors"
@@ -194,7 +306,10 @@
 
 <script lang="ts">
 import EditablePortion from '@client/components/EditablePortion.vue';
+import EditableRecipeStep from '@client/components/EditableRecipeStep.vue';
+import TagSelect from '@client/components/TagSelect.vue';
 import MainLayout from '@client/layout/default.vue';
+import { AvailableLanguages } from '@common/Localisation/Generic';
 import { ICreateRecipe } from '@common/Model/Recipe';
 import { RecipeStepTypes } from '@common/Model/RecipeStep';
 
@@ -202,8 +317,6 @@ import '@nuxtjs/axios';
 import { Component, Vue } from 'nuxt-property-decorator';
 import { extend, ValidationObserver, ValidationProvider } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
-import EditableRecipeStep from '@client/components/EditableRecipeStep.vue';
-import TagSelect from '@client/components/TagSelect.vue';
 
 extend('required', { ...required });
 
@@ -221,7 +334,7 @@ extend('required', { ...required });
 export default class CreateRecipePage extends Vue {
   // The recipe which is being created
   createRecipe: ICreateRecipe = {
-    cookTime: 0,
+    cookTime: 15,
     difficulty: 0,
     images: [],
     ingredients: [
@@ -233,7 +346,7 @@ export default class CreateRecipePage extends Vue {
         type: 1,
       },
     ],
-    language: undefined,
+    language: AvailableLanguages.German,
     recipeSteps: [
       {
         payloadNumber: 0,
@@ -243,10 +356,10 @@ export default class CreateRecipePage extends Vue {
         type: RecipeStepTypes.Normal,
       },
     ],
-    servingSize: 0,
+    servingSize: 1,
     tags: [],
     title: '',
-    totalTime: 0,
+    totalTime: 30,
   };
 
   editingDisallowed = false;

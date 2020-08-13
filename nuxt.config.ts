@@ -27,6 +27,10 @@ export default {
     domain,
   },
 
+  server: {
+    port,
+  },
+
   dev: isDev,
 
   globalName: 'root',
@@ -55,7 +59,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['plugins/i18n'],
+  plugins: ['plugins/i18n', 'plugins/axios'],
 
   /*
    ** Nuxt.js modules

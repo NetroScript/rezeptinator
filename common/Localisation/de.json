@@ -80,7 +80,25 @@
     "DEGREE": "Grad",
     "TIME": "Zeit",
     "TAGSHEADER": "Wenn du willst, füge ein paar Tags hinzu",
-    "SEARCHTAGS": "Nach Tags suchen"
+    "SEARCHTAGS": "Nach Tags suchen",
+    "MISCHEADER": "Noch ein paar letzte Eckdaten.",
+    "COOKTIME": "Zeit für aktive Schritte",
+    "TOTALTIME": "Zeit insgesamt",
+    "DIFFICULTY": "Wie schwierig schätzt du das Rezept ein?",
+    "PORTION": "Wie viele Portionen ergibt das Rezept?",
+    "INVALIDFORM": "Es sind noch nicht alle Felder korrekt ausgefüllt, klick hier um nochmal alle Felder zu sehen die Fehlerhaft sind (nach dem Klick hochscrollen)."
+  },
+  "RECIPEDIFFICULTIES": {
+    "0": "\uD83D\uDE0D kann ein Kind machen",
+    "1": "\uD83D\uDE04 kann so gut wie jeder",
+    "2": "\uD83D\uDE01 sollte kaum ein Problem geben",
+    "3": "\uD83D\uDE42 mit Anstrengung schafft das jeder",
+    "4": "\uD83D\uDE0A schaffbar für alle mit etwas Erfahrung",
+    "5": "\uD83D\uDE10 man sollte schon fortgeschritten sein",
+    "6": "\uD83D\uDE41 Kochen sollte die zweite Liebe sein",
+    "7": "☹️ ich hoffe du kannst das Rezept auswendig",
+    "8": "\uD83D\uDE22 bist du sicher, dass du das überhaupt kochen willst?",
+    "9": "\uD83D\uDE2D hoffentlich bist du bereit dann auch eine Doktorarbeit über das Rezept zu schreiben"
   },
   "MINUTES": "Minuten",
   "PORTIONTYPES": {
@@ -128,5 +146,6 @@
   "SmallPiecePortion": "Klein",
   "MediumPiecePortion": "Normal",
   "LargePiecePortion": "Groß",
-  "ExtraLargePiecePortion": "Sehr Groß"
+  "ExtraLargePiecePortion": "Sehr Groß",
+  "PORTIONS": "Portionen"
 }
