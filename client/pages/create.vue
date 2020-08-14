@@ -4,7 +4,7 @@
       <h1 class="text-center text-h3 text-md-h2">Erstelle ein Rezept</h1>
       <div class="pa-4">
         <ValidationObserver ref="observer" v-slot="{ invalid, validate, errors }">
-          <form>
+          <v-form :disabled="isLoading">
             <h2 class="text-h5 text-md-h4 my-2 text-center">{{ $t('CREATE.TITLEHEADER') }}</h2>
             <ValidationProvider v-slot="{ errors }" name="CREATE.TITLE" rules="required">
               <v-text-field
@@ -279,7 +279,13 @@
 
             <v-divider class="ma-9" />
 
-            <v-btn bottom :disabled="invalid" block :loading="isLoading" @click="submit">
+            <v-btn
+              bottom
+              :disabled="invalid || isLoading"
+              block
+              :loading="isLoading"
+              @click="submit"
+            >
               {{ $t('SEND') }}
             </v-btn>
             <v-alert v-if="invalid" class="my-4 mx-2" type="error" dense @click="validate">
@@ -297,7 +303,7 @@
                 {{ $t(error) }}
               </v-alert>
             </div>
-          </form>
+          </v-form>
         </ValidationObserver>
       </div>
     </template>
@@ -317,6 +323,7 @@ import '@nuxtjs/axios';
 import { Component, Vue } from 'nuxt-property-decorator';
 import { extend, ValidationObserver, ValidationProvider } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
+import responseErrorHandler from '~/utils/responseErrorHandler';
 
 extend('required', { ...required });
 
@@ -379,6 +386,41 @@ export default class CreateRecipePage extends Vue {
       (await (this.$refs.observer as Vue & { validate: () => boolean }).validate())
     ) {
       this.isLoading = true;
+
+      // Upload the images and then save their ids in the recipe
+
+      const formData = new FormData();
+
+      this.files.forEach((file) => {
+        formData.append('file', file, file.name);
+      });
+
+      try {
+        const uploadedFiles = await this.$axios.$post<{ success: boolean; ids: number[] }>(
+          '/images',
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          },
+        );
+
+        this.createRecipe.images = uploadedFiles.ids;
+      } catch (e) {
+        this.additionalErrors.push('ERROR.FAILEDIMAGEUPLOAD');
+      }
+
+      try {
+        const uploadedRecipe = await this.$axios.$post<{ success: boolean; id: number }>(
+          'recipes',
+          this.createRecipe,
+        );
+
+        await this.$router.push('/show/' + uploadedRecipe.id);
+      } catch (error) {
+        this.additionalErrors = responseErrorHandler(error);
+      }
 
       // TODO: Send create Recipe to Server
 

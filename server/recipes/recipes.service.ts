@@ -246,7 +246,12 @@ export class RecipesService {
     const data = await queryBuilder.getRawAndEntities();
 
     data.entities.forEach((entity) => {
-      entity.ingredients = entity.tags = entity.recipeSteps = entity.favorites = entity.ratings = entity.imageEntities = [];
+      entity.ingredients = [];
+      entity.tags = [];
+      entity.recipeSteps = [];
+      entity.favorites = [];
+      entity.ratings = [];
+      entity.imageEntities = [];
       recipes.set(entity.id, entity);
     });
 
@@ -522,10 +527,16 @@ export class RecipesService {
   }
 
   async getTagsByIdList(ids: number[]): Promise<TagEntity[]> {
+    if (ids.length == 0) {
+      return [];
+    }
     return await this.tagRepository.findByIds(ids);
   }
 
   async getImagesByIdList(ids: number[]): Promise<ImagesEntity[]> {
+    if (ids.length == 0) {
+      return [];
+    }
     return await this.imageRepository.findByIds(ids);
   }
 

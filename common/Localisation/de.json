@@ -42,7 +42,8 @@
     "UNKNOWN": "Ein unbekannter Fehler ist aufgetreten.",
     "USEREXISTS": "Die E-Mail Adresse oder der Nutzername existieren schon.",
     "NOACCOUNT": "Es gibt keinen Account mit dieser E-Mail",
-    "WRONGPASSWORD": "Das eingegebene Passwort ist falsch."
+    "WRONGPASSWORD": "Das eingegebene Passwort ist falsch.",
+    "FAILEDIMAGEUPLOAD": "Beim Hochladen der Bilder ist ein Fehler aufgetreten"
   },
   "DESCRIPTION": {
     "PROFILEPICTURE": "Profilbild des Nutzers"

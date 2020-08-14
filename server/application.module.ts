@@ -11,7 +11,10 @@ import ormconfig from '../ormconfig';
 @Module({
   imports: [
     TypeOrmModule.forRoot(
-      Object.assign({ autoLoadEntities: true } as TypeOrmModuleOptions, ormconfig),
+      Object.assign(
+        { autoLoadEntities: true, keepConnectionAlive: true } as TypeOrmModuleOptions,
+        ormconfig,
+      ),
     ),
     IngredientModule,
     RecipesModule,

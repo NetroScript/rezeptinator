@@ -229,7 +229,7 @@ export default class EditablePortion extends Vue {
       this.value.ingredientNameIndex = newValue.nameIndex;
       if (newValue.id < 0) {
         this.value.ingredient = undefined;
-        this.value.newIngredient = this.customIngredients[-(newValue.id - 1)];
+        this.value.newIngredient = this.customIngredients[-(newValue.id + 1)];
         this.currentIngredient = Object.assign(
           { alias: [] },
           this.customIngredients[-(newValue.id + 1)],

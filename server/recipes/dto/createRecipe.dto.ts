@@ -24,7 +24,6 @@ export class createRecipeDto implements ICreateRecipe {
   @Min(0)
   cookTime: number;
 
-  @IsPositive()
   @Min(0)
   @Max(1)
   difficulty: number;
@@ -60,12 +59,10 @@ export class createPortionDto implements ICreatePortion {
   @IsPositive()
   amount: number;
 
-  @IsOptional()
   @IncompatableWith(['ingredient'])
   @ValidateNested()
   newIngredient?: CreateIngredientDto;
 
-  @IsOptional()
   @IncompatableWith(['newIngredient'])
   @IsInt()
   ingredient?: number;

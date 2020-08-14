@@ -29,6 +29,9 @@ export class IngredientService {
   }
 
   async findInList(idList: number[]): Promise<IngredientEntity[]> {
+    if (idList.length == 0) {
+      return [];
+    }
     return this.ingredientRepository.find({ id: In(idList) });
   }
 

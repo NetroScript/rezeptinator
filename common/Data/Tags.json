@@ -30,6 +30,7 @@
     "Ostern",
     "Halloween",
     "Weihnachten",
+    "Geburtstag",
     "Silvester"
   ],
   "Typ": [
@@ -37,13 +38,26 @@
     "Vorspeise",
     "Salat",
     "Hauptspeise",
-    "Frühstuck",
     "Dessert",
     "Beilage",
-    "Kaffeetrinken",
     "Snack",
     "Gebäck",
     "Kuchen",
     "Getränk"
+  ],
+  "Zeit": [
+    "Frühstück",
+    "Mittag",
+    "Abendbrot",
+    "Kaffetrinken",
+    "Zwischendurch"
+  ],
+  "Sonstiges": [
+    "Schwer",
+    "Leicht",
+    "Exotisch",
+    "Traditionell",
+    "Ausgefallen",
+    "Omas Geheimrezept"
   ]
 }
