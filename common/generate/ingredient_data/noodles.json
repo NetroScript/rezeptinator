@@ -145,6 +145,18 @@
     "allergien": "gluten, ei"
   },
   {
+    "name": "Gnocchis",
+    "kalorien": 150,
+    "eiweiß": 3.8,
+    "fett": 2.2,
+    "kohlenhydrate": 30.5,
+    "zucker": 3.6,
+    "ballaststoffe": 1.1,
+    "alkohol": 0,
+    "vegan": "vegetarisch",
+    "allergien": "gluten, ei"
+  },
+  {
     "name": "Tortellini",
     "kalorien": 305,
     "eiweiß": 14,

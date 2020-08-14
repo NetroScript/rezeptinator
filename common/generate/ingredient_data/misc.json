@@ -228,5 +228,17 @@
     "alkohol": 0,
     "vegan": "vegetarisch",
     "allergien": "fisch"
+  },
+  {
+    "name": "Klare Brühe, instant",
+    "kalorien": 182,
+    "eiweiß": 14,
+    "fett": 6.8,
+    "kohlenhydrate": 15,
+    "zucker": 4.8,
+    "ballaststoffe": 0.5,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": "gluten, sellerie"
   }
 ]

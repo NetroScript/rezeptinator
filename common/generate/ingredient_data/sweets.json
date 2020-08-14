@@ -743,5 +743,17 @@
     "alkohol": 0,
     "vegan": "vegan",
     "allergien": ""
+  },
+  {
+    "name": "Preiselbeerkonfitüre",
+    "kalorien": 270,
+    "eiweiß": 0.1,
+    "fett": 0.2,
+    "kohlenhydrate": 65.6,
+    "zucker": 65.6,
+    "ballaststoffe": 1.1,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
   }
 ]

@@ -5,6 +5,7 @@ import { DeleteResult, getRepository, In, Repository } from 'typeorm';
 import { IIngredient } from '@common/Model/Ingredient';
 import { NutrientEntity } from '@server/ingredient/nutrient.entity';
 import { CreateIngredientDto } from '@server/ingredient/dto/createIngredient.dto';
+import { Brackets } from 'typeorm/index';
 
 @Injectable()
 export class IngredientService {
@@ -23,8 +24,14 @@ export class IngredientService {
     return this.ingredientRepository
       .createQueryBuilder('ingredient')
       .leftJoinAndSelect('ingredient.nutritions', 'nutrient')
-      .where('LOWER(name) LIKE :name', { name: `%${name.toLowerCase()}%` })
-      .orWhere('LOWER(alias) LIKE :name', { name: `%${name.toLowerCase()}%` })
+      .where('ingredient.userGenerated = false')
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where('LOWER(name) LIKE :name', {
+            name: `%${name.toLowerCase()}%`,
+          }).orWhere('LOWER(alias) LIKE :name', { name: `%${name.toLowerCase()}%` });
+        }),
+      )
       .getMany();
   }
 

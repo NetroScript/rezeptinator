@@ -718,5 +718,18 @@
     "alkohol": 0,
     "vegan": "vegan",
     "allergien": ""
+  },
+  {
+    "name": "Petersilie, gehackt",
+    "alias": ["Petersilie"],
+    "kalorien": 52,
+    "eiweiß": 4.4,
+    "fett": 0.36,
+    "kohlenhydrate": 7.38,
+    "zucker": 0.9,
+    "ballaststoffe": 4.2,
+    "alkohol": 0,
+    "vegan": "vegan",
+    "allergien": ""
   }
 ]

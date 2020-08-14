@@ -13,6 +13,7 @@
                   <v-text-field
                     v-model="currentCustomIngredient.name"
                     :label="$t('CREATE.INGREDIENTNAME')"
+                    :error-messages="customIngredientErrors"
                     required
                   ></v-text-field>
                 </v-col>
@@ -21,10 +22,22 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="secondary" text @click="closeAddIngredient">{{ $t('CANCEL') }}</v-btn>
-            <v-btn color="secondary" text @click="saveAddIngredient">{{
-              $t('CREATE.SAVEINGREDIENT')
-            }}</v-btn>
+            <v-btn
+              :loading="loadingCustomIngredient"
+              :disabled="loadingCustomIngredient"
+              color="secondary"
+              text
+              @click="closeAddIngredient"
+              >{{ $t('CANCEL') }}</v-btn
+            >
+            <v-btn
+              :loading="loadingCustomIngredient"
+              :disabled="loadingCustomIngredient"
+              color="secondary"
+              text
+              @click="saveAddIngredient"
+              >{{ $t('CREATE.SAVEINGREDIENT') }}</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -164,11 +177,15 @@ export default class EditablePortion extends Vue {
 
   loadingIngredients = false;
 
+  // Only do a new search if the result wouldn't already be included in the previous searches
+  cachedSearches: string[] = [];
   foundIngredients: Map<number, IIngredient> = new Map();
 
   customIngredients: ICreateIngredient[] = [];
   showAddIngredientTooltip = false;
   showAddIngredientDialog = false;
+  loadingCustomIngredient = false;
+  customIngredientErrors: string[] = [];
   currentCustomIngredient: ICreateIngredient = {
     allergies: [],
     category: IngredientCategories.Miscellaneous,
@@ -253,30 +270,87 @@ export default class EditablePortion extends Vue {
     }, 200);
   }
 
-  closeAddIngredient() {
+  closeAddIngredient(): void {
     this.showAddIngredientDialog = false;
   }
 
-  saveAddIngredient() {
-    this.customIngredients.push(Object.assign({}, this.currentCustomIngredient));
+  async saveAddIngredient(): Promise<void> {
+    const name = this.currentCustomIngredient.name;
+
+    if (name.length <= 1) {
+      this.customIngredientErrors = [this.$t('VALIDATION.INGREDIENT') as string];
+      return;
+    }
+
+    // First check if an ingredient with this name doesn't already exist
+    this.loadingCustomIngredient = true;
+
+    // Get all ingredients with that supplied name
+    const ingredients = await this.fetchIngredients(name);
+
+    let foundExisting = false;
+
+    // Iterate all the names of the ingredients which matched
+    for (let i = 0; i < ingredients.length && !foundExisting; i++) {
+      let ingredient = ingredients[i];
+      if (ingredient.name == name) {
+        foundExisting = true;
+        this.selectedIngredient = { id: ingredient.id, nameIndex: 0 };
+      } else {
+        for (let index = 0; index < ingredient.alias.length && !foundExisting; index++) {
+          let alias = ingredient.alias[index];
+          if (alias == name) {
+            foundExisting = true;
+            this.selectedIngredient = { id: ingredient.id, nameIndex: index + 1 };
+          }
+        }
+      }
+    }
+
+    // If none matched create the current as a custom ingredient
+    if (!foundExisting) {
+      this.customIngredients.push(Object.assign({}, this.currentCustomIngredient));
+      this.selectedIngredient = { id: -this.customIngredients.length, nameIndex: 0 };
+    }
+
+    // Reset all values to the initial state
     this.currentCustomIngredient.name = '';
-    this.selectedIngredient = { id: -this.customIngredients.length, nameIndex: 0 };
     this.showAddIngredientDialog = false;
+    this.loadingCustomIngredient = false;
   }
 
   async searchIngredients() {
     if (typeof this.ingredientSearchInput === 'string' && this.ingredientSearchInput.length > 1) {
-      const data: IIngredient[] = await this.$axios.$get(
-        'ingredients/' + this.ingredientSearchInput,
-      );
-      data.forEach((ingredient) => {
-        this.foundIngredients.set(ingredient.id, ingredient);
-      });
-      this.updateIngredients++;
+      await this.fetchIngredients(this.ingredientSearchInput);
       this.loadingIngredients = false;
     } else {
       this.loadingIngredients = false;
     }
+  }
+
+  async fetchIngredients(name: string): Promise<IIngredient[]> {
+    const query = name.toLowerCase();
+
+    // Check if we previously already would have obtained the ingredient with a search
+    // If so use the saved values to return the ingredient instead of making another request
+    if (this.cachedSearches.some((search) => query.includes(search))) {
+      return Array.from(this.foundIngredients.values()).filter((ingredient) => {
+        return (
+          ingredient.name.toLowerCase().includes(query) ||
+          (ingredient.alias != undefined &&
+            ingredient.alias.some((alias) => alias.toLowerCase().includes(query)))
+        );
+      });
+    }
+
+    const data: IIngredient[] = await this.$axios.$get('ingredients/' + query);
+    data.forEach((ingredient) => {
+      this.foundIngredients.set(ingredient.id, ingredient);
+    });
+    this.updateIngredients++;
+    this.cachedSearches.push(query);
+
+    return data;
   }
 
   reEmit() {

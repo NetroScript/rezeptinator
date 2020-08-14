@@ -66,7 +66,6 @@ export default {
    */
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/vuetify',
     '@nuxtjs/auth',
     [
       'nuxt-i18n',
