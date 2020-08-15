@@ -1,3 +1,4 @@
+import { IRecipe } from '@common/Model/Recipe/IRecipe';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ImagesEntity } from '@server/images/images.entity';
@@ -8,14 +9,14 @@ import { UserEntity } from '@server/user/user.entity';
 import { advancedRecipeSearchDto } from '@server/recipes/dto/advancedRecipeSearch.dto';
 import { PortionEntity } from '@server/recipes/portion.entity';
 import { createRecipeDto } from '@server/recipes/dto/createRecipe.dto';
-import { IRecipe, IRecipeQueryResult, RecipeOrderVariants, TagList } from '@common/Model/Recipe';
+import { IRecipeQueryResult, RecipeOrderVariants, TagList } from '@common/Model/Recipe/Recipe';
 import { TagEntity } from '@server/recipes/tag.entity';
 import { RecipeStepEntity } from '@server/recipes/recipeStep.entity';
 import { IngredientEntity } from '@server/ingredient/ingredient.entity';
 import { NutrientEntity } from '@server/ingredient/nutrient.entity';
 import { RecipeSummaryEntity } from '@server/recipes/recipeSummary.entity';
 import { IngredientService } from '@server/ingredient/ingredient.service';
-import { PortionFunctions, PortionTypes } from '@common/Model/Portion';
+import { PortionFunctions, PortionTypes } from '@common/Model/Recipe/Portion';
 import { PiecePortion } from '@common/Classes/PiecePortion';
 import { UnitPortion } from '@common/Classes/UnitPortion';
 import { Vegan } from '@common/Model/Ingredient';
@@ -53,12 +54,15 @@ export class RecipesService {
     };
 
     const favoriteMap: Map<number, boolean> = new Map();
+    const ratingMap: Map<number, number> = new Map();
 
     const queryBuilder = await this.recipeRepository
       .createQueryBuilder('recipe')
       // Get the favourite count
       .addSelect('COUNT(DISTINCT userfavorites.userId)', 'favorites')
+      .addSelect('COUNT(DISTINCT ratings."userId")', 'totalratings')
       .leftJoin('user_favorites_recipe', 'userfavorites', 'userfavorites.recipeId = recipe.id')
+      .leftJoin('rating', 'ratings', 'ratings."recipeId" = recipe.id')
       // Join 1-1 stuff
       .leftJoinAndSelect('recipe.creator', 'creator')
       .leftJoinAndSelect('recipe.recipeSummary', 'summary')
@@ -259,6 +263,7 @@ export class RecipesService {
     data.raw.forEach((data: { [key: string]: string | number }): void => {
       const current = recipes.get(data['recipe_id'] as number);
       current.favoriteAmount = parseInt(data['favorites'] as string);
+      current.ratingAmount = parseInt(data['totalratings'] as string);
     });
 
     const loadedRecipeIds = Array.from(recipes.keys());
@@ -295,7 +300,10 @@ export class RecipesService {
       );
 
       if (userID != undefined) {
-        const favorites: { userId: number; recipeId: number }[] = await this.imageRepository.query(
+        const favorites: {
+          userId: number;
+          recipeId: number;
+        }[] = await this.userRatingRepository.query(
           `SELECT * from user_favorites_recipe WHERE "recipeId" IN (${loadedRecipeIds.join(
             ',',
           )}) AND "userId" = ${userID}`,
@@ -303,6 +311,20 @@ export class RecipesService {
 
         favorites.forEach((data) => {
           favoriteMap.set(data.recipeId, true);
+        });
+
+        const ratings: {
+          userId: number;
+          recipeId: number;
+          rating: number;
+        }[] = await this.userRatingRepository.query(
+          `SELECT * from rating WHERE "recipeId" IN (${loadedRecipeIds.join(
+            ',',
+          )}) AND "userId" = ${userID}`,
+        );
+
+        ratings.forEach((data) => {
+          ratingMap.set(data.recipeId, data.rating);
         });
       }
 
@@ -338,6 +360,7 @@ export class RecipesService {
         creator: entity.creator.convertToIUser(),
         difficulty: entity.difficulty,
         favorites: entity.favoriteAmount,
+        ratingAmount: 0,
         id: entity.id,
         ingredients: entity.ingredients,
         language: entity.language,
@@ -350,6 +373,7 @@ export class RecipesService {
         recipeSummary: entity.recipeSummary,
         images: entity.imageEntities.map((entity) => entity.id),
         isFavorited: favoriteMap.get(entity.id) || false,
+        userRating: ratingMap.get(entity.id),
       });
     });
 
@@ -500,17 +524,29 @@ export class RecipesService {
     const favourites: { count: number }[] = await this.recipeRepository.query(
       `SELECT COUNT(*) AS count FROM user_favorites_recipe WHERE "recipeId"=${id}`,
     );
+    const ratingAmount: { count: number }[] = await this.userRatingRepository.query(
+      `SELECT COUNT(*) AS count FROM rating WHERE "recipeId"=${id}`,
+    );
+
+    const rating: UserRatingEntity = await this.userRatingRepository.findOne({
+      where: {
+        recipe: id,
+        user: userID,
+      },
+    });
 
     return {
       cookTime: recipe.cookTime,
       creationDate: recipe.creationDate,
       creator: recipe.creator.convertToIUser(),
       difficulty: recipe.difficulty,
-      favorites: favourites[0].count,
+      favorites: favourites[0].count || 0,
+      ratingAmount: ratingAmount[0].count || 0,
       id: id,
       images: recipe.imageEntities.map((entity) => entity.id),
       ingredients: recipe.ingredients,
       isFavorited: userID == undefined ? false : await this.isFavourited(id, userID),
+      userRating: !!rating ? rating.rating : undefined,
       language: recipe.language,
       rating: recipe.rating,
       recipeSteps: recipe.recipeSteps,

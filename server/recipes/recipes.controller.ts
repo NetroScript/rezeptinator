@@ -1,5 +1,6 @@
 import { collectedIngredients } from '@common/generate/GetIngredients';
 import { IIngredient } from '@common/Model/Ingredient';
+import { IRecipe } from '@common/Model/Recipe/IRecipe';
 import {
   Body,
   ClassSerializerInterceptor,
@@ -24,7 +25,7 @@ import { returnRecipeDto } from '@server/recipes/dto/returnRecipe.dto';
 import { returnRecipeQueryDto } from '@server/recipes/dto/returnRecipeQuery.dto';
 import { RecipesService } from '@server/recipes/recipes.service';
 import { TagEntity } from '@server/recipes/tag.entity';
-import { IRecipe, ITag } from '@common/Model/Recipe';
+import { ITag } from '@common/Model/Recipe/Recipe';
 import { RecipeEntity } from '@server/recipes/recipe.entity';
 import { advancedRecipeSearchDto } from '@server/recipes/dto/advancedRecipeSearch.dto';
 import { RequiredRoles } from '@server/common/decorators/roles.decorator';
@@ -46,8 +47,13 @@ export class RecipesController {
     description:
       'Return recipes based on supplied filters -> this should actually be a get, but validation and parsing of the query would be a pain, so this is implemented as post',
   })
-  async findAll(@Body() search: advancedRecipeSearchDto): Promise<returnRecipeQueryDto> {
-    return new returnRecipeQueryDto(await this.recipesService.advancedSearchOverview(search));
+  async findAll(
+    @Body() search: advancedRecipeSearchDto,
+    @UserNoError('id') userID: number,
+  ): Promise<returnRecipeQueryDto> {
+    return new returnRecipeQueryDto(
+      await this.recipesService.advancedSearchOverview(search, userID),
+    );
   }
 
   @Get(':id')
@@ -178,7 +184,7 @@ export class RecipesController {
   @ApiBearerAuth()
   @UseInterceptors(ClassSerializerInterceptor)
   @ApiResponse({
-    description: 'Returns the rating which a user gave for a recipe or null',
+    description: 'Allows the user to rate a recipe',
   })
   async rate(
     @Param('id', ParseIntPipe) recipeID: number,

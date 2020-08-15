@@ -316,8 +316,8 @@ import EditableRecipeStep from '@client/components/EditableRecipeStep.vue';
 import TagSelect from '@client/components/TagSelect.vue';
 import MainLayout from '@client/layout/default.vue';
 import { AvailableLanguages } from '@common/Localisation/Generic';
-import { ICreateRecipe } from '@common/Model/Recipe';
-import { RecipeStepTypes } from '@common/Model/RecipeStep';
+import { ICreateRecipe } from '@common/Model/Recipe/Recipe';
+import { RecipeStepTypes } from '@common/Model/Recipe/RecipeStep';
 
 import '@nuxtjs/axios';
 import { Component, Vue } from 'nuxt-property-decorator';

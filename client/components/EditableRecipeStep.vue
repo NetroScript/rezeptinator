@@ -105,8 +105,8 @@
 </template>
 
 <script lang="ts">
-import { IRecipeStep } from '@common/Model/IRecipeStep';
-import { OvenTypes, RecipeStepTypes } from '@common/Model/RecipeStep';
+import { IRecipeStep } from '@common/Model/Recipe/IRecipeStep';
+import { OvenTypes, RecipeStepTypes } from '@common/Model/Recipe/RecipeStep';
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import 'reflect-metadata';
 import { extend, ValidationProvider } from 'vee-validate';

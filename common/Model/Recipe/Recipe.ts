@@ -1,11 +1,11 @@
-import { ICreatePortion } from '@common/Model/CreatePortion';
-import { IRecipeStep } from '@common/Model/IRecipeStep';
-import { IUser } from '@common/Model/User';
-import { IPortion } from '@common/Model/Portion';
-import TagData from '../Data/Tags.json';
 import { AvailableLanguages } from '@common/Localisation/Generic';
 import { AllergyGroups, IngredientCategories, Vegan } from '@common/Model/Ingredient';
+import { ICreatePortion } from '@common/Model/Recipe/ICreatePortion';
+import { IRecipe } from '@common/Model/Recipe/IRecipe';
+import { IRecipeStep } from '@common/Model/Recipe/IRecipeStep';
+import { IUser } from '@common/Model/User';
 import { NutrientEntity } from '@server/ingredient/nutrient.entity';
+import TagData from '../../Data/Tags.json';
 
 interface IRating {
   creator: IUser;
@@ -35,27 +35,6 @@ export const TagList: ITag[] = Object.keys(TagData)
   .reduce((current, out) => {
     return [...current, ...out];
   }, []);
-
-export interface IRecipe {
-  id?: number;
-  title: string;
-  images: number[];
-  language: AvailableLanguages;
-  creator: IUser;
-  rating: number;
-  favorites: number;
-  difficulty: number;
-  cookTime: number;
-  totalTime: number;
-  servingSize: number;
-  creationDate: Date;
-  recipeSteps: IRecipeStep[];
-  ingredients: IPortion[];
-  tags: ITag[];
-  recipeSummary: IRecipeSummary;
-  // If a user is logged in, and has it favourited this is set to true, otherwise false
-  isFavorited: boolean;
-}
 
 export interface IRecipeSummary {
   // If this recipe is vegan / Vegetarian / Neither

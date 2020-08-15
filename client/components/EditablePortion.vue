@@ -137,14 +137,14 @@
 <script lang="ts">
 import { PiecePortion } from '@common/Classes/PiecePortion';
 import { UnitPortion } from '@common/Classes/UnitPortion';
-import { ICreatePortion } from '@common/Model/CreatePortion';
+import { ICreatePortion } from '@common/Model/Recipe/ICreatePortion';
 import {
   ICreateIngredient,
   IIngredient,
   IngredientCategories,
   Vegan,
 } from '@common/Model/Ingredient';
-import { PortionTypes } from '@common/Model/Portion';
+import { PortionTypes } from '@common/Model/Recipe/Portion';
 import { Component, Prop, Vue, Watch } from 'nuxt-property-decorator';
 import 'reflect-metadata';
 import { extend, ValidationProvider } from 'vee-validate';

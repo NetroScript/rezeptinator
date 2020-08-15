@@ -1,5 +1,6 @@
 import { AvailableLanguages } from '@common/Localisation/Generic';
-import { IRecipe, IRecipeQueryResult } from '@common/Model/Recipe';
+import { IRecipe } from '@common/Model/Recipe/IRecipe';
+import { IRecipeQueryResult } from '@common/Model/Recipe/Recipe';
 import { PortionEntity } from '@server/recipes/portion.entity';
 import { RecipeStepEntity } from '@server/recipes/recipeStep.entity';
 import { RecipeSummaryEntity } from '@server/recipes/recipeSummary.entity';
@@ -19,6 +20,7 @@ export class returnRecipeDto implements IRecipe {
   isFavorited: boolean;
   language: AvailableLanguages;
   rating: number;
+  ratingAmount: number;
   recipeSteps: RecipeStepEntity[];
   recipeSummary: RecipeSummaryEntity;
   servingSize: number;

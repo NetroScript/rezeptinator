@@ -1,4 +1,5 @@
-import { IRecipe, ITag } from '@common/Model/Recipe';
+import { IRecipe } from '@common/Model/Recipe/IRecipe';
+import { ITag } from '@common/Model/Recipe/Recipe';
 import { ImagesEntity } from '@server/images/images.entity';
 import {
   Column,
@@ -98,6 +99,8 @@ export class RecipeEntity implements RecipeEntityType {
 
   @OneToMany((type) => UserRatingEntity, (rating) => rating.recipe)
   ratings: UserRatingEntity[];
+
+  ratingAmount: number;
 
   @ManyToMany((type) => UserEntity, (user) => user.favorites)
   favorites: UserEntity[];

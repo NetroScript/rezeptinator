@@ -6,7 +6,7 @@ import {
   PiecePortionTypes,
   PortionFunctions,
   PortionTypes,
-} from '@common/Model/Portion';
+} from '@common/Model/Recipe/Portion';
 
 /**
  * A PiecePortion is used to represent n pieces of a specific thing (like an apple)

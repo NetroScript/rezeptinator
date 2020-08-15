@@ -1,5 +1,5 @@
-import { IngredientCategories } from '@common/Model/Ingredient';
-import { OvenTypes } from '@common/Model/RecipeStep';
+import { AllergyGroups, IngredientCategories } from '@common/Model/Ingredient';
+import { OvenTypes } from '@common/Model/Recipe/RecipeStep';
 
 export const IconsForIngredientCategories: { [key in IngredientCategories]: string } = {
   0: 'mdi-food-apple',
@@ -36,4 +36,22 @@ export const IconsForTagGroups: { [key: string]: string } = {
   Regionen: 'mdi-earth',
   Saison: 'mdi-calendar',
   Typ: 'mdi-pot-mix',
+};
+
+export const IconsForAllergyGroups: { [key in AllergyGroups]: string } = {
+  0: '',
+  1: 'mdi-egg',
+  2: 'mdi-peanut',
+  3: 'mdi-fish',
+  4: 'mdi-barley',
+  5: 'mdi-alert',
+  6: 'mdi-flower-tulip',
+  7: 'mdi-cup',
+  8: 'mdi-seed',
+  9: 'mdi-flask',
+  10: 'mdi-alert',
+  11: 'mdi-alert',
+  12: 'mdi-alert',
+  13: 'mdi-soy-sauce',
+  14: 'mdi-alert',
 };

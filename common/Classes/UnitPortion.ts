@@ -7,7 +7,7 @@ import {
   PortionTypes,
   Unit,
   Units,
-} from '@common/Model/Portion';
+} from '@common/Model/Recipe/Portion';
 
 /**
  * A UnitPortion is used to represent an ingredient measured in a specific unit (like 500g apple)

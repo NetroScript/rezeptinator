@@ -32,7 +32,7 @@
 </template>
 <script lang="ts">
 import 'reflect-metadata';
-import { ITag } from '@common/Model/Recipe';
+import { ITag } from '@common/Model/Recipe/Recipe';
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import { IconsForTagGroups } from '~/utils/enumToIcon';
 

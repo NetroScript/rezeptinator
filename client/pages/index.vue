@@ -2,11 +2,13 @@
   <main-layout>
     <template #content>
       <h1>index</h1>
-      <ul>
-        <li v-for="(recipe, i) in recipeQuery.recipes" :key="recipe.id">
-          Titel: {{ recipe.title }}
-        </li>
-      </ul>
+      <v-row align-content="center">
+        <RecipeOverviewCard
+          v-for="(recipe, i) in recipeQuery.recipes"
+          :key="recipe.id"
+          :recipe="recipe"
+        ></RecipeOverviewCard>
+      </v-row>
     </template>
     <template #drawer>
       <v-btn color="secondary" dark fixed bottom right fab>
@@ -41,15 +43,16 @@ import {
   IAdvancedRecipeSearch,
   IRecipeQueryResult,
   RecipeOrderVariants,
-} from '@common/Model/Recipe';
+} from '@common/Model/Recipe/Recipe';
 
 import { IUser } from '@common/Model/User';
 import { Context } from '@nuxt/types';
 import '@nuxtjs/axios';
 import { Component, Vue } from 'nuxt-property-decorator';
+import RecipeOverviewCard from '~/components/RecipeOverviewCard.vue';
 
 @Component({
-  components: { MainLayout },
+  components: { RecipeOverviewCard, MainLayout },
 })
 export default class IndexPage extends Vue {
   users: IUser[] = [];

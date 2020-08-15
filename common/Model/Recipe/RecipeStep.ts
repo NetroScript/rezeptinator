@@ -1,4 +1,4 @@
-import { IRecipeStep } from '@common/Model/IRecipeStep';
+import { IRecipeStep } from '@common/Model/Recipe/IRecipeStep';
 
 export enum RecipeStepTypes {
   Normal,

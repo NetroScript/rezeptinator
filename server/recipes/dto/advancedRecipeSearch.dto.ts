@@ -1,4 +1,4 @@
-import { IAdvancedRecipeSearch, RecipeOrderVariants } from '@common/Model/Recipe';
+import { IAdvancedRecipeSearch, RecipeOrderVariants } from '@common/Model/Recipe/Recipe';
 import {
   IsBoolean,
   IsEnum,

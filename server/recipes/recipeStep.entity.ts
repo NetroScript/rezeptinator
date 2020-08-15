@@ -1,10 +1,10 @@
-import { IRecipeStep } from '@common/Model/IRecipeStep';
+import { IRecipeStep } from '@common/Model/Recipe/IRecipeStep';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
-import { RecipeStepTypes } from '@common/Model/RecipeStep';
+import { RecipeStepTypes } from '@common/Model/Recipe/RecipeStep';
 import { RecipeEntity } from '@server/recipes/recipe.entity';
 import { Exclude } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { PortionTypes } from '@common/Model/Portion';
+import { PortionTypes } from '@common/Model/Recipe/Portion';
 
 @Entity('recipestep')
 export class RecipeStepEntity implements IRecipeStep {

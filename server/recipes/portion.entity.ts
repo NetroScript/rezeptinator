@@ -1,4 +1,4 @@
-import { IPortion, PortionTypes } from '@common/Model/Portion';
+import { IPortion, PortionTypes } from '@common/Model/Recipe/Portion';
 import { IngredientEntity } from '@server/ingredient/ingredient.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
 import { RecipeEntity } from '@server/recipes/recipe.entity';

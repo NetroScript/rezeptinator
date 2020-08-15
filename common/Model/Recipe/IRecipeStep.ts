@@ -1,5 +1,4 @@
-import { ICreateIngredient } from '@common/Model/Ingredient';
-import { PortionTypes } from '@common/Model/Portion';
+import { RecipeStepTypes } from '@common/Model/Recipe/RecipeStep';
 
 // This now got its own file, because it generated non existant errors
 // See the following links for reference:
@@ -8,11 +7,10 @@ import { PortionTypes } from '@common/Model/Portion';
 // https://github.com/webpack/webpack/issues/2977
 // https://github.com/angular/angular-cli/issues/2034#issuecomment-302666897
 
-export interface ICreatePortion {
-  amount: number;
-  ingredient?: number;
-  ingredientNameIndex: number;
-  instanceType: PortionTypes;
-  newIngredient?: ICreateIngredient;
-  type: number;
+export interface IRecipeStep {
+  readonly type: RecipeStepTypes;
+  text: string;
+  time: number;
+  payloadType?: number;
+  payloadNumber?: number;
 }

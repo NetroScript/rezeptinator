@@ -1,4 +1,4 @@
-import { ITag } from '@common/Model/Recipe';
+import { ITag } from '@common/Model/Recipe/Recipe';
 import { UserEntity } from '@server/user/user.entity';
 import fs from 'fs';
 import path from 'path';

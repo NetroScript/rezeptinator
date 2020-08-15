@@ -1,4 +1,4 @@
-import { IRecipeQueryResult } from '@common/Model/Recipe';
+import { IRecipeQueryResult } from '@common/Model/Recipe/Recipe';
 import { returnRecipeDto } from '@server/recipes/dto/returnRecipe.dto';
 
 // Use a DTO to correctly exclude sensitive data using the transformer
