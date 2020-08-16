@@ -49,4 +49,12 @@ export class RecipeSummaryEntity implements IRecipeSummary {
   @Column('boolean')
   // If every ingredient also has nutrient Data
   dataForAll = true;
+
+  constructor(data?: IRecipeSummary) {
+    if (data != undefined) {
+      Object.assign(this, data);
+      this.id = undefined;
+      this.totalNutritions = new NutrientEntity(data.totalNutritions);
+    }
+  }
 }

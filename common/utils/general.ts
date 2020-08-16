@@ -117,3 +117,23 @@ export function IncompatableWith(incompatibleSiblings: string[]) {
 /*
   Code from: https://github.com/typestack/class-validator/issues/245
  ################################################################# */
+
+export function stepify(value: number, step: number): number {
+  if (step != 0) {
+    value = Math.floor(value / step + 0.5) * step;
+  }
+
+  return value;
+}
+
+//static _ALWAYS_INLINE_ float range_lerp(float p_value, float p_istart, float p_istop, float p_ostart, float p_ostop) { return Math::lerp(p_ostart, p_ostop, Math::inverse_lerp(p_istart, p_istop, p_value)); }
+
+export function mapRange(
+  value: number,
+  inputMin: number,
+  inputMax: number,
+  outputMin: number,
+  outputMax: number,
+): number {
+  return ((value - inputMin) * (outputMax - outputMin)) / (inputMax - inputMin) + outputMin;
+}

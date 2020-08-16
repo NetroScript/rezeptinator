@@ -50,7 +50,7 @@ export class IngredientService {
     return await this.ingredientRepository
       .createQueryBuilder('ingredient')
       .delete()
-      .where('ingredient.userGenerated = 1')
+      .where('ingredient."userGenerated" = true')
       .andWhere('ingredient.id IN (:...ids)', { ids })
       .execute();
   }

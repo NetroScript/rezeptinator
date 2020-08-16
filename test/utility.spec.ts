@@ -1,4 +1,4 @@
-import { splitIntoFraction } from '../common/Utility';
+import { splitIntoFraction } from '@common/utils/general';
 
 describe('Utility Functions | Fractions', function () {
   test('Correct fraction for 1.5', () => {

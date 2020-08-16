@@ -1,5 +1,5 @@
 import { AvailableLanguages } from '@common/Localisation/Generic';
-import { AllergyGroups, IngredientCategories, Vegan } from '@common/Model/Ingredient';
+import { AllergyGroups, IngredientCategories, INutrients, Vegan } from '@common/Model/Ingredient';
 import { ICreatePortion } from '@common/Model/Recipe/ICreatePortion';
 import { IRecipe } from '@common/Model/Recipe/IRecipe';
 import { IRecipeStep } from '@common/Model/Recipe/IRecipeStep';
@@ -44,7 +44,7 @@ export interface IRecipeSummary {
   // All ingredient categories of this recipe
   categories: IngredientCategories[];
   // The total nutrients for the base recipes (for a single serving)
-  totalNutritions: NutrientEntity;
+  totalNutritions: INutrients;
   // If nutrients are available for every single ingredient
   dataForAll: boolean;
 }

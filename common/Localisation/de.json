@@ -189,5 +189,10 @@
     "12": "Sesam",
     "13": "Soya",
     "14": "Weichtiere"
-  }
+  },
+  "MISSINGINGREDIENTS": "*Es sind nicht für alle Zutaten Daten vorhanden, somit kann die Anzeige für Allergien und Kategorien unvollständig sein.",
+  "DIFFICULTY": "Schwierigkeit",
+  "CALORIES": "kcal pro Portion",
+  "HEALTHYNESS": "Lebensmittelampel basierend auf Zucker und Fett",
+  "NORECIPESFOUND": "Es wurden keine Rezepte gefunden. Verallgemeinern Sie die Suche"
 }

@@ -1,4 +1,5 @@
 import { IRecipe } from '@common/Model/Recipe/IRecipe';
+import { getRecipeSummaryFromIPortion } from '@common/utils/summary';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ImagesEntity } from '@server/images/images.entity';
@@ -34,6 +35,8 @@ export class RecipesService {
     private readonly tagRepository: Repository<TagEntity>,
     @InjectRepository(RecipeStepEntity)
     private readonly recipeStepRepository: Repository<RecipeStepEntity>,
+    @InjectRepository(RecipeSummaryEntity)
+    private readonly recipeSummaryRepository: Repository<RecipeSummaryEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(UserRatingEntity)
@@ -453,65 +456,9 @@ export class RecipesService {
     recipe.totalTime = data.totalTime;
     recipe.recipeSummary = new RecipeSummaryEntity();
 
-    const portionInstances: PortionFunctions[] = recipe.ingredients.map<PortionFunctions>(
-      (entity) => {
-        if (entity.instanceType == PortionTypes.Piece) {
-          return new PiecePortion(entity);
-        } else {
-          return new UnitPortion(entity);
-        }
-      },
+    recipe.recipeSummary = new RecipeSummaryEntity(
+      getRecipeSummaryFromIPortion(recipe.ingredients, recipe.servingSize).summary,
     );
-
-    // Generate the RecipeSummary based on all Portions
-    const summary: RecipeSummaryEntity = portionInstances.reduce<RecipeSummaryEntity>(
-      (total, current) => {
-        // Determine which type of vegan the summary should be
-        if (current.ingredient.vegan == Vegan.Neither || total.vegan == Vegan.Neither) {
-          total.vegan = Vegan.Neither;
-        } else if (
-          current.ingredient.vegan == Vegan.Vegetarion ||
-          total.vegan == Vegan.Vegetarion
-        ) {
-          total.vegan = Vegan.Vegetarion;
-        }
-
-        // Boolean giving info if there is sufficient information for all ingredients
-        if (current.ingredient.nutritions == undefined) {
-          total.dataForAll = false;
-        }
-
-        current.ingredient.allergies.forEach((allergy) => {
-          if (!total.allergies.includes(allergy)) {
-            total.allergies.push(allergy);
-          }
-        });
-
-        if (!total.categories.includes(current.ingredient.category)) {
-          total.categories.push(current.ingredient.category);
-        }
-
-        if (!!current.ingredient.nutritions) {
-          // Divided by 100 because the calories are based on 100g ingredients
-          const weight = current.getWeight() / recipe.servingSize / 100;
-
-          // Add the value for every sub category
-          for (const key in current.ingredient.nutritions) {
-            if (
-              current.ingredient.nutritions.hasOwnProperty(key) &&
-              total.totalNutritions.hasOwnProperty(key)
-            ) {
-              total.totalNutritions[key] += current.ingredient.nutritions[key] * weight;
-            }
-          }
-        }
-
-        return total;
-      },
-      new RecipeSummaryEntity(),
-    );
-
-    recipe.recipeSummary = summary;
 
     // Put the object into the database
     recipe = await this.recipeRepository.save(recipe);
@@ -519,7 +466,7 @@ export class RecipesService {
     return recipe.id;
   }
 
-  async findById(id: number, userID: number | undefined): Promise<IRecipe> {
+  async findById(id: number, userID: number | undefined = undefined): Promise<IRecipe> {
     const recipe = await this.recipeRepository.findOne(id);
     const favourites: { count: number }[] = await this.recipeRepository.query(
       `SELECT COUNT(*) AS count FROM user_favorites_recipe WHERE "recipeId"=${id}`,
@@ -590,17 +537,21 @@ export class RecipesService {
   async delete(id: number): Promise<DeleteResult> {
     // When deleting a Recipe we can also create the custom generated ingredients
     // So we get all ingredient ids and then delete them
-    const ingredients: number[] = (
-      await this.recipeRepository
-        .createQueryBuilder('recipe')
-        .select('ingredients.ingredientId', 'ingredientIDs')
-        .leftJoin('recipes.ingredients', 'ingredients')
-        .getRawMany<{ ingredientIDs: number }>()
-    ).map((data) => data.ingredientIDs);
 
-    await this.ingredientService.deleteUserCreatedList(ingredients);
+    const recipe = await this.recipeRepository.findOne(id);
+    const ingredients: number[] = recipe.ingredients.map((ingredient) => ingredient.id);
 
-    // All other properties of recipe are set to delete cascase, so we don't need to delete them manually
+    // For some reason cascade delete doesn't work, so we manually remove all the connected entities
+    await this.imageRepository.remove(recipe.imageEntities);
+    await this.portionRepository.remove(recipe.ingredients);
+    await this.recipeStepRepository.remove(recipe.recipeSteps);
+    await this.recipeSummaryRepository.remove(recipe.recipeSummary);
+    await this.recipeRepository.query(`DELETE FROM rating WHERE "recipeId"=${id}`);
+    await this.recipeRepository.query(`DELETE FROM user_favorites_recipe WHERE "recipeId"=${id}`);
+
+    if (ingredients.length > 0) await this.ingredientService.deleteUserCreatedList(ingredients);
+
+    // All other properties of recipe are set to delete cascade, so we don't need to delete them manually
     return await this.recipeRepository.delete(id);
   }
 

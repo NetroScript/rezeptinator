@@ -1,6 +1,6 @@
 import { IIngredient } from '@common/Model/Ingredient';
 import { LocalisationInformation } from '@common/Model/Localisation';
-import { splitIntoFraction } from '@common/Utility';
+import { splitIntoFraction } from '@common/utils/general';
 
 export enum Unit {
   Milligram,

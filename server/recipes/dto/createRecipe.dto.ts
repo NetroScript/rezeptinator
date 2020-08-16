@@ -4,7 +4,7 @@ import { IRecipeStep } from '@common/Model/Recipe/IRecipeStep';
 import { PortionTypes } from '@common/Model/Recipe/Portion';
 import { ICreateRecipe } from '@common/Model/Recipe/Recipe';
 import { CreateIngredientDto } from '@server/ingredient/dto/createIngredient.dto';
-import { IncompatableWith } from '@common/Utility';
+import { IncompatableWith } from '@common/utils/general';
 import {
   IsEnum,
   IsInt,

@@ -1,13 +1,22 @@
 <template>
   <main-layout>
     <template #content>
-      <h1>index</h1>
       <v-row align-content="center">
         <RecipeOverviewCard
           v-for="(recipe, i) in recipeQuery.recipes"
           :key="recipe.id"
           :recipe="recipe"
         ></RecipeOverviewCard>
+      </v-row>
+      <v-row
+        v-if="recipeQuery.totalCount === 0"
+        justify="center"
+        align-content="center"
+        align="center"
+      >
+        <v-card-title>
+          {{ $t('NORECIPESFOUND') }}
+        </v-card-title>
       </v-row>
     </template>
     <template #drawer>
@@ -18,6 +27,7 @@
 
     <template #header>
       <v-text-field
+        v-model="currentQuery.name"
         flat
         solo-inverted
         hide-details
@@ -26,6 +36,7 @@
         dense
         :label="$t('SEARCH')"
         prepend-inner-icon="mdi-magnify"
+        @input="searchAgain"
       ></v-text-field>
       <v-tooltip bottom>
         <template #activator="{ on, attrs }">
@@ -50,6 +61,7 @@ import { Context } from '@nuxt/types';
 import '@nuxtjs/axios';
 import { Component, Vue } from 'nuxt-property-decorator';
 import RecipeOverviewCard from '~/components/RecipeOverviewCard.vue';
+import Timeout = NodeJS.Timeout;
 
 @Component({
   components: { RecipeOverviewCard, MainLayout },
@@ -63,6 +75,8 @@ export default class IndexPage extends Vue {
     order: RecipeOrderVariants.Favourites,
     pageSize: 25,
   };
+
+  searchDebounce: Timeout;
 
   async asyncData({ $axios }: Context) {
     let recipeQuery: IRecipeQueryResult;
@@ -79,6 +93,21 @@ export default class IndexPage extends Vue {
     return {
       recipeQuery,
     };
+  }
+
+  async searchAgain() {
+    clearTimeout(this.searchDebounce);
+
+    this.searchDebounce = setTimeout(() => {
+      this.search();
+    }, 200);
+  }
+
+  async search() {
+    this.recipeQuery = await this.$axios.$post<IRecipeQueryResult>(
+      'recipes/find',
+      this.currentQuery,
+    );
   }
 }
 </script>

@@ -10,6 +10,7 @@ import { NutrientEntity } from '@server/ingredient/nutrient.entity';
 import { Exclude } from 'class-transformer';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { NutrientDto } from '@server/ingredient/dto/createIngredient.dto';
+import { AfterLoad, BeforeInsert } from 'typeorm/index';
 
 @Entity('ingredient')
 export class IngredientEntity implements IIngredient {
@@ -66,6 +67,16 @@ export class IngredientEntity implements IIngredient {
   @Column('boolean', { default: false })
   @ApiHideProperty()
   userGenerated: boolean;
+
+  @AfterLoad()
+  onLoaded() {
+    this.alias = this.alias.map((alias) => alias.replace(/\[comma\]/g, ','));
+  }
+
+  @BeforeInsert()
+  beforeInsert() {
+    this.alias = this.alias.map((alias) => alias.replace(/,/g, '[comma]'));
+  }
 
   constructor(data?: IIngredient) {
     if (data !== undefined) {

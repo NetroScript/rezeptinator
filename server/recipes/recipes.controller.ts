@@ -122,7 +122,7 @@ export class RecipesController {
       }
     }
 
-    return { success: result.affected == 1 };
+    return { success: result.affected >= 1 };
   }
 
   @Post()
