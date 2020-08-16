@@ -85,6 +85,19 @@ export class RecipesController {
     return { time: Date.now() - now };
   }
 
+  @Post('recalculatesummary/:id')
+  @ApiBearerAuth()
+  @RequiredRoles(Roles.Admin)
+  @ApiResponse({
+    description:
+      'Force recalculation of recipe summary should something have been changed manually.',
+  })
+  async recalculateSummary(@Param('id', ParseIntPipe) id): Promise<{ success: boolean }> {
+    await this.recipesService.recalculateRecipeSummary(id);
+
+    return { success: true };
+  }
+
   @Get('tags/:name')
   @UseInterceptors(ClassSerializerInterceptor)
   @ApiResponse({

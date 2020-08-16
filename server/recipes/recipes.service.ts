@@ -74,7 +74,9 @@ export class RecipesService {
     queryBuilder.where('1 = 1');
 
     if (!!query.name) {
-      queryBuilder.andWhere('recipe.title LIKE :title', { title: `%${query.name}%` });
+      queryBuilder.andWhere('LOWER(recipe.title) LIKE :title', {
+        title: `%${query.name.toLowerCase()}%`,
+      });
     }
 
     if (!!query.includeIngredients) {
@@ -411,7 +413,7 @@ export class RecipesService {
     recipe.creator = await this.userRepository.findOneOrFail({ id: userID });
     recipe.difficulty = data.difficulty;
 
-    const fetchIngredientsIds: [number, number][] = [];
+    let fetchIngredientsIds: [number, number][] = [];
 
     // Map all the PortionEntities and create Ingredients (+nutritions) for those which are still needed
     recipe.ingredients = data.ingredients.map<PortionEntity>((ingredient, index) => {
@@ -434,10 +436,14 @@ export class RecipesService {
       return portion;
     });
 
+    // Sort the ids, because we don't know in which order the database will return results, so we sort them by id
+    fetchIngredientsIds = fetchIngredientsIds.sort((a, b) => a[0] - b[0]);
+
     // Load the missing ingredients to generate the summary of the recipe
-    const loadedIngredients = await this.ingredientService.findInList(
-      fetchIngredientsIds.map((entry) => entry[0]),
-    );
+    // Sort them by id, so that both the data from the database and the local information have the same order
+    const loadedIngredients = (
+      await this.ingredientService.findInList(fetchIngredientsIds.map((entry) => entry[0]))
+    ).sort((a, b) => a.id - b.id);
 
     // Map the loaded ingredients
     loadedIngredients.forEach((ingredient, index) => {
@@ -454,7 +460,6 @@ export class RecipesService {
     recipe.tags = await this.getTagsByIdList(data.tags);
     recipe.imageEntities = await this.getImagesByIdList(data.images);
     recipe.totalTime = data.totalTime;
-    recipe.recipeSummary = new RecipeSummaryEntity();
 
     recipe.recipeSummary = new RecipeSummaryEntity(
       getRecipeSummaryFromIPortion(recipe.ingredients, recipe.servingSize).summary,
@@ -625,5 +630,22 @@ export class RecipesService {
 
   async generateData(): Promise<void> {
     await this.tagRepository.save(TagList);
+  }
+
+  async recalculateRecipeSummary(id: number): Promise<void> {
+    const recipe = await this.recipeRepository.findOne(id);
+
+    // To overwrite the old values instead of new ones, save the ids of them
+    const summaryId = recipe.recipeSummary.id;
+    const nutrientId = recipe.recipeSummary.totalNutritions.id;
+
+    recipe.recipeSummary = new RecipeSummaryEntity(
+      getRecipeSummaryFromIPortion(recipe.ingredients, recipe.servingSize).summary,
+    );
+
+    recipe.recipeSummary.id = summaryId;
+    recipe.recipeSummary.totalNutritions.id = nutrientId;
+
+    await this.recipeRepository.save(recipe);
   }
 }

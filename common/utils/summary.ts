@@ -75,7 +75,7 @@ export function getRecipeSummary(
     {
       allergies: [],
       categories: [],
-      dataForAll: false,
+      dataForAll: true,
       totalNutritions: {
         alcohol: 0,
         calories: 0,
