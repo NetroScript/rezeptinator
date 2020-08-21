@@ -59,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import MainLayout from '@client/layout/default.vue';
+import MainLayout from '~/layout/default.vue';
 import { IRecipe } from '@common/Model/Recipe/IRecipe';
 import {
   IAdvancedRecipeSearch,

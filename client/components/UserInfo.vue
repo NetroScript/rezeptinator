@@ -74,8 +74,8 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
-import AuthenticationForm from '@client/components/AuthenticationForm.vue';
-import responseErrorHandler from '@client/utils/responseErrorHandler';
+import AuthenticationForm from '~/components/AuthenticationForm.vue';
+import responseErrorHandler from '~/utils/responseErrorHandler';
 
 @Component({
   components: { AuthenticationForm },

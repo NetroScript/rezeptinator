@@ -58,7 +58,7 @@ export class ImagesService {
                   width: 2000,
                   height: 2000,
                   withoutEnlargement: true,
-                  fit: 'outside',
+                  fit: 'inside',
                 })
                 .jpeg({ progressive: true, quality: 85 });
               const thumbImage = sharp()
@@ -89,6 +89,11 @@ export class ImagesService {
               Promise.all([firstPromise, secondPromise]).then(() => {
                 images.push(image);
                 currentResolve();
+              });
+
+              // After 30s if nothing happened abort the request
+              new Promise((r) => setTimeout(r, 60000)).then(() => {
+                reject(new HttpException({ message: 'Failed to save images' }, 408));
               });
             }),
           );

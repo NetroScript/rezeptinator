@@ -1,5 +1,6 @@
 import { resolve } from 'path';
 import LowerHeat from './client/components/icons/LowerHeat.vue';
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 
 const {
   NODE_ENV,
@@ -15,7 +16,8 @@ const configFile = resolve(process.cwd(), 'client', 'tsconfig.json');
 
 export default {
   mode: 'universal',
-  modern: isDev ? false : 'client',
+  modern: false,
+  telemetry: false,
 
   srcDir: 'client/',
   buildDir: 'dist/client',
@@ -95,7 +97,7 @@ export default {
     baseURL,
   },
 
-  buildModules: ['@nuxtjs/vuetify', '@nuxt/typescript-build', '@nuxtjs/stylelint-module'],
+  buildModules: ['@nuxt/typescript-build', '@nuxtjs/vuetify', '@nuxtjs/stylelint-module'],
 
   typescript: {
     typeCheck: {
@@ -125,14 +127,14 @@ export default {
     extend(config, ctx) {
       // config.resolve.alias.vue = 'vue/dist/vue.common'
 
-      if (isDev) {
-        const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-
-        config.resolve.plugins = [
-          ...(config.resolve.plugins || []),
-          new TsconfigPathsPlugin({ configFile }),
-        ];
+      if (!config.resolve) {
+        config.resolve = {};
       }
+      if (!config.resolve.plugins) {
+        config.resolve.plugins = [];
+      }
+      console.log(configFile);
+      config.resolve.plugins.push(new TsconfigPathsPlugin({ configFile: configFile }));
     },
   },
 

@@ -25,6 +25,7 @@
     ],
     "paths": {
       "@server/*": ["server/*"],
+      "~/*": ["client/*"],
       "@client/*": ["client/*"],
       "@common/*": ["common/*"]
     }

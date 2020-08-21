@@ -228,7 +228,7 @@
 </template>
 
 <script lang="ts">
-import MainLayout from '@client/layout/default.vue';
+import MainLayout from '~/layout/default.vue';
 import { Vegan } from '@common/Model/Ingredient';
 import { IRecipe } from '@common/Model/Recipe/IRecipe';
 import { PortionFunctions } from '@common/Model/Recipe/Portion';
@@ -351,8 +351,9 @@ export default class IndexPage extends Vue {
         recipe.tags.splice(0, 0, { group: 'Vegan', tag: app.i18n.t('VEGETARIAN') as string });
       }
     } catch (e) {
-      console.log(e);
+      if (route.params.id != undefined) console.log(e);
       error({ statusCode: 418, message: 'ERROR.UNKNOWN' });
+      return {};
     }
 
     return {

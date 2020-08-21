@@ -43,7 +43,7 @@
     "fastify-plugin": "^1.6.1",
     "fastify-swagger": "^2.6.0",
     "jsonwebtoken": "^8.5.1",
-    "nuxt": "2.12.2",
+    "nuxt": "^2.14.3",
     "nuxt-i18n": "^6.13.7",
     "nuxt-property-decorator": "^2.7.2",
     "pg": "^8.3.0",
@@ -54,6 +54,7 @@
     "tinygradient": "^1.1.2",
     "typeorm": "^0.2.25",
     "vee-validate": "^3.3.8",
+    "vue": "^2.6.12",
     "vue-i18n": "^8.20.0"
   },
   "devDependencies": {

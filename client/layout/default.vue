@@ -54,7 +54,7 @@
 <script lang="ts">
 import 'reflect-metadata';
 import { Component, Vue } from 'nuxt-property-decorator';
-import UserInfo from '@client/components/UserInfo.vue';
+import UserInfo from '~/components/UserInfo.vue';
 @Component({
   components: { UserInfo },
 })

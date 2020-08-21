@@ -3,7 +3,7 @@
     <template #content>
       <h1 class="text-center text-h3 text-md-h2">Erstelle ein Rezept</h1>
       <div class="pa-4">
-        <ValidationObserver ref="observer" v-slot="{ invalid, validate, errors }">
+        <ValidationObserver ref="observer" v-slot="{ invalid, validate }">
           <v-form :disabled="isLoading">
             <h2 class="text-h5 text-md-h4 my-2 text-center">{{ $t('CREATE.TITLEHEADER') }}</h2>
             <ValidationProvider v-slot="{ errors }" name="CREATE.TITLE" rules="required">
@@ -311,10 +311,10 @@
 </template>
 
 <script lang="ts">
-import EditablePortion from '@client/components/EditablePortion.vue';
-import EditableRecipeStep from '@client/components/EditableRecipeStep.vue';
-import TagSelect from '@client/components/TagSelect.vue';
-import MainLayout from '@client/layout/default.vue';
+import EditablePortion from '~/components/EditablePortion.vue';
+import EditableRecipeStep from '~/components/EditableRecipeStep.vue';
+import TagSelect from '~/components/TagSelect.vue';
+import MainLayout from '~/layout/default.vue';
 import { AvailableLanguages } from '@common/Localisation/Generic';
 import { ICreateRecipe } from '@common/Model/Recipe/Recipe';
 import { RecipeStepTypes } from '@common/Model/Recipe/RecipeStep';

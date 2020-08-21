@@ -16,7 +16,6 @@
     "rootDir": "../",
     "paths": {
       "~/*": ["./client/*"],
-      "@client/*": ["./client/*"],
       "@common/*": ["./common/*"],
       "@server/*": ["./server/*"]
     },

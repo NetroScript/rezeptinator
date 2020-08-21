@@ -111,7 +111,7 @@ import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import 'reflect-metadata';
 import { extend, ValidationProvider } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
-import { IconsForOvenTypes } from '@client/utils/enumToIcon';
+import { IconsForOvenTypes } from '~/utils/enumToIcon';
 
 extend('required', { ...required });
 
