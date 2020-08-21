@@ -41,7 +41,7 @@
             >
               {{ recipe.title }}
             </v-col>
-            <v-btn large icon color="amber accent-3" @click="favourite">
+            <v-btn large icon color="amber accent-3" :loading="recipeLoading" @click="favorite">
               <v-icon>mdi-star{{ recipe.isFavorited ? '' : '-outline' }}</v-icon>
             </v-btn>
           </v-row>
@@ -143,7 +143,7 @@
                 recipe.recipeSummary.dataForAll === true
                   ? stepify(recipe.recipeSummary.totalNutritions.calories, 10) +
                     ' ' +
-                    $t('CALORIES')
+                    $t('CALORIESINFO')
                   : ''
               }}
             </v-row>
@@ -182,7 +182,7 @@ export default class RecipeOverviewCard extends Vue {
 
   recipeLoading = false;
 
-  async favourite(): Promise<void> {
+  async favorite(): Promise<void> {
     try {
       this.recipeLoading = true;
       const result = await this.$axios.$post<{ success: boolean; result: boolean }>(

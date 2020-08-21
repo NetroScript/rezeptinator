@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" clipped fixed app>
+    <v-navigation-drawer v-model="drawer" clipped app>
       <v-list>
         <UserInfo />
         <v-divider></v-divider>
@@ -43,7 +43,7 @@
         <slot name="content"></slot>
       </v-container>
     </v-main>
-    <v-footer app absolute elevation="4">
+    <v-footer app inset absolute elevation="4">
       <v-col class="text-center" cols="12">
         &copy; {{ new Date().getFullYear() }} — <strong>Rezeptinator</strong>
       </v-col>
@@ -90,13 +90,6 @@ export default class MainLayout extends Vue {
       icon: 'mdi-home',
       title: 'MAINPAGE',
       to: '/',
-      loggedInOnly: false,
-      onclick: () => {},
-    },
-    {
-      icon: 'mdi-chart-bubble',
-      title: 'Inspire',
-      to: '/inspire',
       loggedInOnly: false,
       onclick: () => {},
     },

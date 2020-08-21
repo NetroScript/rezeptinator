@@ -55,19 +55,11 @@ export class PiecePortion extends PortionFunctions implements IPortion {
    */
   getText(): LocalisationInformation {
     return {
-      key: 'PiecePortionPrefix',
+      key: 'PIECEPORTIONPREFIX',
       options: {
         amount: this._cachedAmount,
         fraction: this._cachedFraction,
         size: '$t(' + PiecePortionTypes[this.type] + 'PiecePortion)',
-        ingredientName:
-          '$t(' +
-          (this.ingredientNameIndex == 0
-            ? this.ingredient.name
-            : this.ingredient.alias[
-                (this.ingredientNameIndex - 1) % this.ingredient.alias.length
-              ]) +
-          ')',
       },
     };
   }

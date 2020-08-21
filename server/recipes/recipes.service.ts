@@ -1,6 +1,6 @@
 import { IRecipe } from '@common/Model/Recipe/IRecipe';
 import { getRecipeSummaryFromIPortion } from '@common/utils/summary';
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ImagesEntity } from '@server/images/images.entity';
 import { RecipeEntity } from '@server/recipes/recipe.entity';
@@ -365,7 +365,7 @@ export class RecipesService {
         creator: entity.creator.convertToIUser(),
         difficulty: entity.difficulty,
         favorites: entity.favoriteAmount,
-        ratingAmount: 0,
+        ratingAmount: entity.ratingAmount,
         id: entity.id,
         ingredients: entity.ingredients,
         language: entity.language,
@@ -473,10 +473,15 @@ export class RecipesService {
 
   async findById(id: number, userID: number | undefined = undefined): Promise<IRecipe> {
     const recipe = await this.recipeRepository.findOne(id);
-    const favourites: { count: number }[] = await this.recipeRepository.query(
+
+    if (recipe == undefined) {
+      throw new HttpException({ error: 'ERROR.NOTFOUND' }, 404);
+    }
+
+    const favourites: { count: string }[] = await this.recipeRepository.query(
       `SELECT COUNT(*) AS count FROM user_favorites_recipe WHERE "recipeId"=${id}`,
     );
-    const ratingAmount: { count: number }[] = await this.userRatingRepository.query(
+    const ratingAmount: { count: string }[] = await this.userRatingRepository.query(
       `SELECT COUNT(*) AS count FROM rating WHERE "recipeId"=${id}`,
     );
 
@@ -492,8 +497,8 @@ export class RecipesService {
       creationDate: recipe.creationDate,
       creator: recipe.creator.convertToIUser(),
       difficulty: recipe.difficulty,
-      favorites: favourites[0].count || 0,
-      ratingAmount: ratingAmount[0].count || 0,
+      favorites: parseInt(favourites[0].count) || 0,
+      ratingAmount: parseInt(ratingAmount[0].count) || 0,
       id: id,
       images: recipe.imageEntities.map((entity) => entity.id),
       ingredients: recipe.ingredients,

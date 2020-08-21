@@ -422,8 +422,6 @@ export default class CreateRecipePage extends Vue {
         this.additionalErrors = responseErrorHandler(error);
       }
 
-      // TODO: Send create Recipe to Server
-
       this.isLoading = false;
     }
   }

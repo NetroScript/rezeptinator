@@ -43,7 +43,8 @@
     "USEREXISTS": "Die E-Mail Adresse oder der Nutzername existieren schon.",
     "NOACCOUNT": "Es gibt keinen Account mit dieser E-Mail",
     "WRONGPASSWORD": "Das eingegebene Passwort ist falsch.",
-    "FAILEDIMAGEUPLOAD": "Beim Hochladen der Bilder ist ein Fehler aufgetreten"
+    "FAILEDIMAGEUPLOAD": "Beim Hochladen der Bilder ist ein Fehler aufgetreten",
+    "NOTFOUND": "Seite wurde nicht gefunden."
   },
   "DESCRIPTION": {
     "PROFILEPICTURE": "Profilbild des Nutzers"
@@ -192,7 +193,28 @@
   },
   "MISSINGINGREDIENTS": "*Es sind nicht für alle Zutaten Daten vorhanden, somit kann die Anzeige für Allergien und Kategorien unvollständig sein.",
   "DIFFICULTY": "Schwierigkeit",
-  "CALORIES": "kcal pro Portion",
+  "CALORIESINFO": "kcal pro Portion",
   "HEALTHYNESS": "Lebensmittelampel basierend auf Zucker und Fett",
-  "NORECIPESFOUND": "Es wurden keine Rezepte gefunden. Verallgemeinern Sie die Suche"
+  "NORECIPESFOUND": "Es wurden keine Rezepte gefunden. Verallgemeinern Sie die Suche",
+  "SHOW": {
+    "NOIMAGES": "Keine Bilder Verfügbar",
+    "TAGS": "Tags:",
+    "CREATOR": "Ersteller: ",
+    "FAVORITES": "Favoriten: ",
+    "RATING": "Bewerten: ",
+    "NORATING": "(Bisher unbewertet)",
+    "INGREDIENTS": "Zutatenliste für ",
+    "STEPS": "Zubereitung"
+  },
+  "PIECEPORTIONPREFIX": "{amount}{fraction}, {size}",
+  "UNITPORTIONPREFIX": "{amount} {fraction} {unit}",
+  "NUTRIENTS": "Ungefähre Nährwerte",
+  "PERPORTION": "pro Portion",
+  "PER100G": "pro 100g",
+  "CALORIES": "Kalorien",
+  "PROTEIN": "Eiweiß",
+  "FAT": "Fett",
+  "SUGAR": "Zucker",
+  "CARBS": "Kohlenhydrate",
+  "FIBERS": "Ballaststoffe"
 }

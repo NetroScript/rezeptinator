@@ -3,8 +3,9 @@
     <template #content>
       <v-row align-content="center">
         <RecipeOverviewCard
-          v-for="(recipe, i) in recipeQuery.recipes"
+          v-for="(recipe, i) in recipes"
           :key="recipe.id"
+          v-intersect.once="i >= recipes.length - 6 ? loadMore : () => {}"
           :recipe="recipe"
         ></RecipeOverviewCard>
       </v-row>
@@ -18,9 +19,18 @@
           {{ $t('NORECIPESFOUND') }}
         </v-card-title>
       </v-row>
+      <div class="text-center">
+        <v-progress-circular
+          v-if="isLoading"
+          :width="10"
+          size="100"
+          color="primary"
+          indeterminate
+        ></v-progress-circular>
+      </div>
     </template>
     <template #drawer>
-      <v-btn color="secondary" dark fixed bottom right fab>
+      <v-btn v-if="$auth.loggedIn" color="secondary" nuxt to="/create" dark fixed bottom right fab>
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </template>
@@ -50,6 +60,7 @@
 
 <script lang="ts">
 import MainLayout from '@client/layout/default.vue';
+import { IRecipe } from '@common/Model/Recipe/IRecipe';
 import {
   IAdvancedRecipeSearch,
   IRecipeQueryResult,
@@ -69,6 +80,7 @@ import Timeout = NodeJS.Timeout;
 export default class IndexPage extends Vue {
   users: IUser[] = [];
   recipeQuery: IRecipeQueryResult = { recipes: [], totalCount: 0 };
+  recipes: IRecipe[] = [];
 
   currentQuery: IAdvancedRecipeSearch = {
     ascending: false,
@@ -76,22 +88,27 @@ export default class IndexPage extends Vue {
     pageSize: 25,
   };
 
+  isLoading = false;
+
   searchDebounce: Timeout;
 
   async asyncData({ $axios }: Context) {
     let recipeQuery: IRecipeQueryResult;
+    let recipes: IRecipe[] = [];
     try {
       recipeQuery = await $axios.$post('recipes/find', {
         ascending: false,
         order: RecipeOrderVariants.Favourites,
         pageSize: 25,
       });
+      recipes = recipeQuery.recipes;
     } catch (e) {
       console.log(e);
     }
 
     return {
       recipeQuery,
+      recipes,
     };
   }
 
@@ -99,15 +116,41 @@ export default class IndexPage extends Vue {
     clearTimeout(this.searchDebounce);
 
     this.searchDebounce = setTimeout(() => {
+      this.recipes = [];
       this.search();
     }, 200);
   }
 
+  // Load more entries
+  async loadMore(
+    entries: IntersectionObserverEntry[],
+    observer: IntersectionObserver,
+    isIntersecting: boolean,
+  ) {
+    if (
+      // Is it actually already on screen or is it the initialising event
+      isIntersecting &&
+      // Did we not already try to load the new page
+      this.currentQuery.lastId != this.recipeQuery.lastId &&
+      // Did we not already load all entries
+      this.recipes.length != this.recipeQuery.totalCount
+    ) {
+      // Continue after the last search and then search
+      this.currentQuery.lastId = this.recipeQuery.lastId;
+      this.currentQuery.lastValue = this.recipeQuery.lastValue;
+      await this.search();
+    }
+  }
+
   async search() {
+    this.isLoading = true;
+    await new Promise((r) => setTimeout(r, 2000));
     this.recipeQuery = await this.$axios.$post<IRecipeQueryResult>(
       'recipes/find',
       this.currentQuery,
     );
+    this.recipes.push(...this.recipeQuery.recipes);
+    this.isLoading = false;
   }
 }
 </script>

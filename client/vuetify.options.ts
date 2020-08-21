@@ -34,45 +34,24 @@ export default {
     values: {
       lowerheat: {
         component: LowerHeat,
-        props: {
-          name: 'lowerheat',
-        },
       },
       upperheat: {
         component: UpperHeat,
-        props: {
-          name: 'upperheat',
-        },
       },
       lowerupperheat: {
         component: LowerUpperHeat,
-        props: {
-          name: 'lowerupperheat',
-        },
       },
       fullgrill: {
         component: FullGrill,
-        props: {
-          name: 'fullgrill',
-        },
       },
       partgrill: {
         component: PartGrill,
-        props: {
-          name: 'partgrill',
-        },
       },
       fan: {
         component: Fan,
-        props: {
-          name: 'fan',
-        },
       },
       grillfan: {
         component: GrillFan,
-        props: {
-          name: 'grillfan',
-        },
       },
     },
   },

@@ -50,19 +50,11 @@ export class UnitPortion extends PortionFunctions implements IPortion {
    */
   getText(): LocalisationInformation {
     return {
-      key: 'UnitPortionPrefix',
+      key: 'UNITPORTIONPREFIX',
       options: {
         amount: this._cachedAmount,
         fraction: this._cachedFraction,
-        unit: '$t(' + Unit[this.type] + 'UnitShort)',
-        ingredientName:
-          '$t(' +
-          (this.ingredientNameIndex == 0
-            ? this.ingredient.name
-            : this.ingredient.alias[
-                (this.ingredientNameIndex - 1) % this.ingredient.alias.length
-              ]) +
-          ')',
+        unit: '$t(' + Unit[this.type] + 'Unit)',
       },
     };
   }

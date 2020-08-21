@@ -1,5 +1,5 @@
 import { AllergyGroups, IngredientCategories } from '@common/Model/Ingredient';
-import { OvenTypes } from '@common/Model/Recipe/RecipeStep';
+import { OvenTypes, RecipeStepTypes } from '@common/Model/Recipe/RecipeStep';
 
 export const IconsForIngredientCategories: { [key in IngredientCategories]: string } = {
   0: 'mdi-food-apple',
@@ -20,6 +20,13 @@ export const IconsForIngredientCategories: { [key in IngredientCategories]: stri
   15: 'mdi-chili-mild',
   16: 'mdi-waves',
   17: 'mdi-silverware-variant',
+};
+
+export const IconsForStepTypes: { [key in RecipeStepTypes]: string } = {
+  0: 'mdi-text',
+  1: 'mdi-stove',
+  2: 'mdi-pot-steam',
+  3: 'mdi-sleep',
 };
 
 export const IconsForOvenTypes: { [key in OvenTypes]: string } = {
