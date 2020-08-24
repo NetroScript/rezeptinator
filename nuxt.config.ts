@@ -167,6 +167,28 @@ export default {
   },
 
   vuetify: {
-    optionsPath: './vuetify.options.ts',
+    theme: {
+      dark: false,
+      themes: {
+        dark: {
+          primary: '#689F38',
+          accent: '#bea11c',
+          secondary: '#827717',
+          success: '#4CAF50',
+          info: '#2196F3',
+          warning: '#FB8C00',
+          error: '#FF5252',
+        },
+        light: {
+          primary: '#9CCC65',
+          accent: '#FDD835',
+          secondary: '#827717',
+          success: '#4CAF50',
+          info: '#2196F3',
+          warning: '#FB8C00',
+          error: '#FF5252',
+        },
+      },
+    },
   },
 };

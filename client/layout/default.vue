@@ -156,4 +156,67 @@ body {
 .theme--dark ::-webkit-scrollbar-thumb:hover {
   background: #999999;
 }
+
+/* Custom icons */
+
+@font-face {
+  font-family: 'oventypes';
+  src: url('/fonts/oventypes.eot?u885ny');
+  src: url('/fonts/oventypes.eot?u885ny#iefix') format('embedded-opentype'),
+    url('/fonts/oventypes.ttf?u885ny') format('truetype'),
+    url('/fonts/oventypes.woff?u885ny') format('woff'),
+    url('/fonts/oventypes.svg?u885ny#oventypes') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^='mdi-oven-'],
+[class*=' mdi-oven-'] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'oventypes' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.mdi-oven-fullgrill:before,
+.mdi-oven-grillandfan:before,
+.mdi-oven-lowerheat:before,
+.mdi-oven-lowerupperheat:before,
+.mdi-oven-partgrill:before,
+.mdi-oven-upperheat:before,
+.mdi-oven-fan:before {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'oventypes' !important;
+}
+
+.mdi-oven-fullgrill:before {
+  content: '\e900';
+}
+.mdi-oven-grillandfan:before {
+  content: '\e901';
+}
+.mdi-oven-lowerheat:before {
+  content: '\e902';
+}
+.mdi-oven-lowerupperheat:before {
+  content: '\e903';
+}
+.mdi-oven-partgrill:before {
+  content: '\e904';
+}
+.mdi-oven-upperheat:before {
+  content: '\e905';
+}
+.mdi-oven-fan:before {
+  content: '\e906';
+}
 </style>

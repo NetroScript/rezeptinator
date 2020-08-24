@@ -30,13 +30,13 @@ export const IconsForStepTypes: { [key in RecipeStepTypes]: string } = {
 };
 
 export const IconsForOvenTypes: { [key in OvenTypes]: string } = {
-  0: '$lowerheat',
-  1: '$upperheat',
-  2: '$lowerupperheat',
-  3: '$fan',
-  4: '$fullgrill',
-  5: '$partgrill',
-  6: '$grillfan',
+  0: 'mdi-oven-lowerheat',
+  1: 'mdi-oven-upperheat',
+  2: 'mdi-oven-lowerupperheat',
+  3: 'mdi-oven-fan',
+  4: 'mdi-oven-fullgrill',
+  5: 'mdi-oven-partgrill',
+  6: 'mdi-oven-grillandfan',
 };
 
 export const IconsForTagGroups: { [key: string]: string } = {
