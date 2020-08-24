@@ -116,3 +116,44 @@ export default class MainLayout extends Vue {
   title = 'Rezeptinator';
 }
 </script>
+
+<style>
+/* Firefox specific */
+body {
+  scrollbar-color: dark;
+  scrollbar-width: thin;
+}
+/* Webkit */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-left: 1px solid #dadada;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c8c8c8;
+  border-radius: 7px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a7a7a7;
+}
+
+.theme--dark ::-webkit-scrollbar-track {
+  background: #202020;
+  border-left: 1px solid #2c2c2c;
+}
+
+.theme--dark ::-webkit-scrollbar-thumb {
+  background: #3e3e3e;
+  border-radius: 7px;
+}
+
+.theme--dark ::-webkit-scrollbar-thumb:hover {
+  background: #999999;
+}
+</style>

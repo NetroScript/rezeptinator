@@ -56,7 +56,7 @@
               :value="recipe.difficulty * 5"
             />
           </v-card>
-          <v-card class="py-3 px-4 mx-2">
+          <v-card v-if="$auth.loggedIn" class="py-3 px-4 mx-2">
             <span class="caption"> {{ $t('SHOW.RATING') }}</span>
             <v-rating
               :value="recipe.userRating * 5"
@@ -345,10 +345,11 @@ export default class IndexPage extends Vue {
     try {
       recipe = await $axios.$get<IRecipe>('recipes/' + route.params.id);
 
-      if (recipe.recipeSummary.vegan == Vegan.Vegan) {
-        recipe.tags.splice(0, 0, { group: 'Vegan', tag: app.i18n.t('VEGAN') as string });
-      } else if (recipe.recipeSummary.vegan == Vegan.Vegetarion) {
-        recipe.tags.splice(0, 0, { group: 'Vegan', tag: app.i18n.t('VEGETARIAN') as string });
+      if (recipe.recipeSummary.vegan > 0) {
+        recipe.tags.splice(0, 0, {
+          group: 'Vegan',
+          tag: app.i18n.t('VEGAN.' + recipe.recipeSummary.vegan) as string,
+        });
       }
     } catch (e) {
       if (route.params.id != undefined) console.log(e);

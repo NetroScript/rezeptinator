@@ -30,6 +30,12 @@
       </div>
     </template>
     <template #drawer>
+      <RecipeFilters
+        :current-query="currentQuery"
+        :search-again="searchAgain"
+        :show-search-drawer="showSearchDrawer"
+      />
+
       <v-btn v-if="$auth.loggedIn" color="secondary" nuxt to="/create" dark fixed bottom right fab>
         <v-icon>mdi-plus</v-icon>
       </v-btn>
@@ -48,9 +54,22 @@
         prepend-inner-icon="mdi-magnify"
         @input="searchAgain"
       ></v-text-field>
+      <v-btn
+        dark
+        icon
+        @click="
+          currentQuery.ascending = !currentQuery.ascending;
+          searchAgain();
+        "
+        ><v-icon>{{
+          currentQuery.ascending ? 'mdi-sort-descending' : 'mdi-sort-ascending'
+        }}</v-icon></v-btn
+      >
       <v-tooltip bottom>
         <template #activator="{ on, attrs }">
-          <v-btn dark icon v-bind="attrs" v-on="on"><v-icon>mdi-filter</v-icon></v-btn>
+          <v-btn dark icon v-bind="attrs" v-on="on" @click="showSearchDrawer = !showSearchDrawer"
+            ><v-icon>mdi-filter</v-icon></v-btn
+          >
         </template>
         <span>{{ $t('ADVANCEDFILTERS') }}</span>
       </v-tooltip>
@@ -59,26 +78,23 @@
 </template>
 
 <script lang="ts">
+import 'reflect-metadata';
+import { IAdvancedRecipeSearch } from '@common/Model/Recipe/IAdvacedRecipeSearch';
 import MainLayout from '~/layout/default.vue';
 import { IRecipe } from '@common/Model/Recipe/IRecipe';
-import {
-  IAdvancedRecipeSearch,
-  IRecipeQueryResult,
-  RecipeOrderVariants,
-} from '@common/Model/Recipe/Recipe';
+import { IRecipeQueryResult, RecipeOrderVariants } from '@common/Model/Recipe/Recipe';
 
-import { IUser } from '@common/Model/User';
 import { Context } from '@nuxt/types';
 import '@nuxtjs/axios';
 import { Component, Vue } from 'nuxt-property-decorator';
 import RecipeOverviewCard from '~/components/RecipeOverviewCard.vue';
+import RecipeFilters from '~/components/RecipeFilters.vue';
 import Timeout = NodeJS.Timeout;
 
 @Component({
-  components: { RecipeOverviewCard, MainLayout },
+  components: { RecipeFilters, RecipeOverviewCard, MainLayout },
 })
 export default class IndexPage extends Vue {
-  users: IUser[] = [];
   recipeQuery: IRecipeQueryResult = { recipes: [], totalCount: 0 };
   recipes: IRecipe[] = [];
 
@@ -89,6 +105,8 @@ export default class IndexPage extends Vue {
   };
 
   isLoading = false;
+
+  showSearchDrawer = false;
 
   searchDebounce: Timeout;
 
@@ -144,13 +162,20 @@ export default class IndexPage extends Vue {
 
   async search() {
     this.isLoading = true;
-    await new Promise((r) => setTimeout(r, 2000));
     this.recipeQuery = await this.$axios.$post<IRecipeQueryResult>(
       'recipes/find',
       this.currentQuery,
     );
     this.recipes.push(...this.recipeQuery.recipes);
     this.isLoading = false;
+  }
+
+  // The combination Nuxt and Vue seems to mess up the model, and the drawer will always set its state to true on load
+  // so we use this to force set it to false
+  async mounted() {
+    this.$nextTick(() => {
+      this.showSearchDrawer = false;
+    });
   }
 }
 </script>

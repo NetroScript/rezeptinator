@@ -4,7 +4,6 @@ import { ICreatePortion } from '@common/Model/Recipe/ICreatePortion';
 import { IRecipe } from '@common/Model/Recipe/IRecipe';
 import { IRecipeStep } from '@common/Model/Recipe/IRecipeStep';
 import { IUser } from '@common/Model/User';
-import { NutrientEntity } from '@server/ingredient/nutrient.entity';
 import TagData from '../../Data/Tags.json';
 
 interface IRating {
@@ -56,29 +55,6 @@ export enum RecipeOrderVariants {
   Calories,
   Difficulty,
   CookTime,
-}
-
-export interface IAdvancedRecipeSearch {
-  ascending?: boolean;
-  author?: number;
-  excludeAllergies?: AllergyGroups[];
-  excludeCategories?: IngredientCategories[];
-  excludeIngredients?: number[];
-  hasTags?: number[];
-  includeCategories?: IngredientCategories[];
-  includeIngredients?: number[];
-  language?: AvailableLanguages;
-  lastId?: number;
-  lastValue?: number;
-  maxCookTime?: number;
-  maxDifficulty?: number;
-  maxTotalTime?: number;
-  minDifficulty?: number;
-  minimalRating?: number;
-  name?: string;
-  order?: RecipeOrderVariants;
-  pageSize?: number;
-  veganLevel?: Vegan;
 }
 
 export interface ICreateRecipe {

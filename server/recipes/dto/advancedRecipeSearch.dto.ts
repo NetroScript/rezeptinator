@@ -1,4 +1,5 @@
-import { IAdvancedRecipeSearch, RecipeOrderVariants } from '@common/Model/Recipe/Recipe';
+import { IAdvancedRecipeSearch } from '@common/Model/Recipe/IAdvacedRecipeSearch';
+import { RecipeOrderVariants } from '@common/Model/Recipe/Recipe';
 import {
   IsBoolean,
   IsEnum,
@@ -60,14 +61,18 @@ export class advancedRecipeSearchDto implements IAdvancedRecipeSearch {
 
   @IsOptional()
   @IsNumber()
+  @Min(0)
   maxCookTime?: number;
 
   @IsOptional()
   @IsNumber()
+  @Min(0)
   maxTotalTime?: number;
 
   @IsOptional()
   @IsNumber()
+  @Min(0)
+  @Max(5)
   minimalRating?: number;
 
   @IsOptional()

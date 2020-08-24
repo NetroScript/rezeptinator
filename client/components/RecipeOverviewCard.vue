@@ -101,7 +101,7 @@
                     v-text="ingredientCategoriesIcons[i]"
                   />
                 </template>
-                <span>{{ $t('CATEGORIES.' + category) }}</span>
+                <span>{{ $t('CATEGORYLIST.' + category) }}</span>
               </v-tooltip>
             </v-row>
             <v-row

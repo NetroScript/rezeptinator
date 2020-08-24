@@ -151,7 +151,7 @@
   "ExtraLargePiecePortion": "Sehr Groß",
   "PORTIONS": "Portionen",
   "INGREDIENTCATEGORIES": "Kategorien von Zutaten",
-  "CATEGORIES": {
+  "CATEGORYLIST": {
     "0": "Obst",
     "1": "Gemüse",
     "2": "Samen",
@@ -171,8 +171,11 @@
     "16": "Meeresfrüchte",
     "17": "Sonstiges"
   },
-  "VEGAN": "Vegan",
-  "VEGETARIAN": "Vegetarisch",
+  "VEGAN": {
+    "0": "Egal",
+    "1": "Vegetarisch",
+    "2": "Vegan"
+  },
   "ALLERGIES": "Allergien",
   "ALLERGY": {
     "0": "Keine",
@@ -216,5 +219,30 @@
   "FAT": "Fett",
   "SUGAR": "Zucker",
   "CARBS": "Kohlenhydrate",
-  "FIBERS": "Ballaststoffe"
+  "FIBERS": "Ballaststoffe",
+  "FILTER": {
+    "AUTHOR": "Nach einem Autor suchen.",
+    "INCLUDEINGREDIENTS": "Folgende Zutaten müssen enthalten sein",
+    "EXCLUDEINGREDIENTS": "Folgende Zutaten dürfen nicht enthalten sein",
+    "INCLUDECATEGORIES": "Folgende Kategorien müssen enthalten sein",
+    "EXCLUDECATEGORIES": "Folgende Kategorien dürfen nicht enthalten sein",
+    "INCLUDETAGS": "Folgende Tags müssen enthalten sein",
+    "EXCLUDEALLERGIES": "Folgende Allergien dürfen nicht enthalten sein",
+    "COOKTIME": "Maximale Kochzeit",
+    "TOTALTIME": "Maximale Gesamtzeit",
+    "RATING": "Mindestens",
+    "DIFFICULTY": "Schwierigkeit",
+    "SORT": "Sortieren nach"
+  },
+  "ORDERVARIANTS": {
+    "0": "Standard",
+    "1": "Bewertung",
+    "2": "Favoriten",
+    "3": "Kalorien",
+    "4": "Schwierigkeit",
+    "5": "Kochzeit"
+  },
+  "INGREDIENTS": "Zutaten",
+  "CATEGORIES": "Kategorien",
+  "AUTHOR": "Autor"
 }

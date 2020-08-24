@@ -105,10 +105,10 @@
 </template>
 
 <script lang="ts">
+import 'reflect-metadata';
 import { IRecipeStep } from '@common/Model/Recipe/IRecipeStep';
 import { OvenTypes, RecipeStepTypes } from '@common/Model/Recipe/RecipeStep';
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
-import 'reflect-metadata';
 import { extend, ValidationProvider } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
 import { IconsForOvenTypes } from '~/utils/enumToIcon';

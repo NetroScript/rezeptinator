@@ -1,9 +1,10 @@
 import { collectedIngredients } from '@common/generate/GetIngredients';
 import { AvailableLanguages } from '@common/Localisation/Generic';
 import { AllergyGroups, IngredientCategories, Vegan } from '@common/Model/Ingredient';
+import { IAdvancedRecipeSearch } from '@common/Model/Recipe/IAdvacedRecipeSearch';
 import { IRecipe } from '@common/Model/Recipe/IRecipe';
 import { PiecePortionTypes, PortionTypes, Unit } from '@common/Model/Recipe/Portion';
-import { IAdvancedRecipeSearch, RecipeOrderVariants, TagList } from '@common/Model/Recipe/Recipe';
+import { RecipeOrderVariants, TagList } from '@common/Model/Recipe/Recipe';
 import { OvenTypes, RecipeStepTypes } from '@common/Model/Recipe/RecipeStep';
 import { Roles } from '@common/Model/User';
 import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';

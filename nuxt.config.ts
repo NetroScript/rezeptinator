@@ -1,5 +1,4 @@
 import { resolve } from 'path';
-import LowerHeat from './client/components/icons/LowerHeat.vue';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 
 const {
@@ -133,7 +132,6 @@ export default {
       if (!config.resolve.plugins) {
         config.resolve.plugins = [];
       }
-      console.log(configFile);
       config.resolve.plugins.push(new TsconfigPathsPlugin({ configFile: configFile }));
     },
   },
