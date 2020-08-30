@@ -3,13 +3,9 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>
 
-# Nestjs Nuxt starter
+# Rezeptinator
 
-This project is an updated version of this repository [nuxtjs-nestjs-starter](https://github.com/ColonelBundy/nuxtjs-nestjs-starter)
-With some minor changes. The cli of nestjs was used and is configured correctly. Each nest cli command should generate the proper file at the right place.
-A big thanks to [ColonelBundy](https://github.com/ColonelBundy) for showing a good way to tie these 2 great framework together.
-
-This is a full typescript project and use yarn as the packager. (not tested with npm but should work regardless)
+This project used [this](https://github.com/Goopil/nest-nuxt-starter) as a starting reference and is made from scratch otherwise, if not noted otherwise in the code.
 
 ## Project structure
 
@@ -30,70 +26,23 @@ you can use webpack alias (defined in each tsconfig.json and shared with [tsconf
 * `@client`
 * `@common`
 
-## getting started
+## Getting started
 
-### command
+### Commands
 
-* `yarn install`
-* `yarn start:dev`
-* `yarn build`
-* `yarn start`
+* `npm install`
+* `npm run start:dev`
+* `npm run build`
+* `npm run start`
 
-### Http adapter
-
-You can choose from your adapter from the 2 supported by nestjs. This starter implements both express and fastify.
-When you are desided, you should clear the other.
-
-* Remove the ` @nestjs/plafetorm-xxx` and the respective `@types` packages from your package.json
-* Remove the related filter in `server/nuxt`
-
-### sharing data between nuxt and nest via req / res attributes
-
-you can augment the data passed to nuxt ctx via the filter located in (`server/nuxt`). when you are done, do not forget to complet the `client/connect-shim.d.ts` to have proper auto completion.
-By default, this project implement the fastify adapter. The `FastifyRequest` and `FastifyReply` are accessible.
-
-* definition: `client/connect-shim.d.ts`
-* injection: `server/nuxt/nuxtFastify.filter.ts`
-
-update to suit your needs.
+For further commands take a look at the `package.json`
 
 ### Settings
 
 the server settings like PORT, HOST and HOSTNAME are injected via process.env and are located in the `nuxt.config.ts`
 
-### Production
-
-Two option here, you will find a multistage dockerfile ready to be used and a pm2 config or you could also go for the classic (node dist/server/main.js)
-in the later case, do not forget to set `process.env.NODE_ENV` as `production`. Otherwise, the Nuxt server would rebuild !
-
-
 ## Docker
 
-Port: 44444 -> Postgresql Instanz
+A docker file is provided to setup a database with the same settings as are defined in the typeorm connection.
 
-## Mögliche Quellen für Daten:
-
-
-https://www.jobundfit.de/rezepte/
-
-Z.B. PDF mit Rezepten hier: https://www.jobundfit.de/rezepte/speiseplaene/
-
-Zutaten:  
-https://eatsmarter.de/lexikon/warenkunde
-
-Tonnen an Daten:  
-https://world.openfoodfacts.org/data  
-https://fdc.nal.usda.gov/download-datasets.html
-
-Nährtwertdaten:  
-https://www.bmi-rechner.net/kalorientabelle.htm
-
-Ideen:
-
-* Filter include, exclude, favourite, time, difficulty, region, categories, diversity, ...
-* Bei Rezepten 
-    * beliebig die Portionen verändern 
-    * Nährwertangaben approximieren
-    * Gesundheitsindex berechnen
-
-
+Alternatively you can provide your own database and edit the `ormconfig.ts`.
