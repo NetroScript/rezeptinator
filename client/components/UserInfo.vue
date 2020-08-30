@@ -96,7 +96,6 @@ export default class UserInfo extends Vue {
   }): Promise<string[]> {
     try {
       const data = await this.$auth.loginWith('local', { data: { email, password } });
-      console.log(data);
       this.loginDialog = false;
       this.loginSuccessful = true;
       return [];

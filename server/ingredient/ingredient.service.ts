@@ -1,10 +1,9 @@
+import { IIngredient } from '@common/Model/Ingredient';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IngredientEntity } from '@server/ingredient/ingredient.entity';
-import { DeleteResult, getRepository, In, Repository } from 'typeorm';
-import { IIngredient } from '@common/Model/Ingredient';
 import { NutrientEntity } from '@server/ingredient/nutrient.entity';
-import { CreateIngredientDto } from '@server/ingredient/dto/createIngredient.dto';
+import { DeleteResult, In, Repository } from 'typeorm';
 import { Brackets } from 'typeorm/index';
 
 @Injectable()
@@ -20,19 +19,23 @@ export class IngredientService {
     return this.ingredientRepository.find();
   }
 
-  async findByNameStarting(name: string): Promise<IIngredient[]> {
-    return this.ingredientRepository
+  async findByNameStarting(name: string, ignoreUserGenerated = true): Promise<IIngredient[]> {
+    const query = this.ingredientRepository
       .createQueryBuilder('ingredient')
       .leftJoinAndSelect('ingredient.nutritions', 'nutrient')
-      .where('ingredient.userGenerated = false')
-      .andWhere(
+      .where(
         new Brackets((qb) => {
           qb.where('LOWER(name) LIKE :name', {
             name: `%${name.toLowerCase()}%`,
           }).orWhere('LOWER(alias) LIKE :name', { name: `%${name.toLowerCase()}%` });
         }),
-      )
-      .getMany();
+      );
+
+    if (ignoreUserGenerated) {
+      query.andWhere('ingredient.userGenerated = false');
+    }
+
+    return await query.getMany();
   }
 
   async findInList(idList: number[]): Promise<IngredientEntity[]> {

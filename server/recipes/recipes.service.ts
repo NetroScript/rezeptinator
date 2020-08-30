@@ -1,26 +1,22 @@
 import { IRecipe } from '@common/Model/Recipe/IRecipe';
+import { IRecipeQueryResult, RecipeOrderVariants, TagList } from '@common/Model/Recipe/Recipe';
 import { getRecipeSummaryFromIPortion } from '@common/utils/summary';
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ImagesEntity } from '@server/images/images.entity';
+import { IngredientEntity } from '@server/ingredient/ingredient.entity';
+import { IngredientService } from '@server/ingredient/ingredient.service';
+import { NutrientEntity } from '@server/ingredient/nutrient.entity';
+import { advancedRecipeSearchDto } from '@server/recipes/dto/advancedRecipeSearch.dto';
+import { createRecipeDto } from '@server/recipes/dto/createRecipe.dto';
+import { PortionEntity } from '@server/recipes/portion.entity';
 import { RecipeEntity } from '@server/recipes/recipe.entity';
+import { RecipeStepEntity } from '@server/recipes/recipeStep.entity';
+import { RecipeSummaryEntity } from '@server/recipes/recipeSummary.entity';
+import { TagEntity } from '@server/recipes/tag.entity';
+import { UserEntity } from '@server/user/user.entity';
 import { UserRatingEntity } from '@server/user/userRating.entity';
 import { DeleteResult, In, Like, Repository } from 'typeorm';
-import { UserEntity } from '@server/user/user.entity';
-import { advancedRecipeSearchDto } from '@server/recipes/dto/advancedRecipeSearch.dto';
-import { PortionEntity } from '@server/recipes/portion.entity';
-import { createRecipeDto } from '@server/recipes/dto/createRecipe.dto';
-import { IRecipeQueryResult, RecipeOrderVariants, TagList } from '@common/Model/Recipe/Recipe';
-import { TagEntity } from '@server/recipes/tag.entity';
-import { RecipeStepEntity } from '@server/recipes/recipeStep.entity';
-import { IngredientEntity } from '@server/ingredient/ingredient.entity';
-import { NutrientEntity } from '@server/ingredient/nutrient.entity';
-import { RecipeSummaryEntity } from '@server/recipes/recipeSummary.entity';
-import { IngredientService } from '@server/ingredient/ingredient.service';
-import { PortionFunctions, PortionTypes } from '@common/Model/Recipe/Portion';
-import { PiecePortion } from '@common/Classes/PiecePortion';
-import { UnitPortion } from '@common/Classes/UnitPortion';
-import { Vegan } from '@common/Model/Ingredient';
 
 @Injectable()
 export class RecipesService {
@@ -56,6 +52,7 @@ export class RecipesService {
       totalCount: 0,
     };
 
+    // Maps to later assign information to the objects based on their ids
     const favoriteMap: Map<number, boolean> = new Map();
     const ratingMap: Map<number, number> = new Map();
 
@@ -304,6 +301,7 @@ export class RecipesService {
         )})`,
       );
 
+      // If a logged in user is making the request fetch data which is connected to his account
       if (userID != undefined) {
         const favorites: {
           userId: number;
@@ -552,12 +550,12 @@ export class RecipesService {
     const ingredients: number[] = recipe.ingredients.map((ingredient) => ingredient.id);
 
     // For some reason cascade delete doesn't work, so we manually remove all the connected entities
+    await this.recipeRepository.query(`DELETE FROM rating WHERE "recipeId"=${id}`);
+    await this.recipeRepository.query(`DELETE FROM user_favorites_recipe WHERE "recipeId"=${id}`);
     await this.imageRepository.remove(recipe.imageEntities);
     await this.portionRepository.remove(recipe.ingredients);
     await this.recipeStepRepository.remove(recipe.recipeSteps);
     await this.recipeSummaryRepository.remove(recipe.recipeSummary);
-    await this.recipeRepository.query(`DELETE FROM rating WHERE "recipeId"=${id}`);
-    await this.recipeRepository.query(`DELETE FROM user_favorites_recipe WHERE "recipeId"=${id}`);
 
     if (ingredients.length > 0) await this.ingredientService.deleteUserCreatedList(ingredients);
 
@@ -608,7 +606,6 @@ export class RecipesService {
       .getRawOne<{ ratingAverage: number | null }>();
 
     // Save the new average value
-
     await this.recipeRepository
       .createQueryBuilder()
       .update()

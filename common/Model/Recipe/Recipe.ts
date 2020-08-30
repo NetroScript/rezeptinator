@@ -11,10 +11,6 @@ interface IRating {
   rating: number;
 }
 
-interface IRecipeImage {
-  path: string;
-}
-
 // The Tag model would also need to be adjusted to work with localisation
 // Meaning additionally a language entry which then also gets filterd on tag search
 export interface ITag {
@@ -23,6 +19,7 @@ export interface ITag {
   tag: string;
 }
 
+// Load the list of all tags from the JSOn data
 export const TagList: ITag[] = Object.keys(TagData)
   .map((key): ITag[] => {
     return TagData[key].map(

@@ -1,15 +1,7 @@
-import { ITag } from '@common/Model/Recipe/Recipe';
 import { UserEntity } from '@server/user/user.entity';
 import fs from 'fs';
 import path from 'path';
-import {
-  AfterRemove,
-  Column,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  Unique,
-} from 'typeorm/index';
+import { AfterRemove, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm/index';
 
 @Entity('image')
 export class ImagesEntity {
@@ -43,13 +35,13 @@ export class ImagesEntity {
     }
   }
 
-  constructor(data?: { id?: number; path?: string; originaLName?: string }) {
+  constructor(data?: { id?: number; path?: string; originalName?: string }) {
     if (!!data) {
       if (data.id != undefined) {
         this.id = data.id;
       }
       this.path = data.path;
-      this.originalName = data.originaLName;
+      this.originalName = data.originalName;
     }
   }
 }

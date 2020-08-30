@@ -11,6 +11,8 @@ export interface IRecipeStep {
   readonly type: RecipeStepTypes;
   text: string;
   time: number;
+  // Allow specific types to carry additional data, for example the temperature
+  // for the oven type
   payloadType?: number;
   payloadNumber?: number;
 }

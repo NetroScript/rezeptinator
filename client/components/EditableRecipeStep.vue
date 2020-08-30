@@ -106,6 +106,7 @@
 
 <script lang="ts">
 import 'reflect-metadata';
+
 import { IRecipeStep } from '@common/Model/Recipe/IRecipeStep';
 import { OvenTypes, RecipeStepTypes } from '@common/Model/Recipe/RecipeStep';
 import { Component, Prop, Vue } from 'nuxt-property-decorator';

@@ -55,12 +55,14 @@
 
 <script lang="ts">
 import 'reflect-metadata';
-import { required, email, min, max } from 'vee-validate/dist/rules';
-import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate';
-import { Vue, Component, Prop } from 'vue-property-decorator';
+
+import { extend, setInteractionMode, ValidationObserver, ValidationProvider } from 'vee-validate';
+import { email, max, min, required } from 'vee-validate/dist/rules';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 setInteractionMode('eager');
 
+// define the used rules
 extend('required', { ...required });
 
 extend('email', { ...email });
@@ -86,6 +88,7 @@ export default class AuthenticationForm extends Vue {
   async submit(): Promise<void> {
     if (
       !this.isLoading &&
+      // The form is valid
       (await (this.$refs.observer as Vue & { validate: () => boolean }).validate())
     ) {
       this.isLoading = true;

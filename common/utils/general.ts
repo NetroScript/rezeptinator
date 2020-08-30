@@ -8,6 +8,7 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 
+// Turn a number into the fraction string, 0.5 f.e. into ½
 function fractionToString(fraction: number): string {
   switch (fraction.toFixed(3)) {
     case '0.500':
@@ -51,6 +52,7 @@ function fractionToString(fraction: number): string {
   }
 }
 
+// Turn a number into both fraction and the leftover number
 export function splitIntoFraction(amount: number): { number: number; fraction: string } {
   const amountFloor = Math.floor(amount);
   const fractionPart = amount - amountFloor;
@@ -118,6 +120,7 @@ export function IncompatableWith(incompatibleSiblings: string[]) {
   Code from: https://github.com/typestack/class-validator/issues/245
  ################################################################# */
 
+// Round a number to a specific step size
 export function stepify(value: number, step: number): number {
   if (step != 0) {
     value = Math.floor(value / step + 0.5) * step;
@@ -126,8 +129,7 @@ export function stepify(value: number, step: number): number {
   return value;
 }
 
-//static _ALWAYS_INLINE_ float range_lerp(float p_value, float p_istart, float p_istop, float p_ostart, float p_ostop) { return Math::lerp(p_ostart, p_ostop, Math::inverse_lerp(p_istart, p_istop, p_value)); }
-
+// map one range into another range
 export function mapRange(
   value: number,
   inputMin: number,

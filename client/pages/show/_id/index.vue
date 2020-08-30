@@ -32,8 +32,7 @@
           </v-card>
           <v-card class="py-2 px-4 ma-2">
             <v-row no-gutters justify="center" align="center" align-content="center">
-              <span class="caption"> {{ $t('SHOW.FAVORITES') }}</span
-              >{{ recipe.favorites }}
+              <span class="caption pr-2"> {{ $t('SHOW.FAVORITES') }} </span> {{ recipe.favorites }}
               <v-spacer></v-spacer>
               <v-btn v-if="$auth.loggedIn" icon right color="amber accent-3" @click="favorite">
                 <v-icon>mdi-star{{ recipe.isFavorited ? '' : '-outline' }}</v-icon>
@@ -59,7 +58,7 @@
           <v-card v-if="$auth.loggedIn" class="py-3 px-4 mx-2">
             <span class="caption"> {{ $t('SHOW.RATING') }}</span>
             <v-rating
-              :value="recipe.userRating * 5"
+              v-model="recipe.userRating"
               color="#FFD740"
               half-increments
               background-color="grey darken-1"
@@ -228,7 +227,6 @@
 </template>
 
 <script lang="ts">
-import MainLayout from '~/layout/default.vue';
 import { Vegan } from '@common/Model/Ingredient';
 import { IRecipe } from '@common/Model/Recipe/IRecipe';
 import { PortionFunctions } from '@common/Model/Recipe/Portion';
@@ -239,6 +237,7 @@ import { Context } from '@nuxt/types';
 import '@nuxtjs/axios';
 import { Component, Vue } from 'nuxt-property-decorator';
 import RecipeOverviewCard from '~/components/RecipeOverviewCard.vue';
+import MainLayout from '~/layout/default.vue';
 import { IconsForOvenTypes, IconsForStepTypes, IconsForTagGroups } from '~/utils/enumToIcon';
 
 @Component({
@@ -257,6 +256,7 @@ export default class IndexPage extends Vue {
     return get100gSummaryFromIPortion(this.recipe.ingredients);
   }
 
+  // Keys to simplify mapping
   nutrientKeys = ['CALORIES', 'PROTEIN', 'FAT', 'SUGAR', 'CARBS', 'FIBERS'];
 
   // get Ingredient Data for the ingredients in the recipe
@@ -315,7 +315,8 @@ export default class IndexPage extends Vue {
         rating,
       });
       // If the not rated yes message was there, now disable it by setting a value
-      this.recipe.userRating = rating;
+      // We need to use set for reactivity
+      this.$set(this.recipe, 'userRating', rating);
     } catch (error) {}
   }
 

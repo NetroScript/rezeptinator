@@ -29,6 +29,8 @@ export const IconsForStepTypes: { [key in RecipeStepTypes]: string } = {
   3: 'mdi-sleep',
 };
 
+// The icon names for all the custom created icons, they might be called mdi
+// but they were manually made in InkScape specifically for this application
 export const IconsForOvenTypes: { [key in OvenTypes]: string } = {
   0: 'mdi-oven-lowerheat',
   1: 'mdi-oven-upperheat',

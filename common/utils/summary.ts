@@ -5,6 +5,7 @@ import { Vegan } from '@common/Model/Ingredient';
 import { IPortion, PortionFunctions, PortionTypes } from '@common/Model/Recipe/Portion';
 import { IRecipeSummary } from '@common/Model/Recipe/Recipe';
 
+// Turn a list of Portion Data Objects into the corresponding classes
 export function getPortionClassFromInterface(portions: IPortion[]): PortionFunctions[] {
   return portions.map<PortionFunctions>((entity) => {
     if (entity.instanceType == PortionTypes.Piece) {
@@ -39,21 +40,19 @@ export function getRecipeSummary(
         total.vegan = Vegan.Vegetarion;
       }
 
-      // Boolean giving info if there is sufficient information for all ingredients
-      if (current.ingredient.nutritions == undefined) {
-        total.dataForAll = false;
-      }
-
+      // Getting all allergies
       current.ingredient.allergies.forEach((allergy) => {
         if (!total.allergies.includes(allergy)) {
           total.allergies.push(allergy);
         }
       });
 
+      // getting all categories
       if (!total.categories.includes(current.ingredient.category)) {
         total.categories.push(current.ingredient.category);
       }
 
+      // sum up
       if (!!current.ingredient.nutritions) {
         totalWeight += current.getWeight() / servingSize;
         // Divided by 100 because the calories are based on 100g ingredients
@@ -68,10 +67,14 @@ export function getRecipeSummary(
             total.totalNutritions[key] += current.ingredient.nutritions[key] * weight;
           }
         }
+      } else {
+        // Boolean giving info if there is sufficient information for all ingredients
+        total.dataForAll = false;
       }
 
       return total;
     },
+    // Empty base object
     {
       allergies: [],
       categories: [],

@@ -1,20 +1,20 @@
+import { IUser, Roles } from '@common/Model/User';
 import { ImagesEntity } from '@server/images/images.entity';
+import { RecipeEntity } from '@server/recipes/recipe.entity';
+import { UserRatingEntity } from '@server/user/userRating.entity';
+import * as argon2 from 'argon2';
+import { IsEmail } from 'class-validator';
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
   BeforeInsert,
+  Column,
+  CreateDateColumn,
+  Entity,
   JoinTable,
   ManyToMany,
   OneToMany,
-  CreateDateColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { IsEmail } from 'class-validator';
-import * as argon2 from 'argon2';
-import { IUser, Roles } from '@common/Model/User';
-import { RecipeEntity } from '@server/recipes/recipe.entity';
-import { UserRatingEntity } from '@server/user/userRating.entity';
 
 @Entity('user')
 export class UserEntity implements IUser {

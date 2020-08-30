@@ -1,5 +1,5 @@
-import { Nuxt, Builder } from 'nuxt';
 import { Logger } from '@nestjs/common';
+import { Builder, Nuxt } from 'nuxt';
 import config from '../../nuxt.config';
 
 const log = new Logger('NuxtServer');
@@ -8,7 +8,7 @@ export class NuxtServer {
   private static instance: NuxtServer;
   public nuxt: Nuxt;
 
-  public async run(shouldBuild: boolean = true): Promise<Nuxt> {
+  public async run(shouldBuild = true): Promise<Nuxt> {
     const willBuild = config.dev && shouldBuild;
     const nuxt = new Nuxt(config);
     await nuxt.ready();

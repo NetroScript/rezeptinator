@@ -52,6 +52,7 @@ export interface IPortion {
 export abstract class PortionFunctions implements IPortion {
   abstract type: number;
 
+  // private data used for calculations, doesn't need to be exposed
   private _servingSize: number;
   protected _cachedAmount = 1;
   protected _cachedFraction = '';
@@ -61,10 +62,12 @@ export abstract class PortionFunctions implements IPortion {
   amount: number;
   ingredientNameIndex = 0;
 
+  // Get the serving size
   get servingSize(): number {
     return this._servingSize;
   }
 
+  // change the serving size, do additional calculations when doing so
   set servingSize(value: number) {
     ({ number: this._cachedAmount, fraction: this._cachedFraction } = splitIntoFraction(
       this.amount * value,

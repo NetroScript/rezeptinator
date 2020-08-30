@@ -1,14 +1,13 @@
+import { IOwnAccount } from '@common/Model/User';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from './user.entity';
-import { DeleteResult, Repository } from 'typeorm';
-import { LoginUserDto } from './dto/loginUser.dto';
-import { CreateUserDto } from './dto/createUser.dto';
+import { JWTTokenSecret } from '@server/config';
 import * as argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
-
-import { IOwnAccount, IUser } from '@common/Model/User';
-import { JWTTokenSecret } from '@server/config';
+import { DeleteResult, Repository } from 'typeorm';
+import { CreateUserDto } from './dto/createUser.dto';
+import { LoginUserDto } from './dto/loginUser.dto';
+import { UserEntity } from './user.entity';
 
 @Injectable()
 export class UserService {

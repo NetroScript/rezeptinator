@@ -1,8 +1,8 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { IngredientController } from '@server/ingredient/ingredient.controller';
 import { IngredientEntity } from '@server/ingredient/ingredient.entity';
 import { IngredientService } from '@server/ingredient/ingredient.service';
-import { IngredientController } from '@server/ingredient/ingredient.controller';
 import { NutrientEntity } from '@server/ingredient/nutrient.entity';
 
 @Module({
@@ -12,5 +12,5 @@ import { NutrientEntity } from '@server/ingredient/nutrient.entity';
   exports: [IngredientService],
 })
 export class IngredientModule implements NestModule {
-  configure(consumer: MiddlewareConsumer): void {}
+  configure(): void {}
 }

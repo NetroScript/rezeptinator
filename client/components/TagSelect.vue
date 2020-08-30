@@ -32,6 +32,7 @@
 </template>
 <script lang="ts">
 import 'reflect-metadata';
+
 import { ITag } from '@common/Model/Recipe/Recipe';
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import { IconsForTagGroups } from '~/utils/enumToIcon';
@@ -56,6 +57,7 @@ export default class TagSelect extends Vue {
   }
 
   async mounted(): Promise<void> {
+    // When it is mounted for the first time (component loaded) load all possible tags
     try {
       this.displayTags = (await this.$axios.$get<ITag[]>('recipes/tags/'))
         .map((tag) => {
@@ -77,6 +79,7 @@ export default class TagSelect extends Vue {
         let tag = this.displayTags[index];
         if (tag.group != previousGroup) {
           previousGroup = tag.group;
+          // Insert at index dividers and the group header
           this.displayTags.splice(index++, 0, { divider: true });
           this.displayTags.splice(index++, 0, { header: tag.group });
           this.displayTags.splice(index++, 0, { divider: true });

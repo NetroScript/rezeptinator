@@ -53,8 +53,10 @@
 
 <script lang="ts">
 import 'reflect-metadata';
+
 import { Component, Vue } from 'nuxt-property-decorator';
 import UserInfo from '~/components/UserInfo.vue';
+
 @Component({
   components: { UserInfo },
 })
@@ -101,6 +103,20 @@ export default class MainLayout extends Vue {
       onclick: () => {},
     },
     {
+      icon: 'mdi-view-list',
+      title: 'MYRECIPES',
+      to: '/own',
+      loggedInOnly: true,
+      onclick: () => {},
+    },
+    {
+      icon: 'mdi-star',
+      title: 'MYFAVORITES',
+      to: '/favorites',
+      loggedInOnly: true,
+      onclick: () => {},
+    },
+    {
       icon: 'mdi-invert-colors',
       title: 'CHANGETHEME',
       to: '',
@@ -109,11 +125,21 @@ export default class MainLayout extends Vue {
         event.stopPropagation();
         event.preventDefault();
         this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+        localStorage.setItem('darkMode', this.$vuetify.theme.dark.toString());
       },
     },
   ];
   miniVariant = false;
   title = 'Rezeptinator';
+
+  mounted() {
+    // Load the current theme
+    // TODO: Improve the load so that the page has the correct theme even when server side rendered
+    const theme = localStorage.getItem('darkMode');
+    if (theme != undefined) {
+      this.$vuetify.theme.dark = theme == 'true';
+    }
+  }
 }
 </script>
 
@@ -162,7 +188,8 @@ body {
 @font-face {
   font-family: 'oventypes';
   src: url('/fonts/oventypes.eot?u885ny');
-  src: url('/fonts/oventypes.eot?u885ny#iefix') format('embedded-opentype'),
+  src: url('/fonts/oventypes.woff2?u885ny') format('woff2'),
+    url('/fonts/oventypes.eot?u885ny#iefix') format('embedded-opentype'),
     url('/fonts/oventypes.ttf?u885ny') format('truetype'),
     url('/fonts/oventypes.woff?u885ny') format('woff'),
     url('/fonts/oventypes.svg?u885ny#oventypes') format('svg');

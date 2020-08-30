@@ -1,9 +1,8 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { AllergyGroups, IngredientCategories, Vegan } from '@common/Model/Ingredient';
-import { NutrientEntity } from '@server/ingredient/nutrient.entity';
 import { IRecipeSummary } from '@common/Model/Recipe/Recipe';
 import { ApiProperty } from '@nestjs/swagger';
-import { PortionTypes } from '@common/Model/Recipe/Portion';
+import { NutrientEntity } from '@server/ingredient/nutrient.entity';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('recipesummary')
 export class RecipeSummaryEntity implements IRecipeSummary {

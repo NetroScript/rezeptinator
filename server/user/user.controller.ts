@@ -1,13 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { UserService } from '@server/user/user.service';
-import { User } from '@server/common/decorators/user.decorator';
 import { IOwnAccount, Roles } from '@common/Model/User';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { RequiredRoles } from '@server/common/decorators/roles.decorator';
+import { User } from '@server/common/decorators/user.decorator';
+import { RolesGuard } from '@server/common/guards/roles.guard';
 import { AccountDto } from '@server/user/dto/accountDto';
 import { CreateUserDto } from '@server/user/dto/createUser.dto';
 import { LoginUserDto } from '@server/user/dto/loginUser.dto';
-import { RequiredRoles } from '@server/common/decorators/roles.decorator';
-import { RolesGuard } from '@server/common/guards/roles.guard';
+import { UserService } from '@server/user/user.service';
 
 @ApiBearerAuth()
 @Controller('user')
@@ -39,14 +39,14 @@ export class UserController {
   @ApiResponse({ description: 'Delete a single account' })
   async deleteAccount(@Param('username') username): Promise<{ success: boolean }> {
     const data = await this.userService.delete(username);
-    return { success: data.affected == 1 };
+    return { success: true };
   }
 
   @Delete()
   @ApiResponse({ description: 'Delete your own account' })
   async deleteOwnAccount(@User('username') username: string): Promise<{ success: boolean }> {
     const data = await this.userService.delete(username);
-    return { success: data.affected == 1 };
+    return { success: true };
   }
 
   @Post('login')

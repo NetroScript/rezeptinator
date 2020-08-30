@@ -1,18 +1,14 @@
-// Always per 100xx
+// Always per 100g for ingredients, other data structures keep track how
+// much it is in relation themselves
+// Improvement would be to also support fluids, but then also the density would be needed
+// on the referencing object
 export interface INutrients {
-  // Kalorien in kcal
   calories: number;
-  // Proteine
   protein: number;
-  // Fett
   fat: number;
-  // Kohlenhydrate
   carbs: number;
-  // Davon Zucker
   sugar: number;
-  // Balaststoffe
   fibers: number;
-  // Alcohol in Gramm -> 100ml Rum mit 65% haben 54g Alcohol, aber 65ml -> 54*1.25 = 65
   alcohol: number;
 }
 
@@ -85,6 +81,7 @@ export interface IIngredient {
   portionSize?: number;
 }
 
+// Interface for the API Request
 export interface ICreateIngredient {
   alias?: string[];
   allergies: AllergyGroups[];

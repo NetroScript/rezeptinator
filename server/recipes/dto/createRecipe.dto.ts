@@ -3,22 +3,21 @@ import { ICreatePortion } from '@common/Model/Recipe/ICreatePortion';
 import { IRecipeStep } from '@common/Model/Recipe/IRecipeStep';
 import { PortionTypes } from '@common/Model/Recipe/Portion';
 import { ICreateRecipe } from '@common/Model/Recipe/Recipe';
-import { CreateIngredientDto } from '@server/ingredient/dto/createIngredient.dto';
+import { RecipeStepTypes } from '@common/Model/Recipe/RecipeStep';
 import { IncompatableWith } from '@common/utils/general';
+import { Optional } from '@nestjs/common';
+import { ApiProperty } from '@nestjs/swagger';
+import { CreateIngredientDto } from '@server/ingredient/dto/createIngredient.dto';
 import {
   IsEnum,
   IsInt,
   IsNumber,
-  IsOptional,
   IsPositive,
   Max,
   Min,
   MinLength,
   ValidateNested,
 } from 'class-validator';
-import { RecipeStepTypes } from '@common/Model/Recipe/RecipeStep';
-import { Optional } from '@nestjs/common';
-import { ApiProperty } from '@nestjs/swagger';
 
 export class createRecipeDto implements ICreateRecipe {
   @Min(0)

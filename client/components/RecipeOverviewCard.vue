@@ -26,7 +26,27 @@
               ? 'to top right, rgba(90,109,83,.33), rgba(248,255,247,.7)'
               : ''
           "
-        />
+        >
+          <v-row style="position: absolute; top: 0; width: 100%;" dense no-gutters>
+            <v-col> </v-col>
+            <div
+              class="pl-4"
+              style="background-color: rgba(0, 0, 0, 0.2); border-radius: 10px; line-height: 44px;"
+            >
+              <div class="d-inline-block" style="opacity: 0.5;">({{ recipe.favorites }})</div>
+              <v-btn
+                large
+                class="d-inline-block text--white"
+                icon
+                color="amber accent-3"
+                :loading="recipeLoading"
+                @click.prevent.stop="favorite"
+              >
+                <v-icon>mdi-star{{ recipe.isFavorited ? '' : '-outline' }}</v-icon>
+              </v-btn>
+            </div>
+          </v-row>
+        </v-img>
 
         <v-col>
           <v-row dense no-gutters>
@@ -41,9 +61,6 @@
             >
               {{ recipe.title }}
             </v-col>
-            <v-btn large icon color="amber accent-3" :loading="recipeLoading" @click="favorite">
-              <v-icon>mdi-star{{ recipe.isFavorited ? '' : '-outline' }}</v-icon>
-            </v-btn>
           </v-row>
           <v-card-subtitle class="pb-0 pt-0">
             {{ recipe.creator.username }}
@@ -60,7 +77,7 @@
                   readonly
                   half-icon="mdi-star-half-full"
                   length="5"
-                  :value="recipe.rating * 5"
+                  :value="recipe.rating"
                 />
                 <div class="grey--text pl-2 d-inline-block" style="padding-top: 5px;">
                   ({{ recipe.ratingAmount }})
@@ -166,15 +183,16 @@
 </template>
 
 <script lang="ts">
+import 'reflect-metadata';
+
 import { AllergyGroups } from '@common/Model/Ingredient';
 import { IRecipe } from '@common/Model/Recipe/IRecipe';
 import { IRecipeSummary } from '@common/Model/Recipe/Recipe';
 import { mapRange, stepify } from '@common/utils/general';
 import { get100gSummaryFromIPortion } from '@common/utils/summary';
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
-import 'reflect-metadata';
-import { IconsForAllergyGroups, IconsForIngredientCategories } from '~/utils/enumToIcon';
 import tinygradient from 'tinygradient';
+import { IconsForAllergyGroups, IconsForIngredientCategories } from '~/utils/enumToIcon';
 
 @Component({})
 export default class RecipeOverviewCard extends Vue {
@@ -205,6 +223,7 @@ export default class RecipeOverviewCard extends Vue {
     return this.allergiesWithout0.map<string>((allergy) => IconsForAllergyGroups[allergy] || '');
   }
 
+  // Provide the stepify function to the vue context
   stepify = stepify;
 
   get allergiesWithout0(): AllergyGroups[] {
@@ -216,6 +235,7 @@ export default class RecipeOverviewCard extends Vue {
   }
 
   get ingredientRating(): string {
+    // get a color based on the "healthyness" of a recipe, based on sugar and fat per 100g
     const gradient = tinygradient('#64DD17', '#FFEB3B', '#B71C1C');
     const sugarValue = mapRange(this.summaryFor100g.totalNutritions.sugar, 5, 22.5, 0, 1);
     const fatValue = mapRange(this.summaryFor100g.totalNutritions.fat, 3, 17.5, 0, 1);

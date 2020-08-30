@@ -1,3 +1,4 @@
+// Default Error handler for API errors
 export default function responseErrorHandler(error: any): string[] {
   if (error.message == 'Network Error') {
     return ['ERROR.NETWORK'];

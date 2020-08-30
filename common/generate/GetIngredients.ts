@@ -1,4 +1,3 @@
-import * as fs from 'fs';
 import {
   AllergyGroups,
   IIngredient,
@@ -6,25 +5,25 @@ import {
   INutrients,
   Vegan,
 } from '@common/Model/Ingredient';
-
-import nuts from './ingredient_data/nuts.json';
-import fruits from './ingredient_data/fruits.json';
-import seeds from './ingredient_data/seeds.json';
 import bakeryproducts from './ingredient_data/bakeryproducts.json';
-import grain from './ingredient_data/grain.json';
-import seafood from './ingredient_data/seafood.json';
-import fish from './ingredient_data/fish.json';
-import poultry from './ingredient_data/poultry.json';
-import misc from './ingredient_data/misc.json';
-import mushrooms from './ingredient_data/mushrooms.json';
-import vegetables from './ingredient_data/vegetables.json';
-import sweets from './ingredient_data/sweets.json';
-import spices from './ingredient_data/spices.json';
+import dairy from './ingredient_data/dairy.json';
 import drinks from './ingredient_data/drinks.json';
 import fat from './ingredient_data/fat.json';
+import fish from './ingredient_data/fish.json';
 import flesh from './ingredient_data/flesh.json';
-import dairy from './ingredient_data/dairy.json';
+import fruits from './ingredient_data/fruits.json';
+import grain from './ingredient_data/grain.json';
+import misc from './ingredient_data/misc.json';
+import mushrooms from './ingredient_data/mushrooms.json';
 import noodles from './ingredient_data/noodles.json';
+
+import nuts from './ingredient_data/nuts.json';
+import poultry from './ingredient_data/poultry.json';
+import seafood from './ingredient_data/seafood.json';
+import seeds from './ingredient_data/seeds.json';
+import spices from './ingredient_data/spices.json';
+import sweets from './ingredient_data/sweets.json';
+import vegetables from './ingredient_data/vegetables.json';
 
 interface DataEntry {
   name: string;

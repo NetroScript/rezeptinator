@@ -1,17 +1,19 @@
-import { HttpStatus, INestApplication, Logger, ValidationPipe } from '@nestjs/common';
+import { IUser, Roles } from '@common/Model/User';
+import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as supertest from 'supertest';
 import { getConnection, Repository } from 'typeorm';
+import ormconfig from '../../ormconfig';
 
 import { UserEntity } from './user.entity';
 import { UserModule } from './user.module';
-import ormconfig from '../../ormconfig';
-import { IUser, Roles } from '../../common/Model/User';
 
 describe('User', () => {
   let app: INestApplication;
   let repository: Repository<UserEntity>;
+
+  // test Data
   const userData: IUser = {
     email: 'test@test.com',
     joinDate: new Date(),
@@ -32,6 +34,7 @@ describe('User', () => {
   );
   User2.password = 'abcdefghij';
 
+  // Setup Server
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
@@ -97,7 +100,7 @@ describe('User', () => {
         .expect('Content-Type', /json/)
         .expect(HttpStatus.BAD_REQUEST);
       expect(body).toEqual({
-        message: 'Account creation failed. - Username or email already exist.',
+        message: 'ERROR.USEREXISTS',
       });
     });
 
@@ -115,7 +118,7 @@ describe('User', () => {
         .expect(HttpStatus.CREATED);
       expect(body).toMatchObject({
         email: 'newmail@mail.com',
-        profilePicture: '',
+        profilePicture: 'https://api.adorable.io/avatars/100/Iamanewuser.png',
         role: [0],
         username: 'Iamanewuser',
       });

@@ -1,9 +1,9 @@
 import { IPortion, PortionTypes } from '@common/Model/Recipe/Portion';
+import { ApiProperty } from '@nestjs/swagger';
 import { IngredientEntity } from '@server/ingredient/ingredient.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
 import { RecipeEntity } from '@server/recipes/recipe.entity';
 import { Exclude } from 'class-transformer';
-import { ApiProperty } from '@nestjs/swagger';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
 
 @Entity('portion')
 export class PortionEntity implements IPortion {

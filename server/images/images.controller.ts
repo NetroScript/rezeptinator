@@ -5,7 +5,6 @@ import {
   Get,
   HttpException,
   HttpStatus,
-  Logger,
   NotFoundException,
   Param,
   ParseIntPipe,
@@ -14,17 +13,18 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RequiredRoles } from '@server/common/decorators/roles.decorator';
 import { User } from '@server/common/decorators/user.decorator';
 import { RolesGuard } from '@server/common/guards/roles.guard';
 import { ImagesService } from '@server/images/images.service';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { ServerResponse } from 'http';
 import fs from 'fs';
+import { ServerResponse } from 'http';
 
 @UseGuards(RolesGuard)
 @Controller('images')
+@ApiTags('images')
 export class ImagesController {
   constructor(private imagesService: ImagesService) {}
 

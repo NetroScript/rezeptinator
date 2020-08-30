@@ -1,25 +1,28 @@
+import { collectedIngredients } from '@common/generate/GetIngredients';
+import { IIngredient } from '@common/Model/Ingredient';
+import { Roles } from '@common/Model/User';
 import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   Param,
+  ParseBoolPipe,
   ParseIntPipe,
   Post,
+  Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { RequiredRoles } from '@server/common/decorators/roles.decorator';
+import { User } from '@server/common/decorators/user.decorator';
+import { RolesGuard } from '@server/common/guards/roles.guard';
+import { CreateIngredientDto } from '@server/ingredient/dto/createIngredient.dto';
 import { IngredientEntity } from '@server/ingredient/ingredient.entity';
 import { IngredientService } from '@server/ingredient/ingredient.service';
-import { IIngredient } from '@common/Model/Ingredient';
-import { collectedIngredients } from '@common/generate/GetIngredients';
-import { CreateIngredientDto } from '@server/ingredient/dto/createIngredient.dto';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { RolesGuard } from '@server/common/guards/roles.guard';
-import { RequiredRoles } from '@server/common/decorators/roles.decorator';
-import { Roles } from '@common/Model/User';
-import { User } from '@server/common/decorators/user.decorator';
 
 @Controller('ingredients')
 @UseGuards(RolesGuard)
@@ -58,8 +61,12 @@ export class IngredientController {
     description:
       'Find all ingredients containing this sub string. This API also returns if an alias contains the substring',
   })
-  async findIngredient(@Param('name') name): Promise<IIngredient[]> {
-    return await this.ingredientService.findByNameStarting(name);
+  async findIngredient(
+    @Param('name') name: string,
+    @Query('includeUserGenerated', new DefaultValuePipe(false), ParseBoolPipe)
+    includeUserGenerated: boolean,
+  ): Promise<IIngredient[]> {
+    return await this.ingredientService.findByNameStarting(name, !includeUserGenerated);
   }
 
   @Delete(':id')
@@ -68,7 +75,7 @@ export class IngredientController {
   @ApiResponse({ description: 'Delete a single ingredient' })
   async deleteIngredient(@Param('id', ParseIntPipe) number: number): Promise<{ success: boolean }> {
     const data = await this.ingredientService.deleteIngredient(number);
-    return { success: data.affected == 1 };
+    return { success: true };
   }
 
   @Post()

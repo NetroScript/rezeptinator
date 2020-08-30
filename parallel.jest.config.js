@@ -1,0 +1,2 @@
+const config = require('./jest.config');
+module.exports = Object.assign({}, config, { testRegex: '\\.spec.ts$' });

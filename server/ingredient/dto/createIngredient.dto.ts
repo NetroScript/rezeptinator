@@ -5,6 +5,7 @@ import {
   INutrients,
   Vegan,
 } from '@common/Model/Ingredient';
+import { ApiProperty } from '@nestjs/swagger';
 import {
   ArrayNotEmpty,
   ArrayUnique,
@@ -15,7 +16,6 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
 
 export class NutrientDto implements INutrients {
   @IsPositive()

@@ -1,27 +1,29 @@
+import { Roles } from '@common/Model/User';
 import {
-  Injectable,
   CanActivate,
   ExecutionContext,
   HttpException,
   HttpStatus,
+  Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Roles } from '@common/Model/User';
-import { User } from '@server/common/decorators/user.decorator';
-import * as jwt from 'jsonwebtoken';
 import { JWTTokenSecret } from '@server/config';
 import { IJWTPayload } from '@server/user/dto/accountDto';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
+    // fetch the required roles
     const roles = this.reflector.get<Roles[]>('roles', context.getHandler());
+    // if no required roles allow the access
     if (!roles) {
       return true;
     }
 
+    // get the request
     const request = context.switchToHttp().getRequest();
     const lackingRoles: Roles[] = [];
 

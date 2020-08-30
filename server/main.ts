@@ -1,17 +1,18 @@
+import { Logger as NestLogger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { Logger, ValidationPipe } from '@nestjs/common';
 
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import { NuxtFastifyFilter } from './nuxt/nuxtFastify.filter';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import fmp from 'fastify-multipart';
-
-import { NuxtServer } from './nuxt';
+import { Logger } from 'nestjs-pino';
 import config from '../nuxt.config';
 
 import { ApplicationModule } from './application.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-const log = new Logger('Bootstrap');
+import { NuxtServer } from './nuxt';
+import { NuxtFastifyFilter } from './nuxt/nuxtFastify.filter';
+
+const log = new NestLogger('Bootstrap');
 
 declare const module: any;
 
@@ -32,14 +33,13 @@ async function bootstrap() {
 
     const app = await NestFactory.create<NestFastifyApplication>(ApplicationModule, adapter);
 
+    app.useLogger(app.get(Logger));
+
     const document = SwaggerModule.createDocument(app, APIConfig);
     SwaggerModule.setup('api', app, document);
 
     app.useGlobalPipes(new ValidationPipe({ transform: true }));
     app.useGlobalFilters(new NuxtFastifyFilter(app.getHttpAdapter(), nuxt));
-
-    // const app = await NestFactory.create(ApplicationModule);
-    // app.useGlobalFilters(new NuxtExpressFilter(nuxt));
 
     if (!config.dev) {
       app.enableShutdownHooks();

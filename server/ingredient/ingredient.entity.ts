@@ -5,11 +5,11 @@ import {
   INutrients,
   Vegan,
 } from '@common/Model/Ingredient';
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { NutrientEntity } from '@server/ingredient/nutrient.entity';
-import { Exclude } from 'class-transformer';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { NutrientDto } from '@server/ingredient/dto/createIngredient.dto';
+import { NutrientEntity } from '@server/ingredient/nutrient.entity';
+import { Exclude } from 'class-transformer';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { AfterLoad, BeforeInsert } from 'typeorm/index';
 
 @Entity('ingredient')

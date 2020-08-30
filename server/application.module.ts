@@ -1,15 +1,21 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './application.controller';
-import { IngredientModule } from './ingredient/ingredient.module';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { RecipesModule } from './recipes/recipes.module';
-import { UserModule } from './user/user.module';
-import { ImagesModule } from './images/images.module';
+import { LoggerModule } from 'nestjs-pino/dist';
+import config from '../nuxt.config';
 
 import ormconfig from '../ormconfig';
+import { ImagesModule } from './images/images.module';
+import { IngredientModule } from './ingredient/ingredient.module';
+import { RecipesModule } from './recipes/recipes.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
+    LoggerModule.forRoot({
+      pinoHttp: {
+        prettyPrint: config.dev ? { colorize: true } : false,
+      },
+    }),
     TypeOrmModule.forRoot(
       Object.assign(
         { autoLoadEntities: true, keepConnectionAlive: true } as TypeOrmModuleOptions,
@@ -21,6 +27,5 @@ import ormconfig from '../ormconfig';
     UserModule,
     ImagesModule,
   ],
-  controllers: [AppController],
 })
 export class ApplicationModule {}

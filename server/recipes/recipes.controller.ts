@@ -1,6 +1,5 @@
-import { collectedIngredients } from '@common/generate/GetIngredients';
-import { IIngredient } from '@common/Model/Ingredient';
-import { IRecipe } from '@common/Model/Recipe/IRecipe';
+import { ITag } from '@common/Model/Recipe/Recipe';
+import { Roles } from '@common/Model/User';
 import {
   Body,
   ClassSerializerInterceptor,
@@ -9,30 +8,25 @@ import {
   Get,
   HttpException,
   HttpStatus,
-  Logger,
   Param,
   ParseIntPipe,
   Post,
-  Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { RequiredRoles } from '@server/common/decorators/roles.decorator';
+import { User, UserNoError } from '@server/common/decorators/user.decorator';
 import { RolesGuard } from '@server/common/guards/roles.guard';
-import { IngredientEntity } from '@server/ingredient/ingredient.entity';
+import { advancedRecipeSearchDto } from '@server/recipes/dto/advancedRecipeSearch.dto';
+import { createRecipeDto } from '@server/recipes/dto/createRecipe.dto';
 import { rateRecipeDto } from '@server/recipes/dto/rateRecipe.dto';
 import { returnRecipeDto } from '@server/recipes/dto/returnRecipe.dto';
 import { returnRecipeQueryDto } from '@server/recipes/dto/returnRecipeQuery.dto';
+import { RecipeEntity } from '@server/recipes/recipe.entity';
 import { RecipesService } from '@server/recipes/recipes.service';
 import { TagEntity } from '@server/recipes/tag.entity';
-import { ITag } from '@common/Model/Recipe/Recipe';
-import { RecipeEntity } from '@server/recipes/recipe.entity';
-import { advancedRecipeSearchDto } from '@server/recipes/dto/advancedRecipeSearch.dto';
-import { RequiredRoles } from '@server/common/decorators/roles.decorator';
-import { Roles } from '@common/Model/User';
-import { User, UserNoError } from '@server/common/decorators/user.decorator';
 import { DeleteResult } from 'typeorm';
-import { createRecipeDto } from '@server/recipes/dto/createRecipe.dto';
 
 @Controller('recipes')
 @UseGuards(RolesGuard)
@@ -135,7 +129,7 @@ export class RecipesController {
       }
     }
 
-    return { success: result.affected >= 1 };
+    return { success: true };
   }
 
   @Post()

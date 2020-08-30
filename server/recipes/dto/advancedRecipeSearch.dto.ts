@@ -1,9 +1,11 @@
+import { AvailableLanguages } from '@common/Localisation/Generic';
+import { AllergyGroups, IngredientCategories, Vegan } from '@common/Model/Ingredient';
 import { IAdvancedRecipeSearch } from '@common/Model/Recipe/IAdvacedRecipeSearch';
 import { RecipeOrderVariants } from '@common/Model/Recipe/Recipe';
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
   IsEnum,
-  IsIn,
   IsInt,
   IsNumber,
   IsOptional,
@@ -12,9 +14,6 @@ import {
   Max,
   Min,
 } from 'class-validator';
-import { AllergyGroups, IngredientCategories, Vegan } from '@common/Model/Ingredient';
-import { AvailableLanguages } from '@common/Localisation/Generic';
-import { ApiProperty } from '@nestjs/swagger';
 
 export class advancedRecipeSearchDto implements IAdvancedRecipeSearch {
   @IsOptional()

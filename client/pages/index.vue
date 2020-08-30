@@ -10,7 +10,7 @@
         ></RecipeOverviewCard>
       </v-row>
       <v-row
-        v-if="recipeQuery.totalCount === 0"
+        v-if="recipeQueryResult.totalCount === 0"
         justify="center"
         align-content="center"
         align="center"
@@ -31,7 +31,7 @@
     </template>
     <template #drawer>
       <RecipeFilters
-        :current-query="currentQuery"
+        :current-query="currentFilters"
         :search-again="searchAgain"
         :show-search-drawer="showSearchDrawer"
       />
@@ -43,7 +43,7 @@
 
     <template #header>
       <v-text-field
-        v-model="currentQuery.name"
+        v-model="currentFilters.name"
         flat
         solo-inverted
         hide-details
@@ -58,11 +58,11 @@
         dark
         icon
         @click="
-          currentQuery.ascending = !currentQuery.ascending;
+          currentFilters.ascending = !currentFilters.ascending;
           searchAgain();
         "
         ><v-icon>{{
-          currentQuery.ascending ? 'mdi-sort-descending' : 'mdi-sort-ascending'
+          currentFilters.ascending ? 'mdi-sort-descending' : 'mdi-sort-ascending'
         }}</v-icon></v-btn
       >
       <v-tooltip bottom>
@@ -79,28 +79,29 @@
 
 <script lang="ts">
 import 'reflect-metadata';
+
 import { IAdvancedRecipeSearch } from '@common/Model/Recipe/IAdvacedRecipeSearch';
-import MainLayout from '~/layout/default.vue';
 import { IRecipe } from '@common/Model/Recipe/IRecipe';
 import { IRecipeQueryResult, RecipeOrderVariants } from '@common/Model/Recipe/Recipe';
 
 import { Context } from '@nuxt/types';
 import '@nuxtjs/axios';
 import { Component, Vue } from 'nuxt-property-decorator';
-import RecipeOverviewCard from '~/components/RecipeOverviewCard.vue';
 import RecipeFilters from '~/components/RecipeFilters.vue';
+import RecipeOverviewCard from '~/components/RecipeOverviewCard.vue';
+import MainLayout from '~/layout/default.vue';
 import Timeout = NodeJS.Timeout;
 
 @Component({
   components: { RecipeFilters, RecipeOverviewCard, MainLayout },
 })
 export default class IndexPage extends Vue {
-  recipeQuery: IRecipeQueryResult = { recipes: [], totalCount: 0 };
+  recipeQueryResult: IRecipeQueryResult = { recipes: [], totalCount: 0 };
   recipes: IRecipe[] = [];
 
-  currentQuery: IAdvancedRecipeSearch = {
+  currentFilters: IAdvancedRecipeSearch = {
     ascending: false,
-    order: RecipeOrderVariants.Favourites,
+    order: RecipeOrderVariants.Default,
     pageSize: 25,
   };
 
@@ -111,25 +112,26 @@ export default class IndexPage extends Vue {
   searchDebounce: Timeout;
 
   async asyncData({ $axios }: Context) {
-    let recipeQuery: IRecipeQueryResult;
+    let recipeQueryResult: IRecipeQueryResult;
     let recipes: IRecipe[] = [];
     try {
-      recipeQuery = await $axios.$post('recipes/find', {
+      recipeQueryResult = await $axios.$post('recipes/find', {
         ascending: false,
-        order: RecipeOrderVariants.Favourites,
+        order: RecipeOrderVariants.Default,
         pageSize: 25,
       });
-      recipes = recipeQuery.recipes;
+      recipes = recipeQueryResult.recipes;
     } catch (e) {
       console.log(e);
     }
 
     return {
-      recipeQuery,
+      recipeQueryResult,
       recipes,
     };
   }
 
+  // Debounce the search
   async searchAgain() {
     clearTimeout(this.searchDebounce);
 
@@ -149,24 +151,25 @@ export default class IndexPage extends Vue {
       // Is it actually already on screen or is it the initialising event
       isIntersecting &&
       // Did we not already try to load the new page
-      this.currentQuery.lastId != this.recipeQuery.lastId &&
+      this.currentFilters.lastId != this.recipeQueryResult.lastId &&
       // Did we not already load all entries
-      this.recipes.length != this.recipeQuery.totalCount
+      this.recipes.length != this.recipeQueryResult.totalCount
     ) {
       // Continue after the last search and then search
-      this.currentQuery.lastId = this.recipeQuery.lastId;
-      this.currentQuery.lastValue = this.recipeQuery.lastValue;
+      this.currentFilters.lastId = this.recipeQueryResult.lastId;
+      this.currentFilters.lastValue = this.recipeQueryResult.lastValue;
       await this.search();
     }
   }
 
   async search() {
     this.isLoading = true;
-    this.recipeQuery = await this.$axios.$post<IRecipeQueryResult>(
+    this.recipeQueryResult = await this.$axios.$post<IRecipeQueryResult>(
       'recipes/find',
-      this.currentQuery,
+      this.currentFilters,
     );
-    this.recipes.push(...this.recipeQuery.recipes);
+    // Add new recipes to the list
+    this.recipes.push(...this.recipeQueryResult.recipes);
     this.isLoading = false;
   }
 

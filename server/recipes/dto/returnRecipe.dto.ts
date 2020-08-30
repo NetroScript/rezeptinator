@@ -1,6 +1,5 @@
 import { AvailableLanguages } from '@common/Localisation/Generic';
 import { IRecipe } from '@common/Model/Recipe/IRecipe';
-import { IRecipeQueryResult } from '@common/Model/Recipe/Recipe';
 import { PortionEntity } from '@server/recipes/portion.entity';
 import { RecipeStepEntity } from '@server/recipes/recipeStep.entity';
 import { RecipeSummaryEntity } from '@server/recipes/recipeSummary.entity';

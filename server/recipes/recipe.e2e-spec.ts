@@ -18,7 +18,6 @@ import { RecipesModule } from '@server/recipes/recipes.module';
 import { TagEntity } from '@server/recipes/tag.entity';
 import { UserEntity } from '@server/user/user.entity';
 import { UserModule } from '@server/user/user.module';
-import exp from 'constants';
 import * as supertest from 'supertest';
 import { getConnection, Repository } from 'typeorm';
 
@@ -28,12 +27,15 @@ import ormconfig from '../../ormconfig';
 jest.setTimeout(30000);
 
 describe('Recipes', () => {
+  // Required classes
   let app: INestApplication;
   let repository: Repository<RecipeEntity>;
   let repositoryIngredient: Repository<IngredientEntity>;
   let repositoryUser: Repository<UserEntity>;
   let repositoryTags: Repository<TagEntity>;
   let repositoryImages: Repository<ImagesEntity>;
+
+  // test Data
   let token: string;
   const Tags: TagEntity[] = [];
 
@@ -133,6 +135,7 @@ describe('Recipes', () => {
     ascending: true,
   };
 
+  // Setup the server, database
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
@@ -158,6 +161,7 @@ describe('Recipes', () => {
     await app.init();
   });
 
+  // clear the database
   afterAll(async () => {
     await getConnection().synchronize(true);
     await app.close();
@@ -176,6 +180,7 @@ describe('Recipes', () => {
     });
 
     it('should show find tags if they exist', async () => {
+      // save all tags
       TagList.forEach((tag) => Tags.push(new TagEntity(tag)));
       await repositoryTags.save(Tags);
 
@@ -186,7 +191,7 @@ describe('Recipes', () => {
         .expect('Content-Type', /json/)
         .expect(200);
 
-      expect(data.body).toStrictEqual([{ id: 6, group: 'Regions', tag: 'Japan' }]);
+      expect(data.body).toStrictEqual([{ id: 6, group: 'Regionen', tag: 'Japan' }]);
     });
   });
 
@@ -199,11 +204,9 @@ describe('Recipes', () => {
 
       await repositoryUser.save(testUser);
       await repositoryImages.save(exampleImage);
-      TagList.forEach((tag) => Tags.push(new TagEntity(tag)));
-      await repositoryTags.save(Tags);
       await repositoryIngredient.save(ingredientList);
 
-      // Set Up to find now that the ingredients have ids assigned
+      // Set Up to find ingredient to be exluced, now that the ingredients have ids assigned
       toFind.excludeIngredients = [
         ingredientList.find((ingredient) => ingredient.name == 'Kartoffeln').id,
       ];
@@ -212,6 +215,7 @@ describe('Recipes', () => {
         recipeData.ingredients[2].ingredient.id,
       ];
 
+      // get a user session
       const { body } = await supertest
         .agent(app.getHttpServer())
         .post('/user/login')
@@ -417,5 +421,29 @@ describe('Recipes', () => {
     });
   });
 
-  describe('/recipes endpoint - deleting', () => {});
+  describe('/recipes endpoint - deleting', () => {
+    it('should not be possible to delete recipes without permissions', async () => {
+      const data = await supertest
+        .agent(app.getHttpServer())
+        .delete('/recipes/1')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/);
+
+      expect(data.status).toBe(401);
+    });
+
+    it('should be able to delete a single recipe as the user who created it', async () => {
+      const data = await supertest
+        .agent(app.getHttpServer())
+        .delete('/recipes/1')
+        .set('Accept', 'application/json')
+        .set('Authorization', 'Bearer ' + token)
+        .expect('Content-Type', /json/);
+
+      expect(data.status).toBe(200);
+
+      // The now deleted recipe should not exist
+      expect(await repository.findOne(1)).toBeUndefined();
+    });
+  });
 });

@@ -17,6 +17,9 @@ export enum OvenTypes {
   GrilLAndFan,
 }
 
+// For the case that specific functionality is added later to RecipeSteps we already
+// implement a class per type, currently unusued
+
 abstract class RecipeStep implements IRecipeStep {
   abstract readonly type: RecipeStepTypes;
 

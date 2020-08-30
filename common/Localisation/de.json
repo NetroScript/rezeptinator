@@ -60,6 +60,8 @@
   "MAINPAGE": "Startseite",
   "CHANGETHEME": "Theme wechseln",
   "CREATERECIPE": "Neues Rezept erstellen",
+  "MYRECIPES": "Meine Rezepte",
+  "MYFAVORITES": "Meine Favoriten",
   "CREATE": {
     "NOIMAGES": "Du kannst auch per Drag und Drop Bilder hierhin ziehen.",
     "UPLOADIMAGES": "Lade ein paar Bilder hoch - das schönste zuerst :)",

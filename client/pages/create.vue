@@ -71,12 +71,21 @@
               {{ $t('CREATE.INGREDIENTSHEADER') }}
             </h2>
 
-            <div v-for="(ingredient, index) in createRecipe.ingredients" class="ma-3">
+            <div
+              v-for="(ingredient, index) in createRecipe.ingredients"
+              :key="'ingredient-' + index"
+              class="ma-3"
+            >
               <v-row no-gutters>
                 <v-col>
                   <EditablePortion v-model="createRecipe.ingredients[index]"></EditablePortion>
                 </v-col>
-                <v-btn icon class="mx-2 my-auto" @click="createRecipe.ingredients.splice(index, 1)">
+                <v-btn
+                  v-if="createRecipe.ingredients.length > 0"
+                  icon
+                  class="mx-2 my-auto"
+                  @click="createRecipe.ingredients.splice(index, 1)"
+                >
                   <v-icon color="error">mdi-delete</v-icon>
                 </v-btn>
               </v-row>
@@ -105,7 +114,11 @@
               {{ $t('CREATE.STEPSHEADER') }}
             </h2>
 
-            <div v-for="(step, index) in createRecipe.recipeSteps" class="ma-3">
+            <div
+              v-for="(step, index) in createRecipe.recipeSteps"
+              :key="'step-' + index"
+              class="ma-3"
+            >
               <v-row no-gutters>
                 <v-col>
                   <EditableRecipeStep
@@ -122,6 +135,7 @@
                     <v-icon :color="index > 0 ? 'primary' : 'gray'">mdi-arrow-up-bold</v-icon>
                   </v-btn>
                   <v-btn
+                    v-if="createRecipe.recipeSteps.length > 0"
                     icon
                     class="mx-2 my-auto"
                     @click="createRecipe.recipeSteps.splice(index, 1)"
@@ -311,10 +325,6 @@
 </template>
 
 <script lang="ts">
-import EditablePortion from '~/components/EditablePortion.vue';
-import EditableRecipeStep from '~/components/EditableRecipeStep.vue';
-import TagSelect from '~/components/TagSelect.vue';
-import MainLayout from '~/layout/default.vue';
 import { AvailableLanguages } from '@common/Localisation/Generic';
 import { ICreateRecipe } from '@common/Model/Recipe/Recipe';
 import { RecipeStepTypes } from '@common/Model/Recipe/RecipeStep';
@@ -323,6 +333,10 @@ import '@nuxtjs/axios';
 import { Component, Vue } from 'nuxt-property-decorator';
 import { extend, ValidationObserver, ValidationProvider } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
+import EditablePortion from '~/components/EditablePortion.vue';
+import EditableRecipeStep from '~/components/EditableRecipeStep.vue';
+import TagSelect from '~/components/TagSelect.vue';
+import MainLayout from '~/layout/default.vue';
 import responseErrorHandler from '~/utils/responseErrorHandler';
 
 extend('required', { ...required });
@@ -339,7 +353,7 @@ extend('required', { ...required });
   middleware: 'auth',
 })
 export default class CreateRecipePage extends Vue {
-  // The recipe which is being created
+  // The recipe which is being created - currently default dummy data
   createRecipe: ICreateRecipe = {
     cookTime: 15,
     difficulty: 0,
@@ -383,6 +397,7 @@ export default class CreateRecipePage extends Vue {
   async submit(): Promise<void> {
     if (
       !this.isLoading &&
+      // Check if the form is valid
       (await (this.$refs.observer as Vue & { validate: () => boolean }).validate())
     ) {
       this.isLoading = true;
@@ -411,6 +426,7 @@ export default class CreateRecipePage extends Vue {
         this.additionalErrors.push('ERROR.FAILEDIMAGEUPLOAD');
       }
 
+      // Even if the image upload failed we will just submit the recipe
       try {
         const uploadedRecipe = await this.$axios.$post<{ success: boolean; id: number }>(
           'recipes',
@@ -426,6 +442,8 @@ export default class CreateRecipePage extends Vue {
     }
   }
 
+  // Helper function to change the position in an array
+  // We have to use the specific array modifier because array destructuring is not supported by vue
   swapRecipeStep(oldIndex, newIndex) {
     this.$set(
       this.createRecipe.recipeSteps,
@@ -434,11 +452,11 @@ export default class CreateRecipePage extends Vue {
     );
   }
 
+  // When images are dragged onto the form
   dragImages(event: DragEvent) {
     const files = Array.from(event.dataTransfer.files).filter((file) =>
       file.type.startsWith('image/'),
     );
-    console.log(files);
     this.files = [];
     this.calculatePreviews(files);
   }

@@ -1,14 +1,14 @@
 import {
-  ExceptionFilter,
-  HttpException,
   ArgumentsHost,
   Catch,
-  HttpStatus,
+  ExceptionFilter,
+  HttpException,
   HttpServer,
+  HttpStatus,
 } from '@nestjs/common';
-import { Nuxt } from 'nuxt';
-import { ServerResponse } from 'http';
 import { FastifyReply, FastifyRequest } from 'fastify';
+import { ServerResponse } from 'http';
+import { Nuxt } from 'nuxt';
 
 @Catch()
 export class NuxtFastifyFilter implements ExceptionFilter {
@@ -34,14 +34,20 @@ export class NuxtFastifyFilter implements ExceptionFilter {
       path: req.req.url,
     };
 
+    // No handler for the requested route, just return the front end
     if (status === 404) {
       if (!res.res.headersSent) {
         await this.nuxt.render(req.req, res.res);
+      } else {
+        res.status(status);
+        res.send(Object.assign(baseError, { error: exception }));
       }
+      // No HTTP Error, send a basic error message
     } else if (!(exception instanceof HttpException)) {
       res.status(status);
       res.send(Object.assign(baseError, { error: exception }));
     } else {
+      // HttpException, the standard error response
       const res = exception.getResponse();
       const message =
         !(typeof res === 'undefined' || res === null) && typeof res === 'object'

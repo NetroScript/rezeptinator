@@ -135,18 +135,19 @@
 </template>
 
 <script lang="ts">
+import 'reflect-metadata';
+
 import { PiecePortion } from '@common/Classes/PiecePortion';
 import { UnitPortion } from '@common/Classes/UnitPortion';
-import { ICreatePortion } from '@common/Model/Recipe/ICreatePortion';
 import {
   ICreateIngredient,
   IIngredient,
   IngredientCategories,
   Vegan,
 } from '@common/Model/Ingredient';
+import { ICreatePortion } from '@common/Model/Recipe/ICreatePortion';
 import { PortionTypes } from '@common/Model/Recipe/Portion';
 import { Component, Prop, Vue, Watch } from 'nuxt-property-decorator';
-import 'reflect-metadata';
 import { extend, ValidationProvider } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
 import Timeout = NodeJS.Timeout;
@@ -171,7 +172,9 @@ export default class EditablePortion extends Vue {
   @Prop() value: ICreatePortion;
 
   typeOfPortionUpdated() {
+    // Reset the type
     this.value.type = 1;
+    // Update the v-model
     this.reEmit();
   }
 
@@ -216,12 +219,15 @@ export default class EditablePortion extends Vue {
 
   get displayIngredients(): ListEntry[] {
     const data: ListEntry[] = [];
+    // Just reference this variable so there is a forced update if it gets changed
     this.updateIngredients;
     this.foundIngredients.forEach((ingredient) => {
+      // Ingredients with the direct name
       data.push({
         text: ingredient.name,
         value: { id: ingredient.id, nameIndex: 0 },
       });
+      // Ingredients with an alias
       ingredient.alias.forEach((alias, index) => {
         data.push({
           text: alias,
@@ -230,6 +236,7 @@ export default class EditablePortion extends Vue {
       });
     });
 
+    // Ingredients added by the user
     this.customIngredients.forEach((ingredient, index) => {
       data.push({
         text: ingredient.name,
@@ -244,6 +251,7 @@ export default class EditablePortion extends Vue {
   onIngredientChange(newValue: { id: number; nameIndex: number }) {
     if (newValue != undefined) {
       this.value.ingredientNameIndex = newValue.nameIndex;
+      // When it is a custom added ingredient
       if (newValue.id < 0) {
         this.value.ingredient = undefined;
         this.value.newIngredient = this.customIngredients[-(newValue.id + 1)];
@@ -251,6 +259,7 @@ export default class EditablePortion extends Vue {
           { alias: [] },
           this.customIngredients[-(newValue.id + 1)],
         );
+        // When it is a selected ingredient from the database
       } else {
         this.value.newIngredient = undefined;
         this.value.ingredient = newValue.id;

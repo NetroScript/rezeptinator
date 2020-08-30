@@ -253,6 +253,7 @@
 </template>
 <script lang="ts">
 import 'reflect-metadata';
+
 import { IAdvancedRecipeSearch } from '@common/Model/Recipe/IAdvacedRecipeSearch';
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
 
