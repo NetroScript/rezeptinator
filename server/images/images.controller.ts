@@ -73,7 +73,12 @@ export class ImagesController {
     const imageData = await this.imagesService.findById(imageID);
 
     if (imageData != undefined) {
-      response.type('image/jpeg').send(fs.readFileSync(imageData.getPath()));
+      try {
+        const file = fs.readFileSync(imageData.getPath());
+        response.type('image/jpeg').send(file);
+      } catch (e) {
+        throw new NotFoundException({ message: 'Image not found' });
+      }
     } else {
       throw new NotFoundException({ message: 'Image not found' });
     }
@@ -87,7 +92,12 @@ export class ImagesController {
     const imageData = await this.imagesService.findById(imageID);
 
     if (imageData != undefined) {
-      response.type('image/jpeg').send(fs.readFileSync(imageData.getPreviewPath()));
+      try {
+        const file = fs.readFileSync(imageData.getPreviewPath());
+        response.type('image/jpeg').send(file);
+      } catch (e) {
+        throw new NotFoundException({ message: 'Image not found' });
+      }
     } else {
       throw new NotFoundException({ message: 'Image not found' });
     }

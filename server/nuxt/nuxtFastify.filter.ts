@@ -34,8 +34,20 @@ export class NuxtFastifyFilter implements ExceptionFilter {
       path: req.req.url,
     };
 
+    // HttpException, the standard error response
+    const exceptionResponse =
+      exception instanceof HttpException ? exception.getResponse() : undefined;
+
     // No handler for the requested route, just return the front end
-    if (status === 404) {
+    if (
+      status === 404 &&
+      !(
+        exceptionResponse != undefined &&
+        //eslint-disable-next-line @typescript-eslint/ban-types
+        (exceptionResponse as object).hasOwnProperty('message') !== undefined &&
+        !exceptionResponse['message'].startsWith('Cannot GET')
+      )
+    ) {
       if (!res.res.headersSent) {
         await this.nuxt.render(req.req, res.res);
       } else {
@@ -47,12 +59,11 @@ export class NuxtFastifyFilter implements ExceptionFilter {
       res.status(status);
       res.send(Object.assign(baseError, { error: exception }));
     } else {
-      // HttpException, the standard error response
-      const res = exception.getResponse();
       const message =
-        !(typeof res === 'undefined' || res === null) && typeof res === 'object'
-          ? Object.assign(baseError, res)
-          : Object.assign(baseError, { message: res });
+        !(typeof exceptionResponse === 'undefined' || exceptionResponse === null) &&
+        typeof exceptionResponse === 'object'
+          ? Object.assign(baseError, exceptionResponse)
+          : Object.assign(baseError, { message: exceptionResponse });
 
       this.server.reply(host.getArgByIndex(1), message, exception.getStatus());
     }
